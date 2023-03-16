@@ -1,0 +1,407 @@
+<mujoco model="GH360T">
+    <!-- <compiler discardvisual="false" angle="radian"/> -->
+
+    <asset>
+        <mesh name="shoulder0_mesh" file="meshes/360/360_shoulder_0.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="shoulder1_mesh" file="meshes/360/360_shoulder_1.stl" scale="1 1 1"/>
+        <mesh name="shoulder2_mesh" file="meshes/360/360_shoulder_2.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="shoulder3_mesh" file="meshes/360/360_shoulder_3.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="upperarm0_mesh" file="meshes/360/360_upper_arm_0.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="upperarm1_mesh" file="meshes/360/360_upper_arm_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="upperarm2_mesh" file="meshes/360/360_upper_arm_2.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="lowerarm0_mesh" file="meshes/360/360_lower_arm_0.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="lowerarm1_mesh" file="meshes/360/360_lower_arm_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="lowerarm2_mesh" file="meshes/360/360_lower_arm_2.stl" scale="0.001 0.001 0.001"/>
+
+        <!-- <mesh name="active_pulley_shoulder_mesh" file="meshes/360/360_active_pulley_shoulder.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="active_pulley_arm_mesh" file="meshes/360/360_active_pulley_arm.stl" scale="0.001 0.001 0.001"/> -->
+    </asset> 
+
+    <default>
+        <!-- <geom rgba=".9 .7 .1 1" size="0.01"/> -->
+        <site type="sphere" rgba=".9 .9 .9 1" size="5E-03"/>
+        <joint damping="0.1"/>
+        <!-- <joint type="hinge" axis="0 1 0" limited="true" range="0 60" solimplimit="0.95 0.95 0.1"/> -->
+        <muscle ctrllimited="true" ctrlrange="0 1"/>
+    </default>
+
+    <worldbody>
+        <body name="base" pos="0 0 0">
+            <!-- robot view -->
+            <camera mode="fixed" name="robotview" pos="1.0 0 0.4" quat="0.653 0.271 0.271 0.653"/>
+            <inertial diaginertia="0 0 0" mass="0" pos="0 0 0"/>
+            <!-- mount attached here -->
+
+            <body name="shoulder0" pos="-100E-03 0E-03 200E-03" euler="1.571 1.571 0">
+                <geom name="shoulder0_vis" group="1" type="mesh" contype="0" conaffinity="0" mesh="shoulder0_mesh" pos="0 0 0" euler="0 0 0"/>
+                <geom name="shoulder0_col_back" group="0" type="box" pos="0E-03 140.5E-03 25E-03" size="86E-03 140.5E-03 31E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_col_top_1" group="0" type="box" pos="0E-03 275.00E-03 85.00E-03" size="86E-03 6E-03 91E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_col_top_2" group="0" type="cylinder" fromto="0 281.00E-03 176E-03 0 269E-03 176E-03" size="86E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_col_bot_1" group="0" type="box" pos="0 6E-03 85E-03" size="86E-03 6E-03 91E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_col_bot_2" group="0" type="cylinder" fromto="0 0E-03 176E-03 0 12E-03 176E-03" size="86E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_pulley_right_col" group="0" type="cylinder" fromto="65.90E-03 253.267E-03 47.324E-03 65.90E-03 268.35E-03 47.324E-03" size="28E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_pulley_left_col" group="0" type="cylinder" fromto="-65.90E-03 249.962E-03 47.324E-03 -65.90E-03 265.045E-03 47.324E-03" size="28E-03" rgba=".95 .1 .1 0.6"/>
+
+                <inertial pos="2.713E-03 148.309E-03 49.227E-03" mass="3744.519E-03" fullinertia="5.643E-02 2.838E-02 4.930E-02 4.639E-04 -58154.639E-09 8.301E-04" />
+
+                <site name="shoulder_yaw_active_right_top" pos="53.3997E-03 264.1E-03 32.3576E-03" />
+                <site name="shoulder_yaw_active_right_bot" pos="85.3499E-03 257.6E-03 48.7206E-03" />
+                <site name="shoulder_yaw_active_left_top" pos="-85.3499E-03 254.295E-03 48.7206E-03" />
+                <site name="shoulder_yaw_active_left_bot" pos="-53.3997E-03 260.795E-03 32.3576E-03" />
+
+                <site name="shoulder_yaw_side_right_top" pos="-48.7288E-03 260.5E-03 117.658E-03" />
+                <site name="shoulder_yaw_side_right_bot" pos="75.8198E-03 260.5E-03 181.444E-03" />
+                <site name="shoulder_yaw_side_left_top" pos="-75.8198E-03 253.50E-03 181.444E-03" />
+                <site name="shoulder_yaw_side_left_bot" pos="48.7288E-03 253.50E-03 117.658E-03" />
+
+
+                <body name="shoulder1" pos="0E-03 0E-03 0E-03">
+                    <joint name="shoulder1_joint" type="hinge" axis="0 1 0" pos="0E-03 284E-03 176E-03" limited="true" range="-1.57 1.57" />
+                    <geom name="shoulder1_vis" group="1" type="mesh" mesh="shoulder1_mesh" contype="0" conaffinity="0" pos="0 0 0" euler="0 0 0"/>
+                    <geom name="shoulder1_col_outer" group="0" type="cylinder" fromto="0E-03 265E-03 176E-03 0 15E-03 176E-03" size="81E-03" rgba=".95 .1 .1 0.6" />
+                    <geom name="shoulder1_pulley_right_col" group="0" type="cylinder" fromto="63.70E-03 55.524E-03 209.206E-03 63.70E-03 55.524E-03 224.289E-03" size="28E-03" rgba=".95 .1 .1 0.6"/>
+                    <geom name="shoulder1_pulley_left_col" group="0" type="cylinder" fromto="-63.70E-03 55.524E-03 218.528E-03 -63.70E-03 55.524E-03 233.611E-03" size="28E-03" rgba=".95 .1 .1 0.6"/>
+
+                    <geom name="shoulder_yaw_passive_pulley" group="4" type="cylinder" fromto="0.00E-03 250.00E-03 176.00E-03 0.00E-03 265.00E-03 176.00E-03" size="74.5E-03" rgba=".2 .2 .5 0.6" />
+
+                    <inertial pos="-0.166E-03 111.148E-03 177.807E-03" mass="1832.108E-03" fullinertia="2.133E-02 7.556E-03 2.037E-02 -25913.861E-09 1.146E-04 2.253E-04" />
+
+                    <site name="shoulder_yaw_passive_right" pos="-10.988E-03 261.683E-03 253.325E-03" />
+                    <site name="shoulder_yaw_passive_left" pos="10.988E-03 252.317E-03 253.325E-03" />
+
+                    <site name="shoulder_roll_active_right_top" pos="82.4476E-03 60.8886E-03 213.539E-03" />
+                    <site name="shoulder_roll_active_right_bot" pos="50.3448E-03 41.3152E-03 220.039E-03" />
+                    <site name="shoulder_roll_active_left_top" pos="-50.3448E-03 41.3152E-03 229.361E-03" />
+                    <site name="shoulder_roll_active_left_bot" pos="-82.4476E-03 60.8886E-03 222.861E-03" />
+
+                    <site name="shoulder_roll_side_right_top" pos="49.9935E-03 174.306E-03 215.1750E-03" />
+                    <site name="shoulder_roll_side_right_bot" pos="-35.6138E-03 122.11E-03 215.175E-03" />
+                    <site name="shoulder_roll_side_left_top" pos="35.6138E-03 122.11E-03 224.4250E-03" />
+                    <site name="shoulder_roll_side_left_bot" pos="-49.9935E-03 174.306E-03 224.4250E-03" />
+
+
+                    <body name="shoulder2" pos="0E-03 0E-03 0E-03">
+                        <joint name="shoulder2_joint" type="hinge" axis="0 0 1" pos="0E-03 160E-03 262.8E-03" limited="true" range="-1.57 1.57" />
+                        <geom name="shoulder2_vis" group="1" type="mesh" mesh="shoulder2_mesh" contype="0" conaffinity="0" pos="0 0 0" euler="0 0 0"/>
+
+                        <geom name="shoulder_roll_passive_pulley" group="4" type="cylinder" fromto="0.00E-03 160.00E-03 210.00E-03 0.00E-03 160.00E-03 230.00E-03" size="50.5E-03" rgba=".2 .2 .5 0.6" />
+                        <geom name="shoulder_pitch_middle_pulley" group="4" type="cylinder" fromto="-10.00E-03 182.5E-03 252.10E-03 10.00E-03 182.5E-03 252.10E-03" size="9.0E-03" rgba=".2 .2 .5 0.6" />
+
+                        <inertial pos="0.78E-03 165.245E-03 208.015E-03" mass="1416.795E-03" fullinertia="8.669E-03 9.468E-03 3.559E-03 -61355.555E-09 -1.502E-04 -1.559E-03" />
+
+                        <site name="shoulder_roll_passive_right" pos="-20.733E-03 207.688E-03 215.1750E-03" />
+                        <site name="shoulder_roll_passive_left" pos="21.9781E-03 207.127E-03 224.4250E-03" />
+
+                        <site name="shoulder_pitch_active_right_top" pos="7.202E-03 142.804E-03 161.557E-03" />
+                        <site name="shoulder_pitch_active_right_bot" pos="13.702E-03 178.594E-03 159.997E-03" />
+                        <site name="shoulder_pitch_active_left_top" pos="-7.202E-03 142.804E-03 161.557E-03" />
+                        <site name="shoulder_pitch_active_left_bot" pos="-13.702E-03 178.594E-03 159.997E-03" />
+
+                        <site name="shoulder_pitch_side_right_middle" pos="6.30E-03 173.523E-03 251.454E-03" />
+                        <site name="shoulder_pitch_side_left_middle" pos="-6.30E-03 173.523E-03 251.454E-03" />
+                        <site name="shoulder_pitch_middle_right" pos="6.30E-03 177.731E-03 259.733E-03" />
+                        <site name="shoulder_pitch_middle_left" pos="-6.30E-03 177.731E-03 259.733E-03" />
+
+                        <site name="shoulder_pitch_side_right_top" pos="5.50E-03 168.918E-03 354.115E-03" />
+                        <site name="shoulder_pitch_side_right_bot" pos="5.50E-03 247.184E-03 303.125E-03" />
+                        <site name="shoulder_pitch_side_left_top" pos="-5.50E-03 168.918E-03 354.115E-03" />
+                        <site name="shoulder_pitch_side_left_bot" pos="-5.50E-03 247.184E-03 303.125E-03" />
+                        
+                        <body name="shoulder3" pos="0E-03 0E-03 0E-03">
+                            <joint name="shoulder3_joint" type="hinge" axis="-1 0 0" pos="-63E-03 219.896E-03 346.801E-03" limited="true" range="0 1.57" />
+                            <geom name="shoulder3_vis" group="1" type="mesh" mesh="shoulder3_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                            <geom name="shoulder_pitch_passive_pulley" group="4" type="cylinder" fromto="-10.00E-03 219.896E-03 346.801E-03 10.00E-03 219.896E-03 346.801E-03" size="50E-03" rgba=".2 .2 .5 0.6" />
+
+                            <inertial pos="0.133E-03 207.684E-03 356.277E-03" mass="459.953E-03" fullinertia="4.908E-04 7.475E-04 7.713E-04 -716.274E-09 541.784E-09 73592.114E-09" />
+
+                            <site name="shoulder_pitch_passive_right_top" pos="5.50E-03 168.41E-03 345.594E-03" />
+                            <site name="shoulder_pitch_passive_right_bot" pos="5.50E-03 223.971E-03 398.139E-03" />
+                            <site name="shoulder_pitch_passive_left_top" pos="-5.50E-03 168.41E-03 345.594E-03" />
+                            <site name="shoulder_pitch_passive_left_bot" pos="-5.50E-03 223.971E-03 398.139E-03" />
+
+                            <body name="upperarm0" pos="0E-03 0E-03 0E-03">
+                                <geom name="upperarm0_vis" group="1" type="mesh" mesh="upperarm0_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                                <inertial pos="-2.114E-03 133.964E-03 364.032E-03" mass="818.378E-03" fullinertia="9.134E-04 3.100E-03 3.103E-03 -2.038E-04 14733.703E-09 -1.596E-04" />
+
+                                <site name="upperarm_roll_active_right_top" pos="82.8205E-03 106.417E-03 359.301E-03" />
+                                <site name="upperarm_roll_active_right_bot" pos="67.6105E-03 99.917E-03 387.549E-03" />
+                                <site name="upperarm_roll_active_left_top" pos="-67.689E-03 89.417E-03 387.31E-03" />
+                                <site name="upperarm_roll_active_left_bot" pos="-82.7141E-03 82.917E-03 358.932E-03" />
+
+                                <site name="upperarm_roll_side_right_top" pos="-12.3747E-03 108.3170E-03 289.955E-03" /> <!-- 33.7182E-03 108.3170E-03 303.67E-03 -->
+                                <!-- <site name="upperarm_roll_side_right_top_2" pos="29.13E-03 108.3170E-03 290.172E-03" />  0.355E-03 108.3170E-03 260E-03 -->
+                                <site name="upperarm_roll_side_right_bot" pos="-42.6862E-03 100.3170E-03 346.249E-03" /> <!-- -5.86335E-03 100.3170E-03 377.18E-03 -->
+                                <site name="upperarm_roll_side_left_top" pos="43.3349E-03 92.3170E-03 346.449E-03" /> <!-- 6.36903E-03 92.3170E-03 377.209E-03 --> <!-- 50.355E-03 92.3170E-03 350.117E-03 -->
+                                <site name="upperarm_roll_side_left_bot" pos="13.488E-03 84.3170E-03 290.076E-03" /> <!-- -32.7313E-03 84.3170E-03 303.359E-03 -->
+
+                                <body name="upperarm1" pos="0E-03 0E-03 0E-03">
+                                    <joint name="upperarm1_joint" type="hinge" axis="0 1 0" pos="0.855E-03 113.317E-03 333.117E-03" limited="true" range="-3.0 3.0" />
+                                    <geom name="upperarm1_vis" group="1" type="mesh" mesh="upperarm1_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                                    <geom name="upperarm_roll_passive_pulley" group="4" type="cylinder" fromto="0.355E-03 80.00E-03 333.117E-03 0.355E-03 115.00E-03 333.117E-03" size="43E-03" rgba=".2 .2 .5 0.6" />
+
+                                    <inertial pos="0.538E-03 37.141E-03 335.496E-03" mass="751.159E-03" fullinertia="1.822E-03 7.805E-04 1.595E-03 11374.824E-09 -39859.45E-09 1.482E-04" />
+
+                                    <site name="upperarm_roll_side_right_top_2" pos="-55E-03 108.3170E-03 333.117E-03" />
+
+                                    <site name="upperarm_roll_passive_right_top" pos="-32.9224E-03 108.3170E-03 362.661E-03" />
+                                    <site name="upperarm_roll_passive_right_bot" pos="6.51711E-03 100.317E-03 289.046E-03" />
+                                    <site name="upperarm_roll_passive_left_top" pos="-5.67206E-03 92.317E-03 289.027E-03" />
+                                    <site name="upperarm_roll_passive_left_bot" pos="33.4977E-03 84.3170E-03 362.812E-03" />
+
+                                    <site name="elbow_active_right_top" pos="41.355E-03 41.9463E-03 342.071E-03" />
+                                    <site name="elbow_active_right_bot" pos="34.855E-03 46.788E-03 374.791E-03" />
+                                    <site name="elbow_active_left_top" pos="-40.645E-03 33.2584E-03 291.575E-03" />
+                                    <site name="elbow_active_left_bot" pos="-34.145E-03 52.3213E-03 319.031E-03" />
+
+                                    <site name="elbow_side_right_top" pos="36.1050E-03 -50.3221E-03 331.868E-03" />
+                                    <site name="elbow_side_right_bot" pos="36.1050E-03 -38.5718E-03 411.277E-03" />
+                                    <site name="elbow_side_left_top" pos="-35.3950E-03 -70.8001E-03 334.791E-03" />
+                                    <site name="elbow_side_left_bot" pos="-35.3950E-03 -24.5363E-03 401.425E-03" />
+
+                                    <body name="upperarm2" pos="0E-03 0E-03 0E-03">
+                                        <joint name="upperarm2_joint" type="hinge" axis="-1 0 0" pos="-11.345E-03 -54.883E-03 373.117E-03" limited="true" range="-0.4 2.2" />
+                                        <geom name="upperarm2_vis" group="1" type="mesh" mesh="upperarm2_mesh"  pos="0 0 0" euler="0 0 0"/>
+
+                                        <geom name="elbow_right_passive_pulley" group="4" type="cylinder" fromto="30.00E-03 -54.883E-03 373.117E-03 40.00E-03 -54.883E-03 373.117E-03" size="40E-03" rgba=".2 .2 .5 0.6" />
+                                        <geom name="elbow_left_passive_pulley" group="4" type="cylinder" fromto="-30.00E-03 -54.883E-03 373.117E-03 -40.00E-03 -54.883E-03 373.117E-03" size="40E-03" rgba=".2 .2 .5 0.6" />
+
+                                        <inertial pos="0.374E-03 -70.987E-03 370.36E-03" mass="157.454E-03" fullinertia="1.526E-04 1.876E-04 2.460E-04 -178.496E-09 93.437E-09 2752.137E-09" />
+
+                                        <site name="elbow_passive_right" pos="36.1050E-03 -83.2293E-03 342.806E-03" />
+                                        <site name="elbow_passive_left" pos="-35.3950E-03 -77.5353E-03 338.345E-03" />
+
+                                        <body name="lowerarm0" pos="0E-03 0E-03 0E-03">
+                                            <geom name="lowerarm0_vis" group="1" type="mesh" mesh="lowerarm0_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                                            <inertial pos="0.581E-03 -147.507E-03 367.727E-03" mass="268.826E-03" fullinertia="2.717E-04 2.632E-04 1.492E-04 -10.982E-09 -1484.122E-09 -23234.671E-09" />
+
+                                            <body name="lowerarm1" pos="0E-03 0E-03 0E-03">
+                                                <joint name="lowerarm1_joint" type="hinge" axis="0 1 0" pos="1.021E-03 -128.68E-03 331.617E-03" limited="true" range="-1.57 1.57" />
+                                                <geom name="lowerarm1_vis" group="1" type="mesh" mesh="lowerarm1_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                                                <inertial pos="0.846E-03 -218.297E-03 328.426E-03" mass="579.824E-03" fullinertia="1.293E-03 5.658E-04 9.995E-04 10703.597E-09 -20960.705E-09 1.297E-04"/>
+
+                                                <site name="wrist_pitch_active_right_top" pos="36.794E-03 -196.044E-03 341.846E-03" />
+                                                <site name="wrist_pitch_active_right_bot" pos="30.294E-03 -204.876E-03 374.509E-03" />
+                                                <site name="wrist_pitch_active_left_top" pos="-35.612E-03 -196.03E-03 321.217E-03" />
+                                                <site name="wrist_pitch_active_left_bot" pos="-29.112E-03 -204.893E-03 288.562E-03" />
+
+                                                <site name="wrist_pitch_side_right_top" pos="33.341E-03 -285.803E-03 302.817E-03" />
+                                                <site name="wrist_pitch_side_right_bot" pos="33.341E-03 -302.073E-03 362.985E-03" />
+                                                <site name="wrist_pitch_side_left_top" pos="-32.159E-03 -285.778E-03 360.335E-03" />
+                                                <site name="wrist_pitch_side_left_bot" pos="-32.159E-03 -302.103E-03 300.182E-03" />
+
+                                                <body name="lowerarm2" pos="0E-03 0E-03 0E-03">
+                                                    <joint name="lowerarm2_joint" type="hinge" axis="-1 0 0" pos="-12.109E-03 -298.364E-03 331.517E-03" limited="true" range="-1.57 1.57" />
+                                                    <geom name="lowerarm2_vis" group="1" type="mesh" mesh="lowerarm2_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                                                    <geom name="wrist_pitch_right_passive_pulley" group="4" type="cylinder" fromto="28.00E-03 -298.364E-03 331.704E-03 38.00E-03 -298.364E-03 331.704E-03" size="30E-03" rgba=".2 .2 .5 0.6" />
+                                                    <geom name="wrist_pitch_left_passive_pulley" group="4" type="cylinder" fromto="-27.00E-03 -298.364E-03 331.459E-03 -37.00E-03 -298.364E-03 331.459E-03" size="30E-03" rgba=".2 .2 .5 0.6" />
+
+                                                    <inertial pos="0.633E-03 -307.353E-03 331.235E-03" mass="119.007E-03" fullinertia="72691.966E-09 1.201E-04 1.438E-04 -38.629E-09 -287.208E-09 -1214.963E-09 "/>
+
+                                                    <site name="wrist_pitch_passive_right" pos="33.341E-03 -328.933E-03 324.101E-03" />
+                                                    <site name="wrist_pitch_passive_left" pos="-32.159E-03 -329.057E-03 338.543E-03" />
+
+                                                    <site name="testing" pos="1.1135E-03 -335.364E-03 331.567E-03" />
+                                                    <body name="right_hand" pos="1.1135E-03 -335.364E-03 331.567E-03" euler="1.5708 0 0">
+                                                        <!-- This camera points out from the eef. -->
+                                                        <camera mode="fixed" name="eye_in_hand" pos="0.05 0 0" quat="0 0.707108 0.707108 0" fovy="75"/>
+                                                        <!-- to add gripper -->
+                                                    </body>
+                                                </body>
+                                            </body>
+                                        </body>
+                                    </body>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <tendon>
+        <!--Shoulder Yaw-->
+        <spatial name="tendon_shoulder_yaw_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="shoulder_yaw_active_right_top" />
+            <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_right_top" />
+            <site site="shoulder_yaw_passive_right" />         
+        </spatial>
+        <spatial name="tendon_shoulder_yaw_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="shoulder_yaw_active_right_bot" />
+            <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_right_bot" />
+            <site site="shoulder_yaw_passive_right" />         
+        </spatial>
+        <spatial name="tendon_shoulder_yaw_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="shoulder_yaw_active_left_top" />
+            <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_left_top" />
+            <site site="shoulder_yaw_passive_left" />         
+        </spatial>
+        <spatial name="tendon_shoulder_yaw_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="shoulder_yaw_active_left_bot" />
+            <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_left_bot" />
+            <site site="shoulder_yaw_passive_left" />         
+        </spatial>
+
+        <!--Shoulder Roll-->
+        <spatial name="tendon_shoulder_roll_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="shoulder_roll_active_right_top" />
+            <geom geom="shoulder_roll_passive_pulley" sidesite="shoulder_roll_side_right_top" />
+            <site site="shoulder_roll_passive_right" />         
+        </spatial>
+        <spatial name="tendon_shoulder_roll_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="shoulder_roll_active_right_bot" />
+            <geom geom="shoulder_roll_passive_pulley" sidesite="shoulder_roll_side_right_bot" />
+            <site site="shoulder_roll_passive_right" />         
+        </spatial>
+        <spatial name="tendon_shoulder_roll_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="shoulder_roll_active_left_top" />
+            <geom geom="shoulder_roll_passive_pulley" sidesite="shoulder_roll_side_left_top" />
+            <site site="shoulder_roll_passive_left" />         
+        </spatial>
+        <spatial name="tendon_shoulder_roll_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="shoulder_roll_active_left_bot" />
+            <geom geom="shoulder_roll_passive_pulley" sidesite="shoulder_roll_side_left_bot" />
+            <site site="shoulder_roll_passive_left" />         
+        </spatial>
+
+        <!--Shoulder Pitch-->
+        <spatial name="tendon_shoulder_pitch_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="shoulder_pitch_active_right_top" />
+            <geom geom="shoulder_pitch_passive_pulley" sidesite="shoulder_pitch_side_right_top" />
+            <site site="shoulder_pitch_passive_right_top" />         
+        </spatial>
+        <spatial name="tendon_shoulder_pitch_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="shoulder_pitch_active_right_bot" />
+            <geom geom="shoulder_pitch_middle_pulley" sidesite="shoulder_pitch_side_right_middle" />
+            <site site="shoulder_pitch_middle_right" />
+            <geom geom="shoulder_pitch_passive_pulley" sidesite="shoulder_pitch_side_right_bot" />
+            <site site="shoulder_pitch_passive_right_bot" />         
+        </spatial>
+        <spatial name="tendon_shoulder_pitch_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="shoulder_pitch_active_left_top" />
+            <geom geom="shoulder_pitch_passive_pulley" sidesite="shoulder_pitch_side_left_top" />
+            <site site="shoulder_pitch_passive_left_top" />         
+        </spatial>
+        <spatial name="tendon_shoulder_pitch_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="shoulder_pitch_active_left_bot" />
+            <geom geom="shoulder_pitch_middle_pulley" sidesite="shoulder_pitch_side_left_middle" />
+            <site site="shoulder_pitch_middle_left" />
+            <geom geom="shoulder_pitch_passive_pulley" sidesite="shoulder_pitch_side_left_bot" />
+            <site site="shoulder_pitch_passive_left_bot" />         
+        </spatial>
+
+        <!--Upperarm Roll-->
+        <spatial name="tendon_upperarm_roll_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="upperarm_roll_active_right_top" />
+            <!-- <geom geom="upperarm_roll_passive_pulley" sidesite="upperarm_roll_side_right_top_2" /> -->
+            <!-- <site site="upperarm_roll_side_right_top" /> -->
+            <geom geom="upperarm_roll_passive_pulley" sidesite="upperarm_roll_side_right_top" />
+            <site site="upperarm_roll_passive_right_top" />         
+        </spatial>
+        <spatial name="tendon_upperarm_roll_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="upperarm_roll_active_right_bot" />
+            <geom geom="upperarm_roll_passive_pulley" sidesite="upperarm_roll_side_right_bot" />
+            <site site="upperarm_roll_passive_right_bot" />         
+        </spatial>
+        <spatial name="tendon_upperarm_roll_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="upperarm_roll_active_left_top" />
+            <geom geom="upperarm_roll_passive_pulley" sidesite="upperarm_roll_side_left_top" />
+            <site site="upperarm_roll_passive_left_top" />         
+        </spatial>
+        <spatial name="tendon_upperarm_roll_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="upperarm_roll_active_left_bot" />
+            <geom geom="upperarm_roll_passive_pulley" sidesite="upperarm_roll_side_left_bot" />
+            <site site="upperarm_roll_passive_left_bot" />         
+        </spatial>
+
+        <!--Elbow-->
+        <spatial name="tendon_elbow_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="elbow_active_right_top" />
+            <geom geom="elbow_right_passive_pulley" sidesite="elbow_side_right_top" />
+            <site site="elbow_passive_right" />         
+        </spatial>
+        <spatial name="tendon_elbow_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="elbow_active_right_bot" />
+            <geom geom="elbow_right_passive_pulley" sidesite="elbow_side_right_bot" />
+            <site site="elbow_passive_right" />         
+        </spatial>
+        <spatial name="tendon_elbow_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="elbow_active_left_top" />
+            <geom geom="elbow_left_passive_pulley" sidesite="elbow_side_left_top" />
+            <site site="elbow_passive_left" />         
+        </spatial>
+        <spatial name="tendon_elbow_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="elbow_active_left_bot" />
+            <geom geom="elbow_left_passive_pulley" sidesite="elbow_side_left_bot" />
+            <site site="elbow_passive_left" />         
+        </spatial>
+
+        <!--Wrist Pitch-->
+        <spatial name="tendon_wrist_pitch_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="wrist_pitch_active_right_top" />
+            <geom geom="wrist_pitch_right_passive_pulley" sidesite="wrist_pitch_side_right_top" />
+            <site site="wrist_pitch_passive_right" />         
+        </spatial>
+        <spatial name="tendon_wrist_pitch_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="wrist_pitch_active_right_bot" />
+            <geom geom="wrist_pitch_right_passive_pulley" sidesite="wrist_pitch_side_right_bot" />
+            <site site="wrist_pitch_passive_right" />         
+        </spatial>
+        <spatial name="tendon_wrist_pitch_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+            <site site="wrist_pitch_active_left_top" />
+            <geom geom="wrist_pitch_left_passive_pulley" sidesite="wrist_pitch_side_left_top" />
+            <site site="wrist_pitch_passive_left" />         
+        </spatial>
+        <spatial name="tendon_wrist_pitch_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+            <site site="wrist_pitch_active_left_bot" />
+            <geom geom="wrist_pitch_left_passive_pulley" sidesite="wrist_pitch_side_left_bot" />
+            <site site="wrist_pitch_passive_left" />         
+        </spatial>
+    </tendon>
+
+    <actuator>
+        <!-- <motor ctrllimited="true" ctrlrange="-20 20" name="shoulder1_motor" joint="shoulder1_joint" />
+        <motor ctrllimited="true" ctrlrange="-50 50" name="shoulder2_motor" joint="shoulder2_joint" />
+        <motor ctrllimited="true" ctrlrange="-50 50" name="shoulder3_motor" joint="shoulder3_joint" /> -->
+        <!-- <motor ctrllimited="true" ctrlrange="-1 1" name="upperarm1_motor" joint="upperarm1_joint" /> -->
+        <!-- <position ctrllimited="true" ctrlrange="-3 3" gear="1" joint="upperarm1_joint"/> -->
+        <!-- <motor ctrllimited="true" ctrlrange="-50 50" name="upperarm2_motor" joint="upperarm2_joint" />
+        <motor ctrllimited="true" ctrlrange="-12 12" name="lowerarm1_motor" joint="lowerarm1_joint" />
+        <motor ctrllimited="true" ctrlrange="-12 12" name="lowerarm2_motor" joint="lowerarm2_joint" /> -->
+        <!-- <position ctrllimited="true" ctrlrange="-1.2 6.6" gear="3" joint="upperarm2_joint"/>
+        <position ctrllimited="true" ctrlrange="-1.5708 1.5708" gear="1" joint="lowerarm1_joint"/>
+        <position ctrllimited="true" ctrlrange="-1.5708 1.5708" gear="1" joint="lowerarm2_joint"/> -->
+
+        <motor ctrllimited="true" ctrlrange="-10 10" name="motor_lowerarm_roll" joint="lowerarm1_joint" />
+        <motor name="motor_shoulder_yaw_right_top" tendon="tendon_shoulder_yaw_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_shoulder_yaw_right_bot" tendon="tendon_shoulder_yaw_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_shoulder_yaw_left_top" tendon="tendon_shoulder_yaw_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_shoulder_yaw_left_bot" tendon="tendon_shoulder_yaw_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_shoulder_roll_right_top" tendon="tendon_shoulder_roll_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_shoulder_roll_right_bot" tendon="tendon_shoulder_roll_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_shoulder_roll_left_top" tendon="tendon_shoulder_roll_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_shoulder_roll_left_bot" tendon="tendon_shoulder_roll_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_shoulder_pitch_right_top" tendon="tendon_shoulder_pitch_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_shoulder_pitch_right_bot" tendon="tendon_shoulder_pitch_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_shoulder_pitch_left_top" tendon="tendon_shoulder_pitch_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_shoulder_pitch_left_bot" tendon="tendon_shoulder_pitch_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_upperarm_roll_right_top" tendon="tendon_upperarm_roll_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_upperarm_roll_right_bot" tendon="tendon_upperarm_roll_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_upperarm_roll_left_top" tendon="tendon_upperarm_roll_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_upperarm_roll_left_bot" tendon="tendon_upperarm_roll_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_elbow_right_top" tendon="tendon_elbow_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_elbow_right_bot" tendon="tendon_elbow_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_elbow_left_top" tendon="tendon_elbow_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_elbow_left_bot" tendon="tendon_elbow_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_wrist_pitch_right_top" tendon="tendon_wrist_pitch_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_wrist_pitch_right_bot" tendon="tendon_wrist_pitch_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_wrist_pitch_left_top" tendon="tendon_wrist_pitch_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor name="motor_wrist_pitch_left_bot" tendon="tendon_wrist_pitch_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+    </actuator>
+</mujoco>

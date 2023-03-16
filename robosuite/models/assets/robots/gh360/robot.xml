@@ -1,0 +1,141 @@
+<mujoco model="GH360">
+    <!-- <compiler discardvisual="false" angle="radian"/> -->
+
+    <asset>
+        <mesh name="shoulder0_mesh" file="meshes/360/360_shoulder_0.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="shoulder1_mesh" file="meshes/360/360_shoulder_1.stl" scale="1 1 1"/>
+        <mesh name="shoulder2_mesh" file="meshes/360/360_shoulder_2.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="shoulder3_mesh" file="meshes/360/360_shoulder_3.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="upperarm0_mesh" file="meshes/360/360_upper_arm_0.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="upperarm1_mesh" file="meshes/360/360_upper_arm_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="upperarm2_mesh" file="meshes/360/360_upper_arm_2.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="lowerarm0_mesh" file="meshes/360/360_lower_arm_0.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="lowerarm1_mesh" file="meshes/360/360_lower_arm_1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="lowerarm2_mesh" file="meshes/360/360_lower_arm_2.stl" scale="0.001 0.001 0.001"/>
+
+        <!-- <mesh name="active_pulley_shoulder_mesh" file="meshes/360/360_active_pulley_shoulder.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="active_pulley_arm_mesh" file="meshes/360/360_active_pulley_arm.stl" scale="0.001 0.001 0.001"/> -->
+    </asset> 
+
+    <default>
+        <!-- <geom rgba=".9 .7 .1 1" size="0.01"/> -->
+        <site type="sphere" rgba=".9 .9 .9 1" size="5E-03"/>
+        <joint damping="0.1"/>
+        <!-- <joint type="hinge" axis="0 1 0" limited="true" range="0 60" solimplimit="0.95 0.95 0.1"/> -->
+        <muscle ctrllimited="true" ctrlrange="0 1"/>
+    </default>
+
+    <worldbody>
+        <body name="base" pos="0 0 0">
+            <!-- robot view -->
+            <camera mode="fixed" name="robotview" pos="1.0 0 0.4" quat="0.653 0.271 0.271 0.653"/>
+            <inertial diaginertia="0 0 0" mass="0" pos="0 0 0"/>
+            <!-- mount attached here -->
+
+            <body name="shoulder0" pos="-100E-03 0E-03 200E-03" euler="1.571 1.571 0">
+                <geom name="shoulder0_vis" group="1" type="mesh" contype="0" conaffinity="0" mesh="shoulder0_mesh" pos="0 0 0" euler="0 0 0"/>
+                <geom name="shoulder0_col_back" group="0" type="box" pos="0E-03 140.5E-03 25E-03" size="86E-03 140.5E-03 31E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_col_top_1" group="0" type="box" pos="0E-03 275.00E-03 85.00E-03" size="86E-03 6E-03 91E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_col_top_2" group="0" type="cylinder" fromto="0 281.00E-03 176E-03 0 269E-03 176E-03" size="86E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_col_bot_1" group="0" type="box" pos="0 6E-03 85E-03" size="86E-03 6E-03 91E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_col_bot_2" group="0" type="cylinder" fromto="0 0E-03 176E-03 0 12E-03 176E-03" size="86E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_pulley_right_col" group="0" type="cylinder" fromto="65.90E-03 253.267E-03 47.324E-03 65.90E-03 268.35E-03 47.324E-03" size="28E-03" rgba=".95 .1 .1 0.6"/>
+                <geom name="shoulder0_pulley_left_col" group="0" type="cylinder" fromto="-65.90E-03 249.962E-03 47.324E-03 -65.90E-03 265.045E-03 47.324E-03" size="28E-03" rgba=".95 .1 .1 0.6"/>
+
+                <!--R0 Joint-->
+                <inertial pos="2.713E-03 148.309E-03 49.227E-03" mass="3744.519E-03" fullinertia="5.643E-02 2.838E-02 4.930E-02 4.639E-04 -58154.639E-09 8.301E-04" />
+
+                <body name="shoulder1" pos="0E-03 0E-03 0E-03">
+                    <joint name="shoulder1_joint" type="hinge" axis="0 1 0" pos="0E-03 284E-03 176E-03" limited="true" range="-1.571 1.571" />
+                    <geom name="shoulder1_vis" group="1" type="mesh" mesh="shoulder1_mesh" contype="0" conaffinity="0" pos="0 0 0" euler="0 0 0"/>
+                    <geom name="shoulder1_col_outer" group="0" type="cylinder" fromto="0E-03 265E-03 176E-03 0 15E-03 176E-03" size="81E-03" rgba=".95 .1 .1 0.6" />
+                    <geom name="shoulder1_pulley_right_col" group="0" type="cylinder" fromto="63.70E-03 55.524E-03 209.206E-03 63.70E-03 55.524E-03 224.289E-03" size="28E-03" rgba=".95 .1 .1 0.6"/>
+                    <geom name="shoulder1_pulley_left_col" group="0" type="cylinder" fromto="-63.70E-03 55.524E-03 218.528E-03 -63.70E-03 55.524E-03 233.611E-03" size="28E-03" rgba=".95 .1 .1 0.6"/>
+
+                    <!--R1 Joint-->
+                    <inertial pos="-0.166E-03 111.148E-03 177.807E-03" mass="1832.108E-03" fullinertia="2.133E-02 7.556E-03 2.037E-02 -25913.861E-09 1.146E-04 2.253E-04" />
+
+                    <body name="shoulder2" pos="0E-03 0E-03 0E-03">
+                        <joint name="shoulder2_joint" type="hinge" axis="0 0 1" pos="0E-03 160E-03 262.8E-03" limited="true" range="-1.571 1.571" />
+                        <geom name="shoulder2_vis" group="1" type="mesh" mesh="shoulder2_mesh" contype="0" conaffinity="0" pos="0 0 0" euler="0 0 0"/>
+
+                        <!--R2 Joint-->
+                        <inertial pos="0.78E-03 165.245E-03 208.015E-03" mass="1416.795E-03" fullinertia="8.669E-03 9.468E-03 3.559E-03 -61355.555E-09 -1.502E-04 -1.559E-03" />
+
+                        <body name="shoulder3" pos="0E-03 0E-03 0E-03">
+                            <joint name="shoulder3_joint" type="hinge" axis="-1 0 0" pos="-63E-03 219.896E-03 346.801E-03" limited="true" range="0 1.571" />
+                            <geom name="shoulder3_vis" group="1" type="mesh" mesh="shoulder3_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                            <!--R3 Joint-->
+                            <inertial pos="0.633E-03 207.684E-03 356.277E-03" mass="459.953E-03" fullinertia="4.908E-04 7.475E-04 7.713E-04 -716.274E-09 541.784E-09 73592.114E-09" />
+
+                            <body name="upperarm0" pos="0E-03 0E-03 0E-03">
+                                <geom name="upperarm0_vis" group="1" type="mesh" mesh="upperarm0_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                                <!--R4 Joint-->
+                                <inertial pos="-1.614E-03 133.964E-03 364.032E-03" mass="818.378E-03" fullinertia="9.134E-04 3.100E-03 3.103E-03 -2.038E-04 14733.703E-09 -1.596E-04" />
+
+                                <body name="upperarm1" pos="0E-03 0E-03 0E-03">
+                                    <joint name="upperarm1_joint" type="hinge" axis="0 1 0" pos="0.855E-03 113.317E-03 333.117E-03" limited="true" range="-3.1416 3.1416" />
+                                    <geom name="upperarm1_vis" group="1" type="mesh" mesh="upperarm1_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                                    <!--R5 Joint-->
+                                    <inertial pos="1.038E-03 37.141E-03 335.496E-03" mass="751.159E-03" fullinertia="1.822E-03 7.805E-04 1.595E-03 11374.824E-09 -39859.45E-09 1.482E-04" />
+
+                                    <body name="upperarm2" pos="0E-03 0E-03 0E-03">
+                                        <joint name="upperarm2_joint" type="hinge" axis="-1 0 0" pos="-11.345E-03 -54.883E-03 373.117E-03" limited="true" range="-0.4 2.2" />
+                                        <geom name="upperarm2_vis" group="1" type="mesh" mesh="upperarm2_mesh"  pos="0 0 0" euler="0 0 0"/>
+
+                                        <!--R6 Joint-->
+                                        <inertial pos="0.874E-03 -70.987E-03 370.36E-03" mass="157.454E-03" fullinertia="1.526E-04 1.876E-04 2.460E-04 -178.496E-09 93.437E-09 2752.137E-09" />
+
+                                        <body name="lowerarm0" pos="0E-03 0E-03 0E-03">
+                                            <geom name="lowerarm0_vis" group="1" type="mesh" mesh="lowerarm0_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                                            <!--R7 Joint-->
+                                            <inertial pos="1.081E-03 -147.507E-03 367.727E-03" mass="268.826E-03" fullinertia="2.717E-04 2.632E-04 1.492E-04 -10.982E-09 -1484.122E-09 -23234.671E-09" />
+
+                                            <body name="lowerarm1" pos="0E-03 0E-03 0E-03">
+                                                <joint name="lowerarm1_joint" type="hinge" axis="0 1 0" pos="1.021E-03 -128.68E-03 331.617E-03" limited="true" range="-1.571 1.571" />
+                                                <geom name="lowerarm1_vis" group="1" type="mesh" mesh="lowerarm1_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                                                <!--R8 Joint-->
+                                                <inertial pos="1.346E-03 -218.297E-03 328.426E-03" mass="579.824E-03" fullinertia="1.293E-03 5.658E-04 9.995E-04 10703.597E-09 -20960.705E-09 1.297E-04"/>
+
+                                                <body name="lowerarm2" pos="0E-03 0E-03 0E-03">
+                                                    <joint name="lowerarm2_joint" type="hinge" axis="1 0 0" pos="-12.109E-03 -298.364E-03 331.517E-03" limited="true" range="-1.571 1.571" />
+                                                    <geom name="lowerarm2_vis" group="1" type="mesh" mesh="lowerarm2_mesh" pos="0 0 0" euler="0 0 0"/>
+
+                                                    <!--R9 Joint-->
+                                                    <inertial pos="1.133E-03 -307.353E-03 331.253E-03" mass="119.007E-03" fullinertia="72692.866E-09 1.201E-04 1.438E-04 -39.442E-09 -267.454E-09 -1065.399E-09 "/>
+
+                                                    <site name="testing" pos="1.1135E-03 -335.364E-03 331.567E-03" />
+                                                    <body name="right_hand" pos="1.1135E-03 -335.364E-03 331.567E-03" euler="1.5708 0 0">
+                                                        <!-- This camera points out from the eef. -->
+                                                        <camera mode="fixed" name="eye_in_hand" pos="0.05 0 0" quat="0 0.707108 0.707108 0" fovy="75"/>
+                                                        <!-- to add gripper -->
+                                                    </body>
+                                                </body>
+                                            </body>
+                                        </body>
+                                    </body>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <actuator>
+        <motor ctrllimited="true" ctrlrange="-20 20" name="shoulder1_motor" joint="shoulder1_joint" />
+        <motor ctrllimited="true" ctrlrange="-50 50" name="shoulder2_motor" joint="shoulder2_joint" />
+        <motor ctrllimited="true" ctrlrange="-50 50" name="shoulder3_motor" joint="shoulder3_joint" />
+        <motor ctrllimited="true" ctrlrange="-50 50" name="upperarm1_motor" joint="upperarm1_joint" />
+        <motor ctrllimited="true" ctrlrange="-50 50" name="upperarm2_motor" joint="upperarm2_joint" />
+        <motor ctrllimited="true" ctrlrange="-12 12" name="lowerarm1_motor" joint="lowerarm1_joint" />
+        <motor ctrllimited="true" ctrlrange="-12 12" name="lowerarm2_motor" joint="lowerarm2_joint" />
+
+    </actuator>
+</mujoco>
