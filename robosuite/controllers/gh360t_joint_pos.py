@@ -161,8 +161,8 @@ class GH360TJointPositionController(Controller):
 
         # torques = pos_err * kp + vel_err * kd
         # print("goal: ",self.goal_qpos)
-        print("desired: ",desired_qpos)
-        print("current: ", self.joint_pos)
+        #print("desired: ",desired_qpos)
+        #print("current: ", self.joint_pos)
         position_error = desired_qpos - self.joint_pos
         vel_pos_error = -self.joint_vel
         desired_torque = (np.multiply(np.array(position_error), np.array(self.kp))
