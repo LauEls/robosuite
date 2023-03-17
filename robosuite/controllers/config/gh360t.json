@@ -1,0 +1,38 @@
+{
+    "shoulder_yaw_kwargs": {
+        "r_active": 18,
+        "r_passive": 74.5,
+        "r_tendon": 1.5,
+        "file_name": "something.csv",
+        "motor_max_pos": 1,
+        "right_pos_tendon": {
+            "l_free": 0.133,
+            "id": 1,
+            "alpha_active_zero": 0,
+            "alpha_passive_zero": 1,
+            "l_relaxed": 0.458
+        },
+        "right_neg_tendon": {
+            "l_free": 0.133,
+            "id": 2,
+            "alpha_active_zero": 0,
+            "alpha_passive_zero": 1,
+            "l_relaxed": 0.408
+        },
+        "left_pos_tendon": {
+            "l_free": 0.133,
+            "id": 4,
+            "alpha_active_zero": 0,
+            "alpha_passive_zero": 1,
+            "l_relaxed": 0.408
+        },
+        "left_neg_tendon": {
+            "l_free": 0.133,
+            "id": 3,
+            "alpha_active_zero": 0,
+            "alpha_passive_zero": 1,
+            "l_relaxed": 0.458
+        }
+    }
+
+}

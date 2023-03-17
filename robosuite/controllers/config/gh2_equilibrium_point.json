@@ -1,0 +1,15 @@
+{
+  "type": "GH2_EQUILIBRIUM_POINT",
+  "input_max": 1,
+  "input_min": -1,
+  "output_max": 0.1,
+  "output_min": -0.1,
+  "torque_limits": null,
+  "interpolation": null,
+  "ramp_ratio": 0.2,
+  "joints": ["shoulder_yaw", "shoulder_roll", "shoulder_pitch", "upperarm_roll", 
+            "elbow", "forearm_roll", "wrist_pitch"],
+  "tendon_model": "tendon_model_2_0.csv",
+  "motor_max_pos": 31.42
+  
+}

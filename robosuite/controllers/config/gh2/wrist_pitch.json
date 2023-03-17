@@ -1,0 +1,43 @@
+{
+  "name": "Wrist Pitch",
+  "right": {
+    "pos_tendon": {
+      "l_free": 97.8772699711225,
+      "r_active": 15.6,
+      "r_passive": 30,
+      "r_tendon": 1.5,
+      "alpha_passive_zero": 1.6965465479099318,
+      "l_relaxed": 162.59578815605579,
+      "alpha_active_zero": 7.3154592769011382
+    },
+    "neg_tendon": {
+      "l_free": 97.8772699711225,
+      "r_active": 15.6,
+      "r_passive": 30,
+      "r_tendon": 1.5,
+      "alpha_passive_zero": 1.7371963040461944,
+      "l_relaxed": 163.51040766912172,
+      "alpha_active_zero": 7.3315052332707165
+    }
+  },
+  "left": {
+    "pos_tendon": {
+      "l_free": 97.902112975154921,
+      "r_active": 15.6,
+      "r_passive": 30,
+      "r_tendon": 1.5,
+      "alpha_passive_zero": 1.7550109323802618,
+      "l_relaxed": 163.92898180951852,
+      "alpha_active_zero": 7.33884863924259
+    },
+    "neg_tendon": {
+      "l_free": 97.902112975154921,
+      "r_active": 15.6,
+      "r_passive": 30,
+      "r_tendon": 1.5,
+      "alpha_passive_zero": 1.6786588351351912,
+      "l_relaxed": 162.2110596215044,
+      "alpha_active_zero": 7.3087096534879539
+    }
+  }
+}
