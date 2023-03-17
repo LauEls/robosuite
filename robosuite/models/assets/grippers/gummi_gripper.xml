@@ -1,0 +1,131 @@
+<mujoco model="universal_gummi_gripper">
+    <asset>
+        <mesh name="gripper_base_mesh" file="meshes/gummi_gripper/gbase.STL" />
+        <mesh name="gripper_camera_mesh" file="meshes/gummi_gripper/g_camera.STL" />
+        <mesh name="gripper_um_mesh" file="meshes/gummi_gripper/g_um.STL" />
+        <mesh name="gripper_lf_mesh" file="meshes/gummi_gripper/g_lf.STL" />
+        <mesh name="gripper_ll_mesh" file="meshes/gummi_gripper/g_ll.STL" />
+        <mesh name="gripper_mf_mesh" file="meshes/gummi_gripper/g_mf.STL" />
+        <mesh name="gripper_ug_mesh" file="meshes/gummi_gripper/g_ug.STL" />
+        <mesh name="gripper_lg_mesh" file="meshes/gummi_gripper/g_lg.STL" />
+        <mesh name="gripper_mfl_mesh" file="meshes/gummi_gripper/g_mfl.STL" />
+        <mesh name="gripper_lfl_mesh" file="meshes/gummi_gripper/g_lfl.STL" />
+    </asset>
+
+    <equality>
+        <connect name="mfl_mf_mimic" body1="gripper_mfl" body2="gripper_mf" anchor="0.027 0.048 0.01" solref="0.001 1"/>
+        <connect name="lfl_lf_mimic" body1="gripper_lfl" body2="gripper_lf" anchor="0.028 -0.048 -0.01" solref="0.001 1"/>
+    </equality>
+
+    <actuator>
+        <position name='gripper_um_motor' ctrllimited="true" kp="10" joint='gripper_um_joint' ctrlrange='-1 0'/>
+        <position name='gripper_ll_motor' ctrllimited="true" kp="10" joint='gripper_ll_joint' ctrlrange='0 1'/>
+    </actuator>
+
+    <contact>
+        <exclude name="exclude_base_um" body1="gripper_base" body2="gripper_um"/>
+        <exclude name="exclude_base_lf" body1="gripper_base" body2="gripper_lf"/>
+        <exclude name="exclude_camera_lf" body1="gripper_camera" body2="gripper_lf"/>
+
+        <exclude name="exclude_base_ll" body1="gripper_base" body2="gripper_ll"/>
+        <exclude name="exclude_base_mf" body1="gripper_base" body2="gripper_mf"/>
+        <exclude name="exclude_camera_mf" body1="gripper_camera" body2="gripper_mf"/>
+
+        <exclude name="exclude_um_ug" body1="gripper_um" body2="gripper_ug"/>
+        <exclude name="exclude_ll_lg" body1="gripper_ll" body2="gripper_lg"/>
+
+        <exclude name="exclude_base_mfl" body1="gripper_base" body2="gripper_mfl"/>
+        <exclude name="exclude_mf_mfl" body1="gripper_mf" body2="gripper_mfl"/>
+
+        <exclude name="exclude_base_lfl" body1="gripper_base" body2="gripper_lfl"/>
+        <exclude name="exclude_lf_lfl" body1="gripper_lf" body2="gripper_lfl"/>
+
+        <exclude name="exclude_lf_mf" body1="gripper_lf" body2="gripper_mf"/>
+        <exclude name="exclude_um_mf" body1="gripper_um" body2="gripper_mf"/>
+        <exclude name="exclude_ll_lf" body1="gripper_ll" body2="gripper_lf"/>
+    </contact>
+
+    <worldbody>
+         <!-- <body name="gripper_base" pos="23.874E-03 143.393E-03 53.956E-03" euler="0 0 -1.5708"> -->
+         <body name="gripper_base" pos="0 0 0.01" euler="1.5708 0 1.5708">
+            <site name="ft_frame" pos="0 0 0" size="0.01 0.01 0.01" rgba="1 0 0 1" type="sphere" group="1"/>
+
+            <geom name="gripper_base_vis" type="mesh" mesh="gripper_base_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+            <inertial pos="0.0375396345255545 0.000258621653510823 0.000308025751646932" mass="0.112572451212744" fullinertia="3.46149816301849E-08 5.74238369795189E-05 5.74191745262333E-05 3.71824830981742E-07 -8.88625729821223E-07 8.8502104967547E-09"/>
+            <!-- <geom name="gripper_base_col" type="cylinder" fromto="0.0375396345255545E+03 0.000258621653510823E+03 0.000308025751646932E+03 0.0875396345255545E+03 0.000258621653510823E+03 0.000308025751646932E+03" size="16" rgba=".2 .2 .5 0.6" /> -->
+
+            <body name="gripper_camera" pos="0.078543 5.1126E-05 0.00058816" euler="0 0 0">
+                <geom name="gripper_camera_vis" type="mesh" mesh="gripper_camera_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+                <inertial pos="-0.0130038062547488 0.000414347997380345 -0.00115139779329799" mass="0.0054126706518889" diaginertia="0 0 0"/>
+            </body>
+
+            <body name="eef" pos="0.128543 5.1126E-05 0.00058816" euler="0 1.5708 0">
+                <site name="grip_site" pos="0 0 0" size="0.01 0.01 0.01" rgba="1 0 0 0.5" type="sphere" group="1"/>
+                <site name="ee_x" pos="0.1 0 0" size="0.005 .1"  quat="0.707105  0 0.707108 0 " rgba="1 0 0 0" type="cylinder" group="1"/>
+                <site name="ee_y" pos="0 0.1 0" size="0.005 .1" quat="0.707105 0.707108 0 0" rgba="0 1 0 0" type="cylinder" group="1"/>
+                <site name="ee_z" pos="0 0 0.1" size="0.005 .1" quat="1 0 0 0" rgba="0 0 1 0" type="cylinder" group="1"/>
+                <!-- This site was added for visualization. -->
+                <site name="grip_site_cylinder" pos="0 0 0" size="0.005 10" rgba="0 1 0 0.3" type="cylinder" group="1"/>
+            </body>
+
+            <body name="gripper_um" pos="0.03142 0.026601 0.037328" euler="0 0 0">
+                <joint name="gripper_um_joint" type="hinge" axis="0 0 -1" pos="0 0 0" limited="true" range="-1 0" damping="0.5"/>
+                <geom name="gripper_um_vis" type="mesh" mesh="gripper_um_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+                <inertial pos="0.00245238145288562 -0.0217265687128561 -0.0105911469473412" mass="0.0108804943967655" fullinertia="8.08735422601889E-08 4.53539384016324E-08 1.26078407713655E-07 4.97110946899304E-08 -1.39273928121627E-09 6.17358200741367E-10"/>
+                
+                <body name="gripper_lf" pos="0.027486 -0.047634 0.0012399" euler="0 0 0">
+                    <joint name="gripper_lf_joint" type="hinge" axis="0 0 1" pos="0 0 0" limited="true" range="-1.0 1.0" />
+                    <geom name="gripper_lf_vis" type="mesh" mesh="gripper_lf_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+                    <inertial pos="0.0153897110690098 -0.039231067943855 -0.0320049144465503" mass="0.038256465784836" fullinertia="2.65326631113254E-06 1.17585205630411E-05 1.19399763721664E-05 -2.17990122996235E-07 3.30558009736168E-06 -4.57723963439691E-07"/>
+                    
+                </body>
+            </body>
+
+            <body name="gripper_ll" pos="0.032066 -0.026399 -0.036669" euler="0 0 0">
+                <joint name="gripper_ll_joint" type="hinge" axis="0 0 -1" pos="0 0 0" limited="true" range="0 1"  damping="0.5"/>
+                <geom name="gripper_ll_vis" type="mesh" mesh="gripper_ll_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+                <inertial pos="0.00226717834928669 0.0217265688385826 0.0106323527694793" mass="0.0108804855685434" fullinertia="8.08387078665914E-08 4.53539041706008E-08 1.26113207738849E-07 -4.97142942470438E-08 6.03107412291824E-10 -2.50308381825711E-10"/>
+                
+                <body name="gripper_mf" pos="0.027504 0.047634 -0.00076002" euler="0 0 0">
+                    <joint name="gripper_mf_joint" type="hinge" axis="0 0 -1" pos="0 0 0" limited="true" range="-1.0 1.0" damping="0.1"/>
+                    <geom name="gripper_mf_vis" type="mesh" mesh="gripper_mf_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+                    <inertial pos="0.0148288048633209 0.0392310678850323 0.0322686275479262" mass="0.0382564656776473" fullinertia="2.77145795698025E-06 1.17585203696665E-05 1.18217845320535E-05 2.25945432966937E-07 -3.46561709988175E-06 -4.53849748694103E-07"/>
+                    
+                </body>
+            </body>
+
+            <body name="gripper_ug" pos="0.031532 -0.017387 0.031329" euler="0 0 0">
+                <geom name="gripper_ug_vis" type="mesh" mesh="gripper_ug_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+                <inertial pos="0.000109428789818455 -0.000219125965887957 -0.00464704345456175" mass="0.00302052629871028" diaginertia="0 0 0"/>
+                
+            </body>
+
+            <body name="gripper_lg" pos="0.032073 0.017589 -0.030669" euler="0 0 0">
+                <geom name="gripper_lg_vis" type="mesh" mesh="gripper_lg_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+                <inertial pos="-3.89063724342276E-05 0.000229668637375367 0.00464765876845594" mass="0.00302052576429481" diaginertia="0 0 0"/>
+                
+            </body>
+
+            <body name="gripper_mfl" pos="0.032066 0.041601 -0.036669" euler="0 0 0">
+                <joint name="gripper_mfl_joint" type="hinge" axis="0 0 -1" pos="0 0 0" limited="true" range="-1.0 1.0" damping="0.0"/>
+                <geom name="gripper_mfl_vis" type="mesh" mesh="gripper_mfl_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+                <inertial pos="0.013424557472145 0.0238167544532381 0.0371185632355853" mass="0.00820991344622182"  fullinertia="5.76455145604002E-06 5.76499044630889E-06 4.38990269164963E-10 -8.05406743776988E-15 5.03048903631686E-09 9.22933850769957E-13"/>
+                <site name="mfl_attachment" pos="0.027 0.048 0.01" />
+            </body>
+
+            <body name="gripper_lfl" pos="0.03142 -0.041399 0.037328" euler="0 0 0">
+                <joint name="gripper_lfl_joint" type="hinge" axis="0 0 1" pos="0 0 0" limited="true" range="-1.0 1.0" />
+                <geom name="gripper_lfl_vis" type="mesh" mesh="gripper_lfl_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+                <inertial pos="0.0140702561706355 -0.0238167919441672 -0.0368786196319928" mass="0.00820991344622177" fullinertia="5.76455140068273E-06 5.76499044630886E-06 4.39045626410298E-10 -7.94649094794774E-15 5.03080617779889E-09 9.10549003590232E-13"/>
+                <site name="lfl_attachment" pos="0.028 -0.048 -0.01" />
+            </body>
+            
+        </body>
+    </worldbody>
+
+    <sensor>
+        <force name="force_ee" site="ft_frame"/>
+        <torque name="torque_ee" site="ft_frame"/>
+    </sensor>
+
+</mujoco>
