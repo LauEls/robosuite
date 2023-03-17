@@ -12,6 +12,11 @@ from .joint_pos import JointPositionController
 from .joint_tor import JointTorqueController
 from .joint_vel import JointVelocityController
 from .osc import OperationalSpaceController
+from .gh2_joint_pos import GH2JointPositionController
+from .gh2_joint_tor import GH2JointTorqueController
+from .gh2_osc import GH2OperationalSpaceController
+from .gh2_equilibrium_point import GH2EquilibriumPointController
+from .gh360t_joint_pos import GH360TJointPositionController
 
 # Global var for linking pybullet server to multiple ik controller instances if necessary
 pybullet_server = None
@@ -164,5 +169,33 @@ def controller_factory(name, params):
 
     if name == "JOINT_TORQUE":
         return JointTorqueController(interpolator=interpolator, **params)
+    
+    if name == "GH2_JOINT_POSITION":
+        return GH2JointPositionController(interpolator=interpolator, **params)
+
+    if name == "GH360T_JOINT_POSITION":
+        return GH360TJointPositionController(interpolator=interpolator, **params)
+
+    if name == "GH2_JOINT_TORQUE":
+        return GH2JointTorqueController(interpolator=interpolator, **params)
+
+    if name == "GH2_EQUILIBRIUM_POINT":
+        return GH2EquilibriumPointController(interpolator=interpolator, **params)
+
+    if name == "GH2_OSC_POSE":
+        ori_interpolator = None
+        if interpolator is not None:
+            interpolator.set_states(dim=3)                # EE control uses dim 3 for pos and ori each
+            ori_interpolator = deepcopy(interpolator)
+            ori_interpolator.set_states(ori="euler")
+        params["control_ori"] = True
+        return GH2OperationalSpaceController(interpolator_pos=interpolator,
+                                          interpolator_ori=ori_interpolator, **params)
+
+    if name == "GH2_OSC_POSITION":
+        if interpolator is not None:
+            interpolator.set_states(dim=3)                # EE control uses dim 3 for pos
+        params["control_ori"] = False
+        return GH2OperationalSpaceController(interpolator_pos=interpolator, **params)
 
     raise ValueError("Unknown controller name: {}".format(name))
