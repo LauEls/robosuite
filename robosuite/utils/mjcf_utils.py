@@ -720,10 +720,11 @@ def sort_elements(root, parent=None, element_filter=None, _elements_dict=None):
             _elements_dict[key].append(root)
 
     # Loop through all possible subtrees for this XML recurisvely
-    for r in root:
-        _elements_dict = sort_elements(
-            root=r, parent=root, element_filter=element_filter, _elements_dict=_elements_dict
-        )
+    if root.tag != "spatial":
+        for r in root:
+            _elements_dict = sort_elements(
+                root=r, parent=root, element_filter=element_filter, _elements_dict=_elements_dict
+            )
 
     return _elements_dict
 

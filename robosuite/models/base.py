@@ -516,7 +516,7 @@ class MujocoXMLModel(MujocoXML, MujocoModel):
             # Run default filter
             filter_key = _element_filter(element=element, parent=parent)
             # Also additionally modify element if it is (a) a geom and (b) has no name
-            if element.tag == "geom" and element.get("name") is None:
+            if element.tag == "geom" and element.get("name") is None and element.get("sidesite") is None:
                 group = group_mapping[element.get("group")]
                 element.set("name", f"g{ctr_mapping[group]}_{group}")
                 ctr_mapping[group] += 1
