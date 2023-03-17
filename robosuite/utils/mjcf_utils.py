@@ -79,7 +79,7 @@ MUJOCO_NAMED_ATTRIBUTES = {
     "tendon",
     "tendon1",
     "tendon2",
-    "slidesite",
+    "slidersite",
     "cranksite",
     "body",
     "body1",
@@ -88,6 +88,7 @@ MUJOCO_NAMED_ATTRIBUTES = {
     "target",
     "prefix",
     "site",
+    "sidesite",
 }
 
 IMAGE_CONVENTION_MAPPING = {
