@@ -243,10 +243,19 @@ class DoorObject(MujocoXMLObject):
         lock (bool): Whether to use the locked door variation object or not
     """
 
-    def __init__(self, name, friction=None, damping=None, lock=False):
+    def __init__(self, name, friction=None, damping=None, lock=False, lock_type="LATCH", mirror=False):
         xml_path = "objects/door.xml"
         if lock:
-            xml_path = "objects/door_lock.xml"
+            if lock_type == "LATCH":
+                if mirror:
+                    xml_path = "objects/door_mirror_lock.xml"
+                else:
+                    xml_path = "objects/door_lock.xml"
+            elif lock_type == "KNOB":
+                if mirror:
+                    xml_path = "objects/door_knob_lock.xml"
+                else:
+                    xml_path = "objects/door_knob_lock.xml"
         super().__init__(
             xml_path_completion(xml_path), name=name, joints=None, obj_type="all", duplicate_collision_geoms=True
         )
