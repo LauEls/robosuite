@@ -5,7 +5,7 @@ pybullet-svl>=3.1.6.4
 gym
 
 # macOS only
-hidapi
+#hidapi
 
 # required for demonstration utils
 h5py
