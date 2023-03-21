@@ -47,7 +47,7 @@
 
     <worldbody>
          <!-- <body name="gripper_base" pos="23.874E-03 143.393E-03 53.956E-03" euler="0 0 -1.5708"> -->
-         <body name="gripper_base" pos="0 0 0.01" euler="1.5708 0 1.5708">
+         <body name="gripper_base" pos="0 0 0.01" euler="1.5708 1.5708 1.5708">
             <site name="ft_frame" pos="0 0 0" size="0.01 0.01 0.01" rgba="1 0 0 1" type="sphere" group="1"/>
 
             <geom name="gripper_base_vis" type="mesh" mesh="gripper_base_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
