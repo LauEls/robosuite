@@ -16,6 +16,7 @@ class MotorJoint(Joint):
         output_min=-0.05,
         kp=50,
         damping_ratio = 1,
+        id=100,
     ):
         self.goal_motor_pos = 0
 
@@ -25,6 +26,7 @@ class MotorJoint(Joint):
         self.motor_max_pos = motor_max_pos
         self.motor_min_pos = -motor_max_pos
         self.motor_count = 1
+        self.id = id
 
     def update_goal_pos(self, delta_goal_pos):
         self.goal_motor_pos += delta_goal_pos
@@ -33,7 +35,7 @@ class MotorJoint(Joint):
         elif self.goal_motor_pos < self.motor_min_pos:
             self.goal_motor_pos = self.motor_min_pos
 
-    def get_torques(self, current_joint_pos, current_joint_vel, gravity_compensation):
+    def get_torques(self, current_joint_pos, current_joint_vel, gravity_compensation=0):
         torque = 0
 
         position_error = self.goal_motor_pos - current_joint_pos

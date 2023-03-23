@@ -71,19 +71,21 @@ class GH2EquilibriumPointController(Controller):
                 print("Error opening default controller filepath at: {}. "
                     "Please check filepath and try again.".format(filepath))
         
-            if variant["actuators"] == 2:
+            if variant["actuators"] == 4:
                 self.arm.append(SoftJoint(
                     joint_name=joint_name,
                     motor_max_pos=motor_max_pos,
                     left_positive_tendon_kwargs=variant["left"]["pos_tendon"],
                     left_negative_tendon_kwargs=variant["left"]["neg_tendon"],
                     right_positive_tendon_kwargs=variant["right"]["pos_tendon"],
-                    right_negative_tendon_kwargs=variant["left"]["neg_tendon"],
+                    right_negative_tendon_kwargs=variant["right"]["neg_tendon"],
                     file_name=tendon_model_file
                 ))
             elif variant["actuators"] == 1:
                 self.arm.append(MotorJoint(
                     joint_name=joint_name,
+                    id=variant["id"],
+                    motor_max_pos=variant["motor_max_pos"]
                 ))
         #TODO: Make a soft joint class and a nomal joint class
         # self.shoulder_yaw = SoftJoint()
@@ -121,7 +123,7 @@ class GH2EquilibriumPointController(Controller):
 
         i_joint = 0
         i_motor = 0
-        while i_motor < 2:#self.control_dim:
+        while i_motor < self.control_dim:#self.control_dim:
             motor_count = self.arm[i_joint].motor_count
             self.arm[i_joint].update_goal_pos(delta_motor_pos[i_motor:i_motor+motor_count])
             i_motor += motor_count
@@ -160,18 +162,26 @@ class GH2EquilibriumPointController(Controller):
         self.torques = np.zeros(25)
         joint_torques = np.ndarray([7,4])
         #print(self.joint_pos)
-        # for i_joint in range(len(self.arm)):
-        #     joint_torques[i_joint] = self.arm[i_joint].get_torques(self.joint_pos[i_joint])
+        for i_joint in range(len(self.arm)):
+            if self.arm[i_joint].motor_count == 2:
+                current_joint_torques = self.arm[i_joint].get_torques(self.joint_pos[i_joint])
+                self.torques[self.arm[i_joint].tendon_right_pos.id] = current_joint_torques[0]
+                self.torques[self.arm[i_joint].tendon_right_neg.id] = current_joint_torques[1]
+                self.torques[self.arm[i_joint].tendon_left_pos.id] = current_joint_torques[2]
+                self.torques[self.arm[i_joint].tendon_left_neg.id] = current_joint_torques[3]
+            else:
+                self.torques[self.arm[i_joint].id] = self.arm[i_joint].get_torques(self.joint_pos[i_joint],self.joint_vel[i_joint])
 
-        t = self.arm[0].get_torques(self.joint_pos[6])
-        # print(self.joint_pos)
-        # print(t)
-        joint_torques[6] = t
 
-        self.torques[21] = joint_torques[6][1]
-        self.torques[22] = joint_torques[6][0]
-        self.torques[23] = joint_torques[6][2]
-        self.torques[24] = joint_torques[6][3]
+        # t = self.arm[0].get_torques(self.joint_pos[6])
+        # # print(self.joint_pos)
+        # # print(t)
+        # joint_torques[6] = t
+
+        # self.torques[21] = joint_torques[6][1]
+        # self.torques[22] = joint_torques[6][0]
+        # self.torques[23] = joint_torques[6][2]
+        # self.torques[24] = joint_torques[6][3]
         # # Add gravity compensation
         # self.torques = self.current_torque + self.torque_compensation
         #print(self.torques)

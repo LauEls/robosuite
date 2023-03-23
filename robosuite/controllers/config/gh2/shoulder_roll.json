@@ -1,0 +1,48 @@
+{
+  "name": "Shoulder Roll",
+  "actuators": 4,
+  "right": {
+    "pos_tendon": {
+      "l_free": 117.96895598419106,
+      "r_active": 18,
+      "r_passive": 50.5,
+      "r_tendon": 1.5,
+      "id": 6,
+      "alpha_passive_zero": 1.9770401035894065,
+      "l_relaxed": 256.22089980256976,
+      "alpha_active_zero": 8.7159913245168532
+    },
+    "neg_tendon": {
+      "l_free": 117.96895598419106,
+      "r_active": 18,
+      "r_passive": 50.5,
+      "r_tendon": 1.5,
+      "id": 5,
+      "alpha_passive_zero": 1.7022074954102631,
+      "l_relaxed": 245.227595475404,
+      "alpha_active_zero": 8.5891455053572514
+    }
+  },
+  "left": {
+    "pos_tendon": {
+      "l_free": 117.96895598419103,
+      "r_active": 18,
+      "r_passive": 50.5,
+      "r_tendon": 1.5,
+      "id": 8,
+      "alpha_passive_zero": 1.7284688338280281,
+      "l_relaxed": 246.27804901211456,
+      "alpha_active_zero": 8.6012661230885215
+    },
+    "neg_tendon": {
+      "l_free": 117.96895598419103,
+      "r_active": 18,
+      "r_passive": 50.5,
+      "r_tendon": 1.5,
+      "id": 7,
+      "alpha_passive_zero": 1.9507787651716406,
+      "l_relaxed": 255.17044626585908,
+      "alpha_active_zero": 8.7038707067855743
+    }
+  }
+}

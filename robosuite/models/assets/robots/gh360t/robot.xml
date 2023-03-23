@@ -1,5 +1,5 @@
 <mujoco model="GH360T">
-    <!-- <compiler discardvisual="false" angle="radian"/> -->
+    <compiler discardvisual="false" angle="radian"/>
 
     <asset>
         <mesh name="shoulder0_mesh" file="meshes/360/360_shoulder_0.stl" scale="0.001 0.001 0.001"/>
