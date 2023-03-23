@@ -5,5 +5,6 @@
     "output_max": 0.05,
     "output_min": -0.05,
     "kp": 50,
-    "damping_ratio": 1
+    "damping_ratio": 1,
+    "actuators": 1
 }

@@ -78,8 +78,8 @@
                 <body name="gripper_lf" pos="0.027486 -0.047634 0.0012399" euler="0 0 0">
                     <joint name="gripper_lf_joint" type="hinge" axis="0 0 1" pos="0 0 0" limited="true" range="-1.0 1.0" />
                     <geom name="gripper_lf_vis" type="mesh" mesh="gripper_lf_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+                    <geom name="gripper_finger_pad_2" size="0.05 0.001 0.009" pos="0.0653 -0.027 -0.0375" quat="0 0 0 1" type="box" group="0" friction = "2 0.05 0.0001" solref="0.01 0.5" rgba="1 0 0 1"/>
                     <inertial pos="0.0153897110690098 -0.039231067943855 -0.0320049144465503" mass="0.038256465784836" fullinertia="2.65326631113254E-06 1.17585205630411E-05 1.19399763721664E-05 -2.17990122996235E-07 3.30558009736168E-06 -4.57723963439691E-07"/>
-                    
                 </body>
             </body>
 
@@ -91,8 +91,8 @@
                 <body name="gripper_mf" pos="0.027504 0.047634 -0.00076002" euler="0 0 0">
                     <joint name="gripper_mf_joint" type="hinge" axis="0 0 -1" pos="0 0 0" limited="true" range="-1.0 1.0" damping="0.1"/>
                     <geom name="gripper_mf_vis" type="mesh" mesh="gripper_mf_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
+                    <geom name="gripper_finger_pad_1" size="0.05 0.001 0.009" pos="0.0646 0.027 0.0386" quat="0 0 0 1" type="box" group="0" friction = "2 0.05 0.0001" solref="0.01 0.5" rgba="1 0 0 1"/>
                     <inertial pos="0.0148288048633209 0.0392310678850323 0.0322686275479262" mass="0.0382564656776473" fullinertia="2.77145795698025E-06 1.17585203696665E-05 1.18217845320535E-05 2.25945432966937E-07 -3.46561709988175E-06 -4.53849748694103E-07"/>
-                    
                 </body>
             </body>
 

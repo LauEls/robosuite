@@ -71,7 +71,7 @@ class GH2EquilibriumPointController(Controller):
                 print("Error opening default controller filepath at: {}. "
                     "Please check filepath and try again.".format(filepath))
         
-            if variant["actuators"] == 4:
+            if variant["actuators"] == 2:
                 self.arm.append(SoftJoint(
                     joint_name=joint_name,
                     motor_max_pos=motor_max_pos,

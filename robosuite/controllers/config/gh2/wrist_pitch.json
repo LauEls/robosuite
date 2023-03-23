@@ -1,5 +1,7 @@
 {
   "name": "Wrist Pitch",
+  "actuators": 2,
+  "tendons": 4,
   "right": {
     "pos_tendon": {
       "l_free": 97.8772699711225,
