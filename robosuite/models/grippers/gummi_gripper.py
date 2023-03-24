@@ -28,8 +28,8 @@ class GummiGripperBase(GripperModel):
         return {
             "left_finger": "gripper_lf_vis",
             "right_finger": "gripper_mf_vis",
-            "left_fingerpad": "gripper_lf_vis",
-            "right_fingerpad": "gripper_mf_vis",
+            "left_fingerpad": "gripper_finger_pad_2",
+            "right_fingerpad": "gripper_finger_pad_1",
         }
 
 

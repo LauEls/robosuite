@@ -274,6 +274,9 @@ class DoorMirror(SingleArmEnv):
                 handle_qpos = self.sim.data.qpos[self.handle_qpos_addr]
                 reward += np.clip(0.25 * np.abs(handle_qpos / (0.5 * np.pi)), -0.25, 0.25)
 
+            if self._check_grasp(gripper=self.robots[0].gripper, object_geoms="handle"):
+                reward += 0.25
+
         # Scale reward if requested
         if self.reward_scale is not None:
             reward *= self.reward_scale / 1.0
