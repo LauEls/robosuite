@@ -12,7 +12,7 @@
     </default>
 
     <worldbody>
-        <body name="null_gripper" pos="0 0 0">
+        <body name="null_gripper" pos="0 0 0" euler="1.5708 -1.5708 0">
             <site name="ft_frame" pos="0 5.5E-03 0" size="0.01 0.01 0.01" rgba="1 0 0 1" type="sphere" group="1"/>
             <geom name="" type="mesh" mesh="hook_mesh" group="1" pos="0 0 0" euler="0 0 0" />
             <inertial pos="-6.887E-03 26.533E-03 0.014E-03" mass="57.70E-03" fullinertia="35363.467E-09 18046.14E-09 35665.868E-09 1310.376E-09 -7.748E-09 16.896E-09" />
