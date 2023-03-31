@@ -1,17 +1,18 @@
 <mujoco model="universal_gummi_gripper">
+    <compiler angle="radian" meshdir="meshes/gummi_gripper" autolimits="true"/>
     <asset>
-        <mesh name="gripper_base_mesh" file="meshes/gummi_gripper/gbase.STL" />
-        <mesh name="gripper_camera_mesh" file="meshes/gummi_gripper/g_camera.STL" />
-        <mesh name="gripper_um_mesh" file="meshes/gummi_gripper/g_um.STL" />
+        <mesh name="gripper_base_mesh" file="gbase.STL" />
+        <mesh name="gripper_camera_mesh" file="g_camera.STL" />
+        <mesh name="gripper_um_mesh" file="g_um.STL" />
         <!-- <mesh name="gripper_lf_mesh" file="meshes/gummi_gripper/g_lf.STL" /> -->
-        <mesh name="gripper_lf_mesh" file="meshes/gummi_gripper/UGG_gripper_finger_2.stl" />
-        <mesh name="gripper_ll_mesh" file="meshes/gummi_gripper/g_ll.STL" />
+        <mesh name="gripper_lf_mesh" file="UGG_gripper_finger_2.stl" />
+        <mesh name="gripper_ll_mesh" file="g_ll.STL" />
         <!-- <mesh name="gripper_mf_mesh" file="meshes/gummi_gripper/g_mf.STL" /> -->
-        <mesh name="gripper_mf_mesh" file="meshes/gummi_gripper/UGG_gripper_finger_1.stl" />
-        <mesh name="gripper_ug_mesh" file="meshes/gummi_gripper/g_ug.STL" />
-        <mesh name="gripper_lg_mesh" file="meshes/gummi_gripper/g_lg.STL" />
-        <mesh name="gripper_mfl_mesh" file="meshes/gummi_gripper/g_mfl.STL" />
-        <mesh name="gripper_lfl_mesh" file="meshes/gummi_gripper/g_lfl.STL" />
+        <mesh name="gripper_mf_mesh" file="UGG_gripper_finger_1.stl" />
+        <mesh name="gripper_ug_mesh" file="g_ug.STL" />
+        <mesh name="gripper_lg_mesh" file="g_lg.STL" />
+        <mesh name="gripper_mfl_mesh" file="g_mfl.STL" />
+        <mesh name="gripper_lfl_mesh" file="g_lfl.STL" />
     </asset>
 
     <equality>
@@ -61,7 +62,7 @@
                 <inertial pos="-0.0130038062547488 0.000414347997380345 -0.00115139779329799" mass="0.0054126706518889" diaginertia="0 0 0"/>
             </body>
 
-            <body name="eef" pos="0.178543 5.1126E-05 0.00058816" euler="0 1.5708 0">
+            <body name="eef" pos="0.168543 5.1126E-05 0.00058816" euler="0 1.5708 0">
                 <site name="grip_site" pos="0 0 0" size="0.01 0.01 0.01" rgba="1 0 0 0.5" type="sphere" group="1"/>
                 <site name="ee_x" pos="0.1 0 0" size="0.005 .1"  quat="0.707105  0 0.707108 0 " rgba="1 0 0 0" type="cylinder" group="1"/>
                 <site name="ee_y" pos="0 0.1 0" size="0.005 .1" quat="0.707105 0.707108 0 0" rgba="0 1 0 0" type="cylinder" group="1"/>
