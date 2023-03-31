@@ -1,8 +1,8 @@
 <mujoco model="hook">
-    <compiler angle="radian" meshdir="meshes/hook_gripper" autolimits="true"/>
+    <compiler angle="radian"/>
 
     <asset>
-        <mesh class="hook" name="hook_mesh" file="gripper_hook_binary.stl" />
+        <mesh class="hook" name="hook_mesh" file="meshes/hook_gripper/gripper_hook_binary.stl" />
     </asset>
 
     <default>
