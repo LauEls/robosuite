@@ -1,0 +1,178 @@
+<mujoco model="universal_gh360_gripper">
+    <compiler angle="radian" />
+    <!-- meshdir="meshes/gh360_gripper" autolimits="true" -->
+
+    <option impratio="10"/>
+
+    <default>
+        <default class="mesh">
+            <mesh scale="0.001 0.001 0.001"/>
+        </default>
+        
+        <general biastype="affine"/>
+
+        <default class="driver">
+            <joint limited="true" range="-0.2 0.8" armature="0.005" damping="0.1" solimplimit="0.95 0.99 0.001" solreflimit="0.005 1"/>
+        </default>
+
+        <default class="follower">
+            <joint solimplimit="0.95 0.99 0.001" solreflimit="0.005 1"/>
+        </default>
+
+        <default class="visual">
+            <geom type="mesh" contype="0" conaffinity="0" group="1"/>
+        </default>
+        <default class="visible_collision">
+            <geom type="mesh" group="1"/>
+        </default>
+    </default>
+    
+    <asset>
+        <mesh class="mesh" name="base_mesh" file="meshes/gh360_gripper/main_body.stl" />
+        <mesh class="mesh" name="left_back_bar_mesh" file="meshes/gh360_gripper/left_back_bar.stl" />
+        <mesh class="mesh" name="left_back_bar_support_mesh" file="meshes/gh360_gripper/left_back_bar_support.stl" />
+        <mesh class="mesh" name="left_drive_arm_mesh" file="meshes/gh360_gripper/left_drive_arm.stl" />
+        <mesh class="mesh" name="left_drive_gear_mesh" file="meshes/gh360_gripper/left_drive_gear.stl" />
+        <mesh class="mesh" name="left_finger_mesh" file="meshes/gh360_gripper/left_finger.stl" />
+        <mesh class="mesh" name="right_back_bar_mesh" file="meshes/gh360_gripper/right_back_bar.stl" />
+        <mesh class="mesh" name="right_back_bar_support_mesh" file="meshes/gh360_gripper/right_back_bar_support.stl" />
+        <mesh class="mesh" name="right_drive_arm_mesh" file="meshes/gh360_gripper/right_drive_arm.stl" />
+        <mesh class="mesh" name="right_drive_gear_mesh" file="meshes/gh360_gripper/right_drive_gear.stl" />
+        <mesh class="mesh" name="right_finger_mesh" file="meshes/gh360_gripper/right_finger.stl" />
+    </asset>
+
+    <worldbody>
+        <body name="base" pos="0E-03 0E-03 0.09" euler="1.5708 0 0"> <!--childclass="gh360_gripper"-->
+            <!--Mass and inertia matrix from gummi gripper base. Need to get more accurate values-->
+            <inertial pos="0.024E-03 -48.984E-03 -0.157E-03" mass="0.112572451212744" fullinertia="3.46149816301849E-08 5.74238369795189E-05 5.74191745262333E-05 3.71824830981742E-07 -8.88625729821223E-07 8.8502104967547E-09"/>
+            <site name="ft_frame" pos="0 -0.09 0" size="0.01 0.01 0.01" rgba="1 0 0 1" type="sphere" group="1"/>
+            <!-- This site was added for visualization. -->
+            <body name="eef" pos="0 0.12 0.0" euler="1.5708 0 0">
+                <site name="grip_site" pos="0 0 0" size="0.01 0.01 0.01" rgba="1 0 0 0.5" type="sphere" group="1"/>
+                <site name="ee_x" pos="0.1 0 0" size="0.005 .1"  quat="0.707105  0 0.707108 0 " rgba="1 0 0 0" type="cylinder" group="1"/>
+                <site name="ee_y" pos="0 0.1 0" size="0.005 .1" quat="0.707105 0.707108 0 0" rgba="0 1 0 0" type="cylinder" group="1"/>
+                <site name="ee_z" pos="0 0 0.1" size="0.005 .1" quat="1 0 0 0" rgba="0 0 1 0" type="cylinder" group="1"/>
+                <!-- This site was added for visualization. -->
+                <site name="grip_site_cylinder" pos="0 0 0" size="0.005 10" rgba="0 1 0 0.3" type="cylinder" group="1"/>
+            </body>
+            <geom name="base_vis" mesh="base_mesh" pos="0 0 0" euler="0 0 0" class="visible_collision"/>
+
+            <body name="left_back_bar" pos="0E-03 0E-03 0E-03" euler="0 0 0">
+                <inertial pos="-27.46E-03 -27.568E-03 62.504E-03" mass="6.097E-03" fullinertia="1865.15E-09 1130.062E-09 824.869E-09 1.071E-17 -7.003E-17 -863.469E-09"/>
+                <joint name="left_back_bar_joint" axis="-1 0 0" pos="-21.46E-03 -45.215E-03 41.464E-03" class="follower"/>
+                <geom name="left_back_bar_vis" mesh="left_back_bar_mesh" pos="0 0 0" euler="0 0 0" class="visible_collision"/>
+            </body>
+
+            <body name="left_back_bar_support" pos="0E-03 0E-03 0E-03" euler="0 0 0">
+                <inertial pos="27.24E-03 -27.54E-03 62.531E-03" mass="6.478E-03" fullinertia="1980.433E-09 1206.226E-09 882.169E-09 0.00E-09 -1.950E-18 -916.792E-09"/>
+                <joint name="left_back_bar_support_joint" axis="1 0 0" pos="21.551E-03 -45.215E-03 41.464E-03" class="follower"/>
+                <geom name="left_back_bar_support_vis" mesh="left_back_bar_support_mesh" pos="0 0 0" euler="0 0 0" class="visible_collision"/>
+            </body>
+
+            <body name="left_drive_gear" pos="0E-03 0E-03 0E-03" euler="0 0 0">
+                <inertial pos="-27.066E-03 -45.091E-03 16.965E-03" mass="3.501E-03" fullinertia="244.014E-09 152.403E-09 151.31E-09 -2.943E-09 0.356E-09 1.413E-09"/>
+                <geom name="left_drive_gear_vis" mesh="left_drive_gear_mesh" pos="0 0 0" euler="0 0 0" class="visible_collision"/>
+            </body>
+
+            <body name="left_drive_arm" pos="0E-03 0E-03 0E-03" euler="0 0 0">
+                <inertial pos="-26.872E-03 -38.544E-03 -6.253E-03" mass="17.111E-03" fullinertia="7121.09E-09 2579.402E-09 4826.337E-09 -0.792E-09 0.479E-09 -1846.191E-09"/>
+                <joint name="left_drive_arm_joint" axis="-1 0 0" pos="-21.436E-03 -45.215E-03 -26.365E-03" class="driver"/>
+                <geom name="left_drive_arm_vis" mesh="left_drive_arm_mesh" pos="0 0 0" euler="0 0 0" class="visible_collision"/>
+
+                <body name="left_finger" pos="0E-03 0E-03 0E-03" euler="0 0 0">
+                    <inertial pos="-4.037E-03 28.329E-03 57.315E-03" mass="67.85E-03" fullinertia="1.206E-04 20482.328E-09 1.178E-04 -8351.85E-09 -4051.242E-09 -3941.108E-09"/>
+                    <joint name="left_finger_joint" axis="-1 0 0" pos="-21.869E-03 -9.992E-03 15.772E-03" class="follower"/>
+                    <geom name="left_finger_vis" mesh="left_finger_mesh" class="visual"/>
+                    <geom name="left_finger_base_col" type="box" pos="-7.5E-03 -6E-03 48.8E-03" size="29.5E-03 9E-03 40E-03" rgba="0 1 0 0.1" />
+                    <geom name="left_finger_tip_col" type="box" pos="-0.5E-03 54E-03 55.5E-03" size="11.5E-03 69E-03 11.5E-03" rgba="0 0 1 0.1" />
+                    <!-- <geom name="left_finger_vis" type="mesh" mesh="left_finger_mesh" pos="0 0 0" euler="0 0 0"/> -->
+                    <geom name="gripper_finger_pad_left" size="11.5E-03 50E-03 2E-03" pos="-0.5E-03 73E-03 42E-03" type="box" group="1" friction = "2 0.05 0.0001" solref="0.01 0.5" rgba="1 0 0 1"/>
+                </body>
+            </body>
+
+            <body name="right_back_bar" pos="0E-03 0E-03 0E-03" euler="0 0 0">
+                <inertial pos="27.54E-03 -25.045E-03 -62.752E-03" mass="5.871E-03" fullinertia="1822.941E-09 1104.448E-09 804.961E-09 0.00E-09 -1.939E-18 848.409E-09"/>
+                <joint name="right_back_bar_joint" axis="1 0 0" pos="21.54E-03 -45.215E-03 -41.537E-03" class="follower"/>
+                <geom name="right_back_bar_vis" mesh="right_back_bar_mesh" pos="0 0 0" euler="0 0 0" class="visible_collision"/>
+            </body>
+
+            <body name="right_back_bar_support" pos="0E-03 0E-03 0E-03" euler="0 0 0">
+                <inertial pos="-27.16E-03 -25.045E-03 -62.752E-03" mass="6.246E-03" fullinertia="1939.299E-09 1181.003E-09 862.40E-09 0.00E-09 -1.950E-18 902.563E-09"/>
+                <joint name="right_back_bar_support_joint" axis="-1 0 0" pos="-21.471E-03 -45.215E-03 -41.537E-03" class="follower"/>
+                <geom name="right_back_bar_support_vis" mesh="right_back_bar_support_mesh" pos="0 0 0" euler="0 0 0" class="visible_collision"/>
+            </body>
+
+            <body name="right_drive_gear" pos="0E-03 0E-03 0E-03" euler="0 0 0">
+                <inertial pos="27.46E-03 -45.081E-03 -17.988E-03" mass="3.501E-03" fullinertia="252.587E-09 161.803E-09 156.697E-09 2.269E-09 2.22E-09 0.624E-09"/>
+                <geom name="right_drive_gear_vis" mesh="right_drive_gear_mesh" pos="0 0 0" euler="0 0 0" class="visible_collision"/>
+            </body>
+
+            <body name="right_drive_arm" pos="0E-03 0E-03 0E-03" euler="0 0 0">
+                <inertial pos="26.951E-03 -36.062E-03 6.026E-03" mass="17.124E-03" fullinertia="7126.796E-09 2580.562E-09 4831.156E-09 0.385E-09 0.267E-09 1844.762E-09"/>
+                <joint name="right_drive_arm_joint" axis="1 0 0" pos="21.516E-03 -45.215E-03 26.464E-03" class="driver"/>
+                <geom name="right_drive_arm_vis" mesh="right_drive_arm_mesh" pos="0 0 0" euler="0 0 0" class="visible_collision"/>
+
+                <body name="right_finger" pos="0E-03 0E-03 0E-03" euler="0 0 0">
+                    <inertial pos="4.116E-03 30.948E-03 -57.366E-03" mass="67.85E-03" fullinertia="1.206E-04 20482.326E-09 1.178E-04 8351.85E-09 -4051.242E-09 3941.104E-09"/>
+                    <joint name="right_finger_joint" axis="1 0 0" pos="21.949E-03 -7.496E-03 -15.993E-03" class="follower"/>
+                    <geom name="right_finger_vis" mesh="right_finger_mesh" class="visual"/>
+                    <geom name="right_finger_base_col" type="box" pos="7.5E-03 -3.4E-03 -48.9E-03" size="29.5E-03 9E-03 40E-03" rgba="0 1 0 0.1" />
+                    <geom name="right_finger_tip_col" type="box" pos="0.6E-03 56.6E-03 -55.5E-03" size="11.5E-03 69E-03 11.5E-03" rgba="0 0 1 0.1" />
+                    <!-- <geom name="right_finger_vis" type="mesh" mesh="right_finger_mesh" pos="0 0 0" euler="0 0 0"/> -->
+                    <geom name="gripper_finger_pad_right" size="11.5E-03 50E-03 2E-03" pos="0.6E-03 75.6E-03 -42E-03" type="box" group="1" friction = "2 0.05 0.0001" solref="0.01 0.5" rgba="1 0 0 1"/>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <sensor>
+        <force name="force_ee" site="ft_frame"/>
+        <torque name="torque_ee" site="ft_frame"/>
+    </sensor>
+
+    <contact>
+        <exclude body1="left_drive_arm" body2="left_drive_gear" />
+        <exclude body1="left_drive_arm" body2="base" />
+        <exclude body1="left_back_bar" body2="left_finger" />
+        <exclude body1="left_back_bar_support" body2="left_finger" />
+        <exclude body1="base" body2="left_finger" />
+        <exclude body1="base" body2="left_back_bar" />
+        <exclude body1="base" body2="left_back_bar_support" />
+
+        <exclude body1="base" body2="right_back_bar" />
+        <exclude body1="base" body2="right_back_bar_support" />
+        <exclude body1="right_drive_arm" body2="right_drive_gear" />
+        <exclude body1="base" body2="right_drive_arm" />
+        <exclude body1="base" body2="right_finger" />
+        <exclude body1="right_back_bar" body2="right_finger" />
+        <exclude body1="right_back_bar_support" body2="right_finger" />
+
+        <exclude body1="left_finger" body2="right_finger" />
+        <exclude body1="left_finger" body2="right_drive_arm" />
+        <exclude body1="right_finger" body2="left_drive_arm"/>
+    </contact>
+
+    <!-- <tendon>
+        <fixed name="split">
+            <joint joint="right_drive_arm_joint" coef="0.5"/>
+            <joint joint="left_drive_arm_joint" coef="0.5"/>
+        </fixed>
+    </tendon> -->
+
+    <equality>
+        <connect anchor="-22.76E-03 -9.865E-03 83.599E-03" body1="left_finger" body2="left_back_bar" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+        <connect anchor="22.76E-03 -9.865E-03 83.599E-03" body1="left_finger" body2="left_back_bar_support" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+        <connect anchor="22.84E-03 -7.37E-03 -83.82E-03" body1="right_finger" body2="right_back_bar" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+        <connect anchor="-22.16E-03 -7.37E-03 -83.82E-03" body1="right_finger" body2="right_back_bar_support" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+        <!-- <joint joint1="right_drive_arm_joint" joint2="left_drive_arm_joint" polycoef="0 1 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/> -->
+    </equality>
+
+    <actuator>
+        <!-- <position name='left_finger_motor' ctrllimited="true" kp="10" joint='left_drive_arm_joint' ctrlrange='-0.2 0.8'/>
+        <position name='right_finger_motor' ctrllimited="true" kp="10" joint='right_drive_arm_joint' ctrlrange='-0.2 0.8'/> -->
+        <position ctrllimited="true" ctrlrange="-0.2 0.8" joint="left_drive_arm_joint" kp="100" name="gripper_finger_joint_left" forcelimited="true" forcerange="-5 5"/>
+        <position ctrllimited="true" ctrlrange="-0.2 0.8" joint="right_drive_arm_joint" kp="100" name="gripper_finger_joint_right" forcelimited="true" forcerange="-5 5"/>
+        <!-- <general class="gh360_gripper" name="fingers_actuator" tendon="split" forcelimited="true" forcerange="-5 5" ctrllimited="true" ctrlrange="0 255" gainprm="0.392156863 0 0" biasprm="-20 -100 -10"/> -->
+    </actuator>
+
+</mujoco>

@@ -1,4 +1,5 @@
 <mujoco model="panda_hand">
+    <compiler angle="radian" />
     <asset>
         <mesh name="hand" file="meshes/panda_gripper/hand.stl" />
         <mesh name="hand_vis" file="meshes/panda_gripper/hand_vis.stl" />

@@ -1,4 +1,5 @@
 <mujoco model="robotiq_gripper_140_model">
+    <compiler angle="radian" />
     <asset>
         <mesh name="robotiq_arg2f_base_link" file="meshes/robotiq_140_gripper/robotiq_arg2f_base_link.stl" />
         <mesh name="robotiq_arg2f_140_outer_knuckle" file="meshes/robotiq_140_gripper/robotiq_arg2f_140_outer_knuckle.stl" />

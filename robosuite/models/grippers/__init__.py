@@ -13,6 +13,7 @@ from .wiping_gripper import WipingGripper
 from .null_gripper import NullGripper
 from .gummi_gripper import GummiGripper
 from .hook_gripper import HookGripper
+from .gh360_gripper import GH360Gripper
 
 
 GRIPPER_MAPPING = {
@@ -27,6 +28,7 @@ GRIPPER_MAPPING = {
     "RobotiqThreeFingerDexterousGripper": RobotiqThreeFingerDexterousGripper,
     "GummiGripper": GummiGripper,
     "HookGripper": HookGripper,
+    "GH360Gripper": GH360Gripper,
     None: NullGripper,
 }
 

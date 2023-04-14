@@ -15,15 +15,40 @@
         <mesh name="gripper_lfl_mesh" file="meshes/gummi_gripper/g_lfl.STL" />
     </asset>
 
+    <default>
+        <general biastype="affine"/>
+        <default class="driver">
+            <joint limited="true" range="0 1" armature="0.005" damping="0.1" solimplimit="0.95 0.99 0.001" solreflimit="0.005 1"/>
+        </default>
+
+        <default class="follower">
+            <joint solimplimit="0.95 0.99 0.001" solreflimit="0.005 1"/>
+        </default>
+
+        <default class="visual">
+            <geom type="mesh" contype="0" conaffinity="0" group="1"/>
+        </default>
+    </default>
+
     <equality>
-        <connect name="mfl_mf_mimic" body1="gripper_mfl" body2="gripper_mf" anchor="0.027 0.048 0.01" solref="0.001 1"/>
-        <connect name="lfl_lf_mimic" body1="gripper_lfl" body2="gripper_lf" anchor="0.028 -0.048 -0.01" solref="0.001 1"/>
+        <connect name="mfl_mf_mimic" body1="gripper_mfl" body2="gripper_mf" anchor="0.027 0.048 0.01" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+        <connect name="lfl_lf_mimic" body1="gripper_lfl" body2="gripper_lf" anchor="0.028 -0.048 -0.01" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+        <!-- <joint joint1="gripper_um_joint" joint2="gripper_ll_joint" polycoef="0 1 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/> -->
     </equality>
 
     <actuator>
-        <position name='gripper_um_motor' ctrllimited="true" kp="10" joint='gripper_um_joint' ctrlrange='-1 0'/>
-        <position name='gripper_ll_motor' ctrllimited="true" kp="10" joint='gripper_ll_joint' ctrlrange='0 1'/>
+        <position name='gripper_um_motor' ctrllimited="true" kp="100" joint='gripper_um_joint' ctrlrange='0 1' forcelimited="true" forcerange="-5 5"/>
+        <position name='gripper_ll_motor' ctrllimited="true" kp="100" joint='gripper_ll_joint' ctrlrange='0 1' forcelimited="true" forcerange="-5 5"/>
+        <!-- <general name="fingers_actuator" tendon="split" forcelimited="true" forcerange="-5 5" ctrllimited="true" ctrlrange="0 255" gainprm="0.392156863 0 0" biasprm="0 -100 -10"/> -->
+        <!-- <general name="fingers_actuator" tendon="split" forcelimited="true" forcerange="-5 5" ctrllimited="true" ctrlrange="0 1" gainprm="100 0 0" biasprm="0 -100 -10"/> -->
     </actuator>
+
+    <!-- <tendon>
+        <fixed name="split">
+            <joint joint="gripper_um_joint" coef="0.5"/>
+            <joint joint="gripper_ll_joint" coef="0.5"/>
+        </fixed>
+    </tendon> -->
 
     <contact>
         <exclude name="exclude_base_um" body1="gripper_base" body2="gripper_um"/>
@@ -72,7 +97,7 @@
             </body>
 
             <body name="gripper_um" pos="0.03142 0.026601 0.037328" euler="0 0 0">
-                <joint name="gripper_um_joint" type="hinge" axis="0 0 -1" pos="0 0 0" limited="true" range="-1 0" damping="0.5"/>
+                <joint name="gripper_um_joint" type="hinge" axis="0 0 1" pos="0 0 0" class="driver"/>
                 <geom name="gripper_um_vis" type="mesh" mesh="gripper_um_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
                 <inertial pos="0.00245238145288562 -0.0217265687128561 -0.0105911469473412" mass="0.0108804943967655" fullinertia="8.08735422601889E-08 4.53539384016324E-08 1.26078407713655E-07 4.97110946899304E-08 -1.39273928121627E-09 6.17358200741367E-10"/>
                 
@@ -85,7 +110,7 @@
             </body>
 
             <body name="gripper_ll" pos="0.032066 -0.026399 -0.036669" euler="0 0 0">
-                <joint name="gripper_ll_joint" type="hinge" axis="0 0 -1" pos="0 0 0" limited="true" range="0 1"  damping="0.5"/>
+                <joint name="gripper_ll_joint" type="hinge" axis="0 0 -1" pos="0 0 0" class="driver"/>
                 <geom name="gripper_ll_vis" type="mesh" mesh="gripper_ll_mesh" group="1" pos="0 0 0" euler="0 0 0"/>
                 <inertial pos="0.00226717834928669 0.0217265688385826 0.0106323527694793" mass="0.0108804855685434" fullinertia="8.08387078665914E-08 4.53539041706008E-08 1.26113207738849E-07 -4.97142942470438E-08 6.03107412291824E-10 -2.50308381825711E-10"/>
                 

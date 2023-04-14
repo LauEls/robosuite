@@ -26,8 +26,8 @@ class GummiGripperBase(GripperModel):
     @property
     def _important_geoms(self):
         return {
-            "left_finger": "gripper_lf_vis",
-            "right_finger": "gripper_mf_vis",
+            "left_finger": ["gripper_lf_vis", "gripper_finger_pad_2"],
+            "right_finger": ["gripper_mf_vis", "gripper_finger_pad_1"],
             "left_fingerpad": "gripper_finger_pad_2",
             "right_fingerpad": "gripper_finger_pad_1",
         }
@@ -49,8 +49,12 @@ class GummiGripper(GummiGripperBase):
         Raises:
             AssertionError: [Invalid action dimension size]
         """
+        print(self.init_qpos)
+        print(action)
         assert len(action) == self.dof
-        self.current_action = np.clip(self.current_action + np.array([-1.0, 1.0]) * self.speed * np.sign(action), -1.0, 1.0)
+        
+        self.current_action = np.clip(self.current_action + self.speed * np.sign(action), -1.0, 1.0)
+        # self.current_action = np.clip(self.current_action + np.array([-1.0, 1.0]) * self.speed * np.sign(action), -1.0, 1.0)
         return self.current_action
 
     @property
