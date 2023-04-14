@@ -140,6 +140,7 @@ class DoorMirror(SingleArmEnv):
         table_offset=(0,0,0),
         action_punishment=False,
         force_punishment=False,
+        grasp_check=False,
         use_camera_obs=True,
         use_object_obs=True,
         reward_scale=1.0,
@@ -172,6 +173,7 @@ class DoorMirror(SingleArmEnv):
 
         self.action_punishment = action_punishment
         self.force_punishment = force_punishment
+        self.grasp_check = grasp_check
         # reward configuration
         self.use_latch = use_latch
         self.reward_scale = reward_scale
@@ -271,10 +273,14 @@ class DoorMirror(SingleArmEnv):
             reward += reaching_reward
             # Add rotating component if we're using a locked door
             
+            if self.grasp_check:
+                if self._check_grasp(gripper=self.robots[0].gripper, object_geoms="handle"):
+                    reward += 0.25
 
-            if self._check_grasp(gripper=self.robots[0].gripper, object_geoms="handle"):
-                reward += 0.25
-
+                    if self.use_latch:
+                        handle_qpos = self.sim.data.qpos[self.handle_qpos_addr]
+                        reward += np.clip(0.25 * np.abs(handle_qpos / (0.5 * np.pi)), -0.25, 0.25)
+            else:
                 if self.use_latch:
                     handle_qpos = self.sim.data.qpos[self.handle_qpos_addr]
                     reward += np.clip(0.25 * np.abs(handle_qpos / (0.5 * np.pi)), -0.25, 0.25)
