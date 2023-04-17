@@ -1,13 +1,14 @@
 {
   "name": "Elbow",
   "actuators": 4,
+  "motor_init_pos": 6.28,
   "right": {
     "pos_tendon": {
       "l_free": 92.830733057538652,
       "r_active": 15.6,
       "r_passive": 40,
       "r_tendon": 1.5,
-      "id": 18,
+      "id": 17,
       "alpha_passive_zero": 2.7936071344430391,
       "l_relaxed": 184.44311255778268,
       "alpha_active_zero": 2.024519694837108
@@ -17,7 +18,7 @@
       "r_active": 15.6,
       "r_passive": 40,
       "r_tendon": 1.5,
-      "id": 17,
+      "id": 18,
       "alpha_passive_zero": 0.86204575003230988,
       "l_relaxed": 189.82019144005557,
       "alpha_active_zero": 11.688060235405496
@@ -29,7 +30,7 @@
       "r_active": 15.6,
       "r_passive": 40,
       "r_tendon": 1.5,
-      "id": 20,
+      "id": 19,
       "alpha_passive_zero": 3.38434861019518,
       "l_relaxed": 218.56668607550952,
       "alpha_active_zero": 2.0635626851319917
@@ -39,7 +40,7 @@
       "r_active": 15.6,
       "r_passive": 40,
       "r_tendon": 1.5,
-      "id": 19,
+      "id": 20,
       "alpha_passive_zero": 0.18376009989965836,
       "l_relaxed": 183.43251440069093,
       "alpha_active_zero": 11.527272026176639

@@ -17,8 +17,9 @@ class MotorJoint(Joint):
         kp=50,
         damping_ratio = 1,
         id=100,
+        motor_init_pos = 0,
     ):
-        self.goal_motor_pos = 0
+        self.goal_motor_pos = motor_init_pos
 
         self.kp = kp
         self.kd = 2 * np.sqrt(kp) * damping_ratio

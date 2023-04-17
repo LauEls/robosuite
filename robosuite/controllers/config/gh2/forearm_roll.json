@@ -8,5 +8,6 @@
     "damping_ratio": 1,
     "actuators": 1,
     "id": 0,
-    "motor_max_pos": 1.5708
+    "motor_max_pos": 1.5708,
+    "motor_init_pos": 0.0
 }

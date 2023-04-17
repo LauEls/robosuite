@@ -70,7 +70,8 @@ class GH2EquilibriumPointController(Controller):
             except FileNotFoundError:
                 print("Error opening default controller filepath at: {}. "
                     "Please check filepath and try again.".format(filepath))
-        
+            print(joint_name)
+            print(variant["motor_init_pos"])
             if variant["actuators"] == 4:
                 self.arm.append(SoftJoint(
                     joint_name=joint_name,
@@ -79,13 +80,15 @@ class GH2EquilibriumPointController(Controller):
                     left_negative_tendon_kwargs=variant["left"]["neg_tendon"],
                     right_positive_tendon_kwargs=variant["right"]["pos_tendon"],
                     right_negative_tendon_kwargs=variant["right"]["neg_tendon"],
-                    file_name=tendon_model_file
+                    file_name=tendon_model_file,
+                    motor_init_pos=variant["motor_init_pos"]
                 ))
             elif variant["actuators"] == 1:
                 self.arm.append(MotorJoint(
                     joint_name=joint_name,
                     id=variant["id"],
-                    motor_max_pos=variant["motor_max_pos"]
+                    motor_max_pos=variant["motor_max_pos"],
+                    motor_init_pos=variant["motor_init_pos"]
                 ))
         #TODO: Make a soft joint class and a nomal joint class
         # self.shoulder_yaw = SoftJoint()
@@ -161,7 +164,7 @@ class GH2EquilibriumPointController(Controller):
 
         self.torques = np.zeros(25)
         joint_torques = np.ndarray([7,4])
-        #print(self.joint_pos)
+        print(self.joint_pos)
         for i_joint in range(len(self.arm)):
             if self.arm[i_joint].motor_count == 2:
                 current_joint_torques = self.arm[i_joint].get_torques(self.joint_pos[i_joint])

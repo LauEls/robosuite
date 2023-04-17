@@ -15,6 +15,7 @@ class SoftJoint(Joint):
         motor_max_pos,
         joint_name,
         file_name,
+        motor_init_pos = 0,
         # config_file,
     ):
         # config_dir = "../controllers/config/gh2"
@@ -33,6 +34,7 @@ class SoftJoint(Joint):
 
         # self.left_side = Tendon(config['left'])
         # self.right_side = Tendon(config['right'])
+ 
         self.joint_name = joint_name
         self.motor_count = 2
         self.motor_max = motor_max_pos
@@ -46,6 +48,8 @@ class SoftJoint(Joint):
         self.tendon_right_neg = Tendon(**right_negative_tendon_kwargs, file_name=file_name)
 
         self.current_joint_pos = 0
+
+        self.update_goal_pos([motor_init_pos, motor_init_pos])
         # self.current_left_positive_length = self.left_positive_tendon.zero_active_length + self.left_positive_tendon.free_length + self.left_positive_tendon.zero_passive_length
         # self.current_left_negative_length = self.left_negative_tendon.zero_active_length + self.left_negative_tendon.free_length + self.left_negative_tendon.zero_passive_length
         # self.current_right_positive_length = self.right_positive_tendon.zero_active_length + self.right_positive_tendon.free_length + self.right_positive_tendon.zero_passive_length
@@ -95,6 +99,7 @@ class SoftJoint(Joint):
         self.tendon_left_pos.update_active_pulley(delta_left)
         self.tendon_left_neg.update_active_pulley(-delta_left)
 
+        print("Joint Name: ", self.joint_name)
         print("Right Motor Pos: ",self.motor_pos_right)
         print("Left Motor Pos: ", self.motor_pos_left)
 

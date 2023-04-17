@@ -1,13 +1,14 @@
 {
   "name": "Shoulder Yaw",
   "actuators": 4,
+  "motor_init_pos": 0.0,
   "right": {
     "pos_tendon": {
       "l_free": 133.0716835994796,
       "r_active": 18,
       "r_passive": 74.5,
       "r_tendon": 1.5,
-      "id": 2,
+      "id": 1,
       "alpha_passive_zero": 1.6401587506864372,
       "l_relaxed": 313.64236694165328,
       "alpha_active_zero": 11.31183902227551
@@ -17,7 +18,7 @@
       "r_active": 18,
       "r_passive": 74.5,
       "r_tendon": 1.5,
-      "id": 1,
+      "id": 2,
       "alpha_passive_zero": 2.3044690092145124,
       "l_relaxed": 352.47896667098689,
       "alpha_active_zero": 11.759953634537052
@@ -29,7 +30,7 @@
       "r_active": 18,
       "r_passive": 74.5,
       "r_tendon": 1.5,
-      "id": 4,
+      "id": 3,
       "alpha_passive_zero": 2.3044690092145115,
       "l_relaxed": 352.47896667098684,
       "alpha_active_zero": 11.75995363453705
@@ -39,7 +40,7 @@
       "r_active": 18,
       "r_passive": 74.5,
       "r_tendon": 1.5,
-      "id": 3,
+      "id": 4,
       "alpha_passive_zero": 1.6401587506864375,
       "l_relaxed": 313.64236694165328,
       "alpha_active_zero": 11.311839022275512

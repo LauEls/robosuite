@@ -59,19 +59,19 @@ class Tendon:
 
     def calc_tendon_force(self, l_total):
         strain = (l_total-self.l_relaxed)/self.l_relaxed*100
-        print("Strain: ", strain)
+        #print("Strain: ", strain)
 
         difference_array = np.absolute(self.tendon_model[:,1]-strain)
         index = difference_array.argmin()
         
         f_tendon = self.tendon_model[index,0]
-        print("Force: ",f_tendon)
+        #print("Force: ",f_tendon)
         return f_tendon
 
     def update_active_pulley(self, delta_active):
         self.alpha_active += delta_active
 
-        print("Alpha Active: ", self.alpha_active)
+        #print("Alpha Active: ", self.alpha_active)
 
     def update_tendon(self, alpha_passive): #delta_active, 
     
