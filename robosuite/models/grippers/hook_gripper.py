@@ -22,3 +22,12 @@ class HookGripper(GripperModel):
     @property
     def init_qpos(self):
         return None
+    
+    @property
+    def _important_geoms(self):
+        return {
+            "left_finger": ["hook_1_col", "inner_pad"],
+            "right_finger": ["hook_3_col", "outer_pad"],
+            "left_fingerpad": ["inner_pad"],
+            "right_fingerpad": ["outer_pad"],
+        }

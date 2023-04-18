@@ -1,7 +1,7 @@
 {
   "name": "Shoulder Yaw",
   "actuators": 4,
-  "motor_init_pos": 0.0,
+  "motor_init_pos": 3.14,
   "right": {
     "pos_tendon": {
       "l_free": 133.0716835994796,

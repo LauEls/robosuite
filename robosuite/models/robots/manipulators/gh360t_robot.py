@@ -30,8 +30,8 @@ class GH360T(ManipulatorModel):
 
     @property
     def init_qpos(self):
-        return np.array([0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000])
-        # return np.array([0.000, 0.000, 0.000, np.pi/2, np.pi/2, 0.000, 0.000])
+        # return np.array([0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000])
+        return np.array([0.000, 0.000, 0.000, np.pi/2, np.pi/2, 0.000, 0.000])
 
     @property
     def base_xpos_offset(self):

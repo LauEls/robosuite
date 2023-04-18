@@ -22,7 +22,8 @@
         <site type="sphere" rgba=".9 .9 .9 1" size="5E-03"/>
         <joint damping="0.1"/>
         <!-- <joint type="hinge" axis="0 1 0" limited="true" range="0 60" solimplimit="0.95 0.95 0.1"/> -->
-        <muscle ctrllimited="true" ctrlrange="0 1"/>
+        <!-- <muscle ctrllimited="true" ctrlrange="0 1"/> -->
+        <spatial damping="10000"/>
     </default>
 
     <worldbody>
@@ -56,7 +57,7 @@
 
 
                 <body name="shoulder1" pos="0E-03 0E-03 0E-03">
-                    <joint name="shoulder1_joint" type="hinge" axis="0 1 0" pos="0E-03 284E-03 176E-03" limited="true" range="-1.57 1.57" />
+                    <joint name="shoulder1_joint" type="hinge" axis="0 1 0" pos="0E-03 284E-03 176E-03" limited="true" range="-1.57 1.57"/>
                     <geom name="shoulder1_vis" group="1" type="mesh" mesh="shoulder1_mesh" contype="0" conaffinity="0" pos="0 0 0" euler="0 0 0"/>
                     <geom name="shoulder1_col_outer" group="0" type="cylinder" fromto="0E-03 265E-03 176E-03 0 15E-03 176E-03" size="81E-03" rgba=".95 .1 .1 0.6" />
                     <geom name="shoulder1_pulley_right_col" group="0" type="cylinder" fromto="63.70E-03 55.524E-03 209.206E-03 63.70E-03 55.524E-03 224.289E-03" size="28E-03" rgba=".95 .1 .1 0.6"/>
@@ -227,68 +228,68 @@
 
     <tendon>
         <!--Shoulder Yaw-->
-        <spatial name="tendon_shoulder_yaw_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_shoulder_yaw_right_top" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="shoulder_yaw_active_right_top" />
             <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_right_top" />
             <site site="shoulder_yaw_passive_right" />         
         </spatial>
-        <spatial name="tendon_shoulder_yaw_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_shoulder_yaw_right_bot" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="shoulder_yaw_active_right_bot" />
             <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_right_bot" />
             <site site="shoulder_yaw_passive_right" />         
         </spatial>
-        <spatial name="tendon_shoulder_yaw_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_shoulder_yaw_left_top" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="shoulder_yaw_active_left_top" />
             <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_left_top" />
             <site site="shoulder_yaw_passive_left" />         
         </spatial>
-        <spatial name="tendon_shoulder_yaw_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_shoulder_yaw_left_bot" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="shoulder_yaw_active_left_bot" />
             <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_left_bot" />
             <site site="shoulder_yaw_passive_left" />         
         </spatial>
 
         <!--Shoulder Roll-->
-        <spatial name="tendon_shoulder_roll_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_shoulder_roll_right_top" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="shoulder_roll_active_right_top" />
             <geom geom="shoulder_roll_passive_pulley" sidesite="shoulder_roll_side_right_top" />
             <site site="shoulder_roll_passive_right" />         
         </spatial>
-        <spatial name="tendon_shoulder_roll_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_shoulder_roll_right_bot" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="shoulder_roll_active_right_bot" />
             <geom geom="shoulder_roll_passive_pulley" sidesite="shoulder_roll_side_right_bot" />
             <site site="shoulder_roll_passive_right" />         
         </spatial>
-        <spatial name="tendon_shoulder_roll_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_shoulder_roll_left_top" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="shoulder_roll_active_left_top" />
             <geom geom="shoulder_roll_passive_pulley" sidesite="shoulder_roll_side_left_top" />
             <site site="shoulder_roll_passive_left" />         
         </spatial>
-        <spatial name="tendon_shoulder_roll_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_shoulder_roll_left_bot" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="shoulder_roll_active_left_bot" />
             <geom geom="shoulder_roll_passive_pulley" sidesite="shoulder_roll_side_left_bot" />
             <site site="shoulder_roll_passive_left" />         
         </spatial>
 
         <!--Shoulder Pitch-->
-        <spatial name="tendon_shoulder_pitch_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_shoulder_pitch_right_top" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="shoulder_pitch_active_right_top" />
             <geom geom="shoulder_pitch_passive_pulley" sidesite="shoulder_pitch_side_right_top" />
             <site site="shoulder_pitch_passive_right_top" />         
         </spatial>
-        <spatial name="tendon_shoulder_pitch_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_shoulder_pitch_right_bot" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="shoulder_pitch_active_right_bot" />
             <geom geom="shoulder_pitch_middle_pulley" sidesite="shoulder_pitch_side_right_middle" />
             <site site="shoulder_pitch_middle_right" />
             <geom geom="shoulder_pitch_passive_pulley" sidesite="shoulder_pitch_side_right_bot" />
             <site site="shoulder_pitch_passive_right_bot" />         
         </spatial>
-        <spatial name="tendon_shoulder_pitch_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_shoulder_pitch_left_top" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="shoulder_pitch_active_left_top" />
             <geom geom="shoulder_pitch_passive_pulley" sidesite="shoulder_pitch_side_left_top" />
             <site site="shoulder_pitch_passive_left_top" />         
         </spatial>
-        <spatial name="tendon_shoulder_pitch_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_shoulder_pitch_left_bot" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="shoulder_pitch_active_left_bot" />
             <geom geom="shoulder_pitch_middle_pulley" sidesite="shoulder_pitch_side_left_middle" />
             <site site="shoulder_pitch_middle_left" />
@@ -297,68 +298,68 @@
         </spatial>
 
         <!--Upperarm Roll-->
-        <spatial name="tendon_upperarm_roll_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_upperarm_roll_right_top" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="upperarm_roll_active_right_top" />
             <!-- <geom geom="upperarm_roll_passive_pulley" sidesite="upperarm_roll_side_right_top_2" /> -->
             <!-- <site site="upperarm_roll_side_right_top" /> -->
             <geom geom="upperarm_roll_passive_pulley" sidesite="upperarm_roll_side_right_top" />
             <site site="upperarm_roll_passive_right_top" />         
         </spatial>
-        <spatial name="tendon_upperarm_roll_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_upperarm_roll_right_bot" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="upperarm_roll_active_right_bot" />
             <geom geom="upperarm_roll_passive_pulley" sidesite="upperarm_roll_side_right_bot" />
             <site site="upperarm_roll_passive_right_bot" />         
         </spatial>
-        <spatial name="tendon_upperarm_roll_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_upperarm_roll_left_top" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="upperarm_roll_active_left_top" />
             <geom geom="upperarm_roll_passive_pulley" sidesite="upperarm_roll_side_left_top" />
             <site site="upperarm_roll_passive_left_top" />         
         </spatial>
-        <spatial name="tendon_upperarm_roll_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_upperarm_roll_left_bot" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="upperarm_roll_active_left_bot" />
             <geom geom="upperarm_roll_passive_pulley" sidesite="upperarm_roll_side_left_bot" />
             <site site="upperarm_roll_passive_left_bot" />         
         </spatial>
 
         <!--Elbow-->
-        <spatial name="tendon_elbow_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_elbow_right_top" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="elbow_active_right_top" />
             <geom geom="elbow_right_passive_pulley" sidesite="elbow_side_right_top" />
             <site site="elbow_passive_right" />         
         </spatial>
-        <spatial name="tendon_elbow_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_elbow_right_bot" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="elbow_active_right_bot" />
             <geom geom="elbow_right_passive_pulley" sidesite="elbow_side_right_bot" />
             <site site="elbow_passive_right" />         
         </spatial>
-        <spatial name="tendon_elbow_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_elbow_left_top" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="elbow_active_left_top" />
             <geom geom="elbow_left_passive_pulley" sidesite="elbow_side_left_top" />
             <site site="elbow_passive_left" />         
         </spatial>
-        <spatial name="tendon_elbow_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_elbow_left_bot" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="elbow_active_left_bot" />
             <geom geom="elbow_left_passive_pulley" sidesite="elbow_side_left_bot" />
             <site site="elbow_passive_left" />         
         </spatial>
 
         <!--Wrist Pitch-->
-        <spatial name="tendon_wrist_pitch_right_top" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_wrist_pitch_right_top" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="wrist_pitch_active_right_top" />
             <geom geom="wrist_pitch_right_passive_pulley" sidesite="wrist_pitch_side_right_top" />
             <site site="wrist_pitch_passive_right" />         
         </spatial>
-        <spatial name="tendon_wrist_pitch_right_bot" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_wrist_pitch_right_bot" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="wrist_pitch_active_right_bot" />
             <geom geom="wrist_pitch_right_passive_pulley" sidesite="wrist_pitch_side_right_bot" />
             <site site="wrist_pitch_passive_right" />         
         </spatial>
-        <spatial name="tendon_wrist_pitch_left_top" width="2E-03" rgba=".3 .95 .3 1" >
+        <spatial name="tendon_wrist_pitch_left_top" width="2E-03" rgba=".3 .95 .3 1" damping="100">
             <site site="wrist_pitch_active_left_top" />
             <geom geom="wrist_pitch_left_passive_pulley" sidesite="wrist_pitch_side_left_top" />
             <site site="wrist_pitch_passive_left" />         
         </spatial>
-        <spatial name="tendon_wrist_pitch_left_bot" width="2E-03" rgba=".95 .3 .3 1" >
+        <spatial name="tendon_wrist_pitch_left_bot" width="2E-03" rgba=".95 .3 .3 1" damping="100">
             <site site="wrist_pitch_active_left_bot" />
             <geom geom="wrist_pitch_left_passive_pulley" sidesite="wrist_pitch_side_left_bot" />
             <site site="wrist_pitch_passive_left" />         
