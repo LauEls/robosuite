@@ -1,7 +1,7 @@
 {
   "name": "Upperarm Roll",
   "actuators": 4,
-  "motor_init_pos": 0.0,
+  "motor_init_pos": 2.5,
   "right": {
     "pos_tendon": {
       "l_free": 74.2018599834263,
