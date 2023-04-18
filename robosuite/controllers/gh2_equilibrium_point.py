@@ -37,7 +37,7 @@ class GH2EquilibriumPointController(Controller):
 
         # Control dimension
         self.control_dim = 13#MAYBE READ THAT OUT OF A CONFIG FILE -> should be 13 at the end
-        print("control dimensions: ",self.control_dim)
+        # print("control dimensions: ",self.control_dim)
 
         # input and output max and min (allow for either explicit lists or single numbers)
         self.input_max = self.nums2array(input_max, self.control_dim)
@@ -70,8 +70,8 @@ class GH2EquilibriumPointController(Controller):
             except FileNotFoundError:
                 print("Error opening default controller filepath at: {}. "
                     "Please check filepath and try again.".format(filepath))
-            print(joint_name)
-            print(variant["motor_init_pos"])
+            # print(joint_name)
+            # print(variant["motor_init_pos"])
             if variant["actuators"] == 4:
                 self.arm.append(SoftJoint(
                     joint_name=joint_name,
@@ -164,7 +164,7 @@ class GH2EquilibriumPointController(Controller):
 
         self.torques = np.zeros(25)
         joint_torques = np.ndarray([7,4])
-        print(self.joint_pos)
+        # print(self.joint_pos)
         for i_joint in range(len(self.arm)):
             if self.arm[i_joint].motor_count == 2:
                 current_joint_torques = self.arm[i_joint].get_torques(self.joint_pos[i_joint])

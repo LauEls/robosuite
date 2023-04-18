@@ -99,9 +99,9 @@ class SoftJoint(Joint):
         self.tendon_left_pos.update_active_pulley(delta_left)
         self.tendon_left_neg.update_active_pulley(-delta_left)
 
-        print("Joint Name: ", self.joint_name)
-        print("Right Motor Pos: ",self.motor_pos_right)
-        print("Left Motor Pos: ", self.motor_pos_left)
+        # print("Joint Name: ", self.joint_name)
+        # print("Right Motor Pos: ",self.motor_pos_right)
+        # print("Left Motor Pos: ", self.motor_pos_left)
 
     #     self.left_positive_tendon.update_active_angle(delta_goal_pos[0])
     #     self.left_negative_tendon.update_active_angle(-delta_goal_pos[0])
