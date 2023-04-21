@@ -39,6 +39,14 @@ class SoftJoint(Joint):
         self.motor_count = 2
         self.motor_max = motor_max_pos
         self.motor_min = -motor_max_pos
+        self.right_max_pos = False
+        self.right_min_pos = False
+        self.left_max_pos = False
+        self.left_min_pos = False
+        self.right_max_tendon = False
+        self.right_min_tendon = False
+        self.left_max_tendon = False
+        self.left_min_tendon = False
 
         self.motor_pos_left = 0
         self.motor_pos_right = 0
@@ -72,34 +80,60 @@ class SoftJoint(Joint):
 
     def update_goal_pos(self, delta_motor_pos):
         #TODO: Check if max or min angle of the motor would be exceeded
-        self.motor_pos_right += delta_motor_pos[0]
-        if self.motor_pos_right > self.motor_max:
-            delta_right = delta_motor_pos[0] - (self.motor_pos_right - self.motor_max)
-            self.motor_pos_right = self.motor_max
-            pass
-        elif self.motor_pos_right < self.motor_min:
-            delta_right = delta_motor_pos[0] + (np.abs(self.motor_pos_right)-np.abs(self.motor_min))
-            self.motor_pos_right = self.motor_min
-            pass
+        if (self.right_max_pos or self.right_max_tendon) and delta_motor_pos[0] > 0.0:
+            print("Can't exceed right max pos!")
+            delta_right = 0.0
+        elif (self.right_min_pos or self.right_min_tendon) and delta_motor_pos[0] < 0.0:
+            print("Can't exceed right min pos!")
+            delta_right = 0.0
         else:
-            delta_right = delta_motor_pos[0]
+            self.motor_pos_right += delta_motor_pos[0]
 
-        self.motor_pos_left += delta_motor_pos[1]
-        if self.motor_pos_left > self.motor_max:
-            delta_left = delta_motor_pos[1] - (self.motor_pos_left - self.motor_max)
-            self.motor_pos_left = self.motor_max
-        elif self.motor_pos_left < self.motor_min:
-            delta_left = delta_motor_pos[1] + (np.abs(self.motor_pos_left)-np.abs(self.motor_min))
-            self.motor_pos_left = self.motor_min
+            if self.motor_pos_right > self.motor_max:
+                delta_right = delta_motor_pos[0] - (self.motor_pos_right - self.motor_max)
+                self.motor_pos_right = self.motor_max
+            elif self.motor_pos_right < self.motor_min:
+                delta_right = delta_motor_pos[0] + (np.abs(self.motor_pos_right)-np.abs(self.motor_min))
+                self.motor_pos_right = self.motor_min
+            else:
+                delta_right = delta_motor_pos[0]
+
+        if (self.left_max_pos or self.left_max_tendon) and delta_motor_pos[1] > 0.0:
+            print("Can't exceed left max pos!")
+            delta_left = 0.0
+        elif (self.left_min_pos or self.left_min_tendon) and delta_motor_pos[1] < 0.0:
+            print("Can't exceed left min pos!")
+            delta_left = 0.0
         else:
-            delta_left = delta_motor_pos[1]
+            self.motor_pos_left += delta_motor_pos[1]
 
-        self.tendon_right_pos.update_active_pulley(delta_right)
-        self.tendon_right_neg.update_active_pulley(-delta_right)
-        self.tendon_left_pos.update_active_pulley(delta_left)
-        self.tendon_left_neg.update_active_pulley(-delta_left)
+            if self.motor_pos_left > self.motor_max:
+                delta_left = delta_motor_pos[1] - (self.motor_pos_left - self.motor_max)
+                self.motor_pos_left = self.motor_max
+            elif self.motor_pos_left < self.motor_min:
+                delta_left = delta_motor_pos[1] + (np.abs(self.motor_pos_left)-np.abs(self.motor_min))
+                self.motor_pos_left = self.motor_min
+            else:
+                delta_left = delta_motor_pos[1]
 
-        # print("Joint Name: ", self.joint_name)
+        
+
+        
+
+        #TODO: CHECK RETURN VALUE AND DO SOMETHING ABOUT IT
+        self.right_min_pos = not self.tendon_right_pos.update_active_pulley(delta_right)
+        self.right_max_pos = not self.tendon_right_neg.update_active_pulley(-delta_right)
+        self.left_min_pos = not self.tendon_left_pos.update_active_pulley(delta_left)
+        self.left_max_pos = not self.tendon_left_neg.update_active_pulley(-delta_left)
+
+        if self.joint_name == "wrist_pitch":
+            print("Joint Name: ", self.joint_name)
+            print("Right Max: ", self.right_max_pos)
+            print("Right Min: ", self.right_min_pos)
+            print("Left Max: ", self.left_max_pos)
+            print("Left Min: ", self.left_min_pos)
+            print(delta_right)
+            print(delta_left)
         # print("Right Motor Pos: ",self.motor_pos_right)
         # print("Left Motor Pos: ", self.motor_pos_left)
 
@@ -119,6 +153,11 @@ class SoftJoint(Joint):
         self.f_left_neg = self.tendon_left_neg.update_tendon(joint_pos)
         self.f_right_pos = self.tendon_right_pos.update_tendon(-joint_pos)
         self.f_right_neg = self.tendon_right_neg.update_tendon(joint_pos)
+
+        self.right_max_tendon = self.tendon_right_pos.check_max()
+        self.right_min_tendon = self.tendon_right_neg.check_max()
+        self.left_max_tendon = self.tendon_left_pos.check_max()
+        self.left_min_tendon = self.tendon_left_neg.check_max()
 
         self.current_joint_pos = joint_pos
 

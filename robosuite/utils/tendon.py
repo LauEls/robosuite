@@ -26,6 +26,7 @@ class Tendon:
         self.alpha_passive = alpha_passive_zero
         self.l_relaxed = l_relaxed
         self.id = id
+        self.tendon_max = False
 
         # TODO: Add retrieving a force-strain curve from file and save it in 2D array
         filepath = os.path.join(os.path.dirname(__file__), "config/tendon_models/"+file_name)
@@ -58,19 +59,31 @@ class Tendon:
         return l_total
 
     def calc_tendon_force(self, l_total):
+        if self.id > 20 and self.id < 25:
+            print(self.id,": ",self.alpha_active)
         strain = (l_total-self.l_relaxed)/self.l_relaxed*100
         #print("Strain: ", strain)
 
         difference_array = np.absolute(self.tendon_model[:,1]-strain)
         index = difference_array.argmin()
-        
+        if index == len(self.tendon_model[:,1])-1:
+            self.tendon_max = True
+        else:
+            self.tendon_max = False
+
         f_tendon = self.tendon_model[index,0]
-        #print("Force: ",f_tendon)
+        if self.id > 20 and self.id < 25:
+            print("Force: ",f_tendon)
         return f_tendon
 
     def update_active_pulley(self, delta_active):
-        self.alpha_active += delta_active
-
+            self.alpha_active += delta_active
+            
+            if self.alpha_active < 1.5708:
+                return False
+            else:
+                return True
+        
         #print("Alpha Active: ", self.alpha_active)
 
     def update_tendon(self, alpha_passive): #delta_active, 
@@ -82,6 +95,12 @@ class Tendon:
 
         return f_tendon
 
+    def check_max(self):
+        if self.tendon_max:
+            return True
+        else:
+            return False
+        
         
 
 
