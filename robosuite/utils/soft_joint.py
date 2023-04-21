@@ -81,10 +81,10 @@ class SoftJoint(Joint):
     def update_goal_pos(self, delta_motor_pos):
         #TODO: Check if max or min angle of the motor would be exceeded
         if (self.right_max_pos or self.right_max_tendon) and delta_motor_pos[0] > 0.0:
-            print("Can't exceed right max pos!")
+            # print("Can't exceed right max pos!")
             delta_right = 0.0
         elif (self.right_min_pos or self.right_min_tendon) and delta_motor_pos[0] < 0.0:
-            print("Can't exceed right min pos!")
+            # print("Can't exceed right min pos!")
             delta_right = 0.0
         else:
             self.motor_pos_right += delta_motor_pos[0]
@@ -99,10 +99,10 @@ class SoftJoint(Joint):
                 delta_right = delta_motor_pos[0]
 
         if (self.left_max_pos or self.left_max_tendon) and delta_motor_pos[1] > 0.0:
-            print("Can't exceed left max pos!")
+            # print("Can't exceed left max pos!")
             delta_left = 0.0
         elif (self.left_min_pos or self.left_min_tendon) and delta_motor_pos[1] < 0.0:
-            print("Can't exceed left min pos!")
+            # print("Can't exceed left min pos!")
             delta_left = 0.0
         else:
             self.motor_pos_left += delta_motor_pos[1]
@@ -126,14 +126,14 @@ class SoftJoint(Joint):
         self.left_min_pos = not self.tendon_left_pos.update_active_pulley(delta_left)
         self.left_max_pos = not self.tendon_left_neg.update_active_pulley(-delta_left)
 
-        if self.joint_name == "wrist_pitch":
-            print("Joint Name: ", self.joint_name)
-            print("Right Max: ", self.right_max_pos)
-            print("Right Min: ", self.right_min_pos)
-            print("Left Max: ", self.left_max_pos)
-            print("Left Min: ", self.left_min_pos)
-            print(delta_right)
-            print(delta_left)
+        # if self.joint_name == "wrist_pitch":
+        #     print("Joint Name: ", self.joint_name)
+        #     print("Right Max: ", self.right_max_pos)
+        #     print("Right Min: ", self.right_min_pos)
+        #     print("Left Max: ", self.left_max_pos)
+        #     print("Left Min: ", self.left_min_pos)
+        #     print(delta_right)
+        #     print(delta_left)
         # print("Right Motor Pos: ",self.motor_pos_right)
         # print("Left Motor Pos: ", self.motor_pos_left)
 

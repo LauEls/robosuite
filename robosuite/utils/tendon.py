@@ -59,8 +59,8 @@ class Tendon:
         return l_total
 
     def calc_tendon_force(self, l_total):
-        if self.id > 20 and self.id < 25:
-            print(self.id,": ",self.alpha_active)
+        # if self.id > 20 and self.id < 25:
+        #     print(self.id,": ",self.alpha_active)
         strain = (l_total-self.l_relaxed)/self.l_relaxed*100
         #print("Strain: ", strain)
 
@@ -72,8 +72,8 @@ class Tendon:
             self.tendon_max = False
 
         f_tendon = self.tendon_model[index,0]
-        if self.id > 20 and self.id < 25:
-            print("Force: ",f_tendon)
+        # if self.id > 20 and self.id < 25:
+        #     print("Force: ",f_tendon)
         return f_tendon
 
     def update_active_pulley(self, delta_active):
