@@ -28,6 +28,6 @@ class HookGripper(GripperModel):
         return {
             "left_finger": ["hook_1_col", "inner_pad"],
             "right_finger": ["hook_3_col", "outer_pad"],
-            "left_fingerpad": ["inner_pad"],
-            "right_fingerpad": ["outer_pad"],
+            "left_fingerpad": ["inner_pad", "middle_pad"],
+            "right_fingerpad": ["outer_pad", "middle_pad"],
         }
