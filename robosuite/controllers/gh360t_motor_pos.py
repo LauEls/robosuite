@@ -8,7 +8,7 @@ from robosuite.utils.soft_joint import SoftJoint
 from robosuite.utils.mjcf_utils import xml_path_completion
 
 
-class GH2EquilibriumPointController(Controller):
+class GH360TMotorPositionController(Controller):
     def __init__(self,
                  sim,
                  eef_name,
@@ -63,7 +63,7 @@ class GH2EquilibriumPointController(Controller):
         # filepath = os.path.join(os.path.dirname(__file__), "config/gh360t.json")
         self.arm = []
         for joint_name in joints:
-            filepath = os.path.join(os.path.dirname(__file__), "config/gh2/"+joint_name+".json")
+            filepath = os.path.join(os.path.dirname(__file__), "config/gh360/"+joint_name+".json")
             try:
                 with open(filepath) as f:
                     variant = json.load(f)
@@ -123,6 +123,9 @@ class GH2EquilibriumPointController(Controller):
 
         # Check to make sure motor_pos is size self.joint_dim
         assert len(delta_motor_pos) == self.control_dim, "Delta torque must be equal to the robot's joint dimension space!"
+
+        delta_motor_pos = np.clip(delta_motor_pos, self.input_min, self.input_max)
+        delta_motor_pos = delta_motor_pos/100
 
         i_joint = 0
         i_motor = 0

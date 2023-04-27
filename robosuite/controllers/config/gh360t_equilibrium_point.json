@@ -1,7 +1,7 @@
 {
-  "type": "GH2_EQUILIBRIUM_POINT",
-  "input_max": 0.1,
-  "input_min": -0.1,
+  "type": "GH360T_EQUILIBRIUM_POINT",
+  "input_max": 1,
+  "input_min": -1,
   "output_max": 0.1,
   "output_min": -0.1,
   "torque_limits": null,

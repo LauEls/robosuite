@@ -15,8 +15,9 @@ from .osc import OperationalSpaceController
 from .gh2_joint_pos import GH2JointPositionController
 from .gh2_joint_tor import GH2JointTorqueController
 from .gh2_osc import GH2OperationalSpaceController
-from .gh2_equilibrium_point import GH2EquilibriumPointController
+from .gh360t_equilibrium_point import GH360TEquilibriumPointController
 from .gh360t_joint_pos import GH360TJointPositionController
+from .gh360t_motor_pos import GH360TMotorPositionController
 
 # Global var for linking pybullet server to multiple ik controller instances if necessary
 pybullet_server = None
@@ -179,8 +180,11 @@ def controller_factory(name, params):
     if name == "GH2_JOINT_TORQUE":
         return GH2JointTorqueController(interpolator=interpolator, **params)
 
-    if name == "GH2_EQUILIBRIUM_POINT":
-        return GH2EquilibriumPointController(interpolator=interpolator, **params)
+    if name == "GH360T_EQUILIBRIUM_POINT":
+        return GH360TEquilibriumPointController(interpolator=interpolator, **params)
+    
+    if name == "GH360T_MOTOR_POSITION":
+        return GH360TMotorPositionController(interpolator=interpolator, **params)
 
     if name == "GH2_OSC_POSE":
         ori_interpolator = None
