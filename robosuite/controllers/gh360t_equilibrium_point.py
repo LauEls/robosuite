@@ -138,10 +138,10 @@ class GH360TEquilibriumPointController(Controller):
                 delta_motor_pos = delta_action[i_motor]
 
 
-            if i_joint == 6:
-                print(delta_motor_pos)
-                print(delta_eq_point)
-                print(delta_stiffness)
+            # if i_joint == 6:
+            #     print(delta_motor_pos)
+            #     print(delta_eq_point)
+            #     print(delta_stiffness)
             self.arm[i_joint].update_goal_pos(delta_motor_pos)
             i_motor += motor_count
             i_joint += 1
