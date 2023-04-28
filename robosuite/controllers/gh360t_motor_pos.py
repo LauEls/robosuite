@@ -14,8 +14,8 @@ class GH360TMotorPositionController(Controller):
                  eef_name,
                  joint_indexes,
                  actuator_range,
-                 input_max=0.01,
-                 input_min=-0.01,
+                 input_max=1,
+                 input_min=-1,
                  output_max=0.05,
                  output_min=-0.05,
                  policy_freq=20,
@@ -125,7 +125,7 @@ class GH360TMotorPositionController(Controller):
         assert len(delta_motor_pos) == self.control_dim, "Delta torque must be equal to the robot's joint dimension space!"
 
         delta_motor_pos = np.clip(delta_motor_pos, self.input_min, self.input_max)
-        delta_motor_pos = delta_motor_pos/100
+        delta_motor_pos = delta_motor_pos/10
 
         i_joint = 0
         i_motor = 0

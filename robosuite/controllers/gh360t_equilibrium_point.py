@@ -14,8 +14,8 @@ class GH360TEquilibriumPointController(Controller):
                  eef_name,
                  joint_indexes,
                  actuator_range,
-                 input_max=0.01,
-                 input_min=-0.01,
+                 input_max=1,
+                 input_min=-1,
                  output_max=0.05,
                  output_min=-0.05,
                  policy_freq=20,
@@ -125,7 +125,7 @@ class GH360TEquilibriumPointController(Controller):
         assert len(delta_action) == self.control_dim, "Delta torque must be equal to the robot's joint dimension space!"
        
         delta_action = np.clip(delta_action, self.input_min, self.input_max)
-        delta_action = delta_action/100
+        delta_action = delta_action/10
         i_joint = 0
         i_motor = 0
         while i_motor < self.control_dim:#self.control_dim:
