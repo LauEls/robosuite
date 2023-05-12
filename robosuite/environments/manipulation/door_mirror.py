@@ -261,8 +261,6 @@ class DoorMirror(SingleArmEnv):
         reward = 0.
         force_punishment_scale = 0.02
 
-        print(self._eef_xpos)
-
         # sparse completion reward
         if self._check_success():
             reward = 0.9
