@@ -248,7 +248,7 @@ class DoorObject(MujocoXMLObject):
         if lock:
             if lock_type == "LATCH":
                 if mirror:
-                    xml_path = "objects/door_mirror_lock_v2.xml"
+                    xml_path = "objects/door_mirror_lock_v3.xml"
                 else:
                     xml_path = "objects/door_lock.xml"
             elif lock_type == "KNOB":

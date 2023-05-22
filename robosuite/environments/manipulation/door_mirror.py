@@ -263,29 +263,29 @@ class DoorMirror(SingleArmEnv):
 
         # sparse completion reward
         if self._check_success():
-            reward = 0.9
-            reward += 0.1 * (1- np.tanh(10*np.linalg.norm(self.resting_pos - self._eef_xpos)))
+            reward = 0.8
+            reward += 0.2 * (1- np.tanh(10*np.linalg.norm(self.resting_pos - self._eef_xpos)))
             #force_punishment_scale = 0.1
 
         # else, we consider only the case if we're using shaped rewards
         elif self.reward_shaping:
             # Add reaching component
             dist = np.linalg.norm(self._gripper_to_handle)
-            reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
+            reaching_reward = 0.2 * (1 - np.tanh(10.0 * dist))
             reward += reaching_reward
             # Add rotating component if we're using a locked door
             
             if self.grasp_check:
                 if self._check_grasp(gripper=self.robots[0].gripper, object_geoms="handle"):
-                    reward += 0.25
+                    reward += 0.2
 
                     if self.use_latch:
                         handle_qpos = self.sim.data.qpos[self.handle_qpos_addr]
-                        reward += np.clip(0.25 * np.abs(handle_qpos / (0.5 * np.pi)), -0.25, 0.25)
+                        reward += np.clip(0.2 * np.abs(handle_qpos / (0.25 * np.pi)), -0.2, 0.2)
             else:
                 if self.use_latch:
                     handle_qpos = self.sim.data.qpos[self.handle_qpos_addr]
-                    reward += np.clip(0.25 * np.abs(handle_qpos / (0.5 * np.pi)), -0.25, 0.25)
+                    reward += np.clip(0.25 * np.abs(handle_qpos / (0.25 * np.pi)), -0.25, 0.25)
 
         # Scale reward if requested
         if self.reward_scale is not None:

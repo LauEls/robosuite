@@ -30,10 +30,11 @@
                       <geom fromto="0 0.0625 0 0 -0.066 0" size="0.008" type="cylinder" group="0" name="handle_base" material="MatMetal"/>
                       <!-- <geom size="0.075 0.015 0.02" pos="-0.075 -0.10 0" type="box" group="0" name="handle" material="MatMetal"/> -->
                       <geom size="0.008 0.061" pos="-0.061 -0.058 0" quat="0.707388 0 0.706825 0" type="cylinder" group="0" name="handle" material="MatMetal"/>
-                      <geom size="0.025 0.0125 0.03125" pos="0.03125 0.05 0" quat="0.707388 0 0.706825 0" type="box" group="0" name="latch" material="MatMetal"/>
-                      <geom size="0.025 0.0125" pos="0.0625 0.05 0" quat="0.707388 0.706825 0 0" type="cylinder" group="0" name="latch_tip" material="MatMetal"/>
+                      <!-- <geom size="0.025 0.0125 0.03125" pos="0.03125 0.05 0" quat="0.707388 0 0.706825 0" type="box" group="0" name="latch" material="MatMetal"/> -->
+                      <geom size="0.025 0.0125 0.01932" pos="0.01932 0.05 0" quat="0.707388 0 0.706825 0" type="box" group="0" name="latch" material="MatMetal"/>
+                      <!-- <geom size="0.025 0.0125" pos="0.03864 0.05 0" quat="0.707388 0.706825 0 0" type="cylinder" group="0" name="latch_tip" material="MatLightWood"/> -->
+                      <geom size="0.01768 0.0125 0.01768" pos="0.03864 0.05 0" euler="0 0.7854 0" type="box" group="0" name="latch_tip" material="MatMetal"/>
                       <!-- Don't render the door handle site by default -->
-                      <!-- <site name="handle" pos="-0.125 -0.10 0" size="0.02" rgba="0 0 1 1" /> -->
                       <site name="handle" pos="-0.095 -0.058 0" size="0.01" rgba="0 0 1 1" />
                   </body>
               </body>
@@ -44,4 +45,9 @@
         <site name="horizontal_radius_site" pos="0.3 0 0" rgba="0 0 0 0" size="0.1"/>
       </body>
     </worldbody>
+
+    <!-- <actuator>
+      <position ctrllimited="true" ctrlrange="-1000 1000" gear="1" joint="hinge"/>
+      <motor ctrllimited="true" ctrlrange="-1.5708 0.7854" joint="latch_joint" name="latch"/>
+    </actuator> -->
 </mujoco>

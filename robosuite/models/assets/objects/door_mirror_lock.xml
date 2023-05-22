@@ -3,6 +3,7 @@
 <!-- Information about door can be found in this paper: https://arxiv.org/pdf/1709.10087.pdf -->
 
 <mujoco model="door_lock">
+  <!-- <compiler angle="radian" /> -->
   <asset>
     <texture file="../textures/light-wood.png" type="cube" name="light-wood" />
     <texture file="../textures/dark-wood.png" type="cube" name="dark-wood" />
@@ -41,4 +42,9 @@
         <site name="horizontal_radius_site" pos="0.3 0 0" rgba="0 0 0 0" size="0.1"/>
       </body>
     </worldbody>
+
+    <!-- <actuator>
+      <position ctrllimited="true" ctrlrange="-1000 1000" gear="1" joint="hinge"/>
+      <motor ctrllimited="true" ctrlrange="-1.5708 0.7854" joint="latch_joint" name="latch"/>
+    </actuator> -->
 </mujoco>
