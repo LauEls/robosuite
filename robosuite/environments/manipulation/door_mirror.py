@@ -264,7 +264,7 @@ class DoorMirror(SingleArmEnv):
         # sparse completion reward
         if self._check_success():
             reward = 0.8
-            reward += 0.2 * (1- np.tanh(10*np.linalg.norm(self.resting_pos - self._eef_xpos)))
+            reward += 0.2 * (1- np.tanh(1*np.linalg.norm(self.resting_pos - self._eef_xpos)))
             #force_punishment_scale = 0.1
 
         # else, we consider only the case if we're using shaped rewards
@@ -519,4 +519,5 @@ class DoorMirror(SingleArmEnv):
         Returns:
             np.array: (x,y,z) distance between handle and eef
         """
+        # print(self._handle_xpos - self._eef_xpos)
         return self._handle_xpos - self._eef_xpos
