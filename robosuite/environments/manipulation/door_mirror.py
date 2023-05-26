@@ -172,6 +172,7 @@ class DoorMirror(SingleArmEnv):
         #self.table_offset = (-0.1, 0.35, 0.8)
         # self.resting_pos = [-0.26256637, 0.35293338, 1.04808937]
         self.resting_pos = [-0.36193448,  0.47809581, -0.06899795]
+        self.resting_q_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
         self.action_punishment = action_punishment
         self.force_punishment = force_punishment
@@ -262,10 +263,14 @@ class DoorMirror(SingleArmEnv):
         reward = 0.
         force_punishment_scale = 0.02
 
+        # print(self._joint_pos)
+
         # sparse completion reward
         if self._check_success():
             reward = 0.8
-            reward += 0.2 * (1- np.tanh(10.0*np.linalg.norm(self.resting_pos - self._eef_xpos)))
+            # reward += 0.2 * (1- np.tanh(10.0*np.linalg.norm(self.resting_pos - self._eef_xpos)))
+            reward += 0.2 * (1- np.tanh(1.0*np.linalg.norm(self.resting_q_pos - self._joint_pos)))
+
             #force_punishment_scale = 0.1
 
         # else, we consider only the case if we're using shaped rewards
@@ -522,3 +527,4 @@ class DoorMirror(SingleArmEnv):
         """
         # print(self._handle_xpos - self._eef_xpos)
         return self._handle_xpos - self._eef_xpos
+    

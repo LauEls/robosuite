@@ -41,6 +41,17 @@ class SingleArmEnv(ManipulationEnv):
             np.array: End effector(x,y,z)
         """
         return np.array(self.sim.data.site_xpos[self.robots[0].eef_site_id])
+    
+    @property
+    def _joint_pos(self):
+        """
+        Grabs the robots joint positions
+
+        Returns:
+            np.array: Joint Angles
+        """
+        #print(self.sim.data.qpos) #[self.robots[0]._ref_joint_pos_indexes]
+        return self.sim.data.qpos[self.robots[0]._ref_joint_pos_indexes]
 
     @property
     def _eef_xmat(self):
