@@ -260,16 +260,16 @@ class DoorMirror(SingleArmEnv):
             float: reward value
         """
         
-        reward = 0.
+        reward = 0.0
         force_punishment_scale = 0.02
 
-        # print(self._joint_pos)
+        # print(0.2 * (1- np.tanh(0.1*np.linalg.norm(self.resting_q_pos - self._joint_pos))))
 
         # sparse completion reward
         if self._check_success():
             reward = 0.8
             # reward += 0.2 * (1- np.tanh(10.0*np.linalg.norm(self.resting_pos - self._eef_xpos)))
-            reward += 0.2 * (1- np.tanh(1.0*np.linalg.norm(self.resting_q_pos - self._joint_pos)))
+            reward += 0.2 * (1- np.tanh(1*np.linalg.norm(self.resting_q_pos - self._joint_pos)))
 
             #force_punishment_scale = 0.1
 
@@ -315,6 +315,7 @@ class DoorMirror(SingleArmEnv):
 
         # print(self.sim.data.qfrc_actuator)
         # print(self.sim.data.)
+        # print(reward)
         return reward
 
     def _load_model(self):
