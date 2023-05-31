@@ -434,6 +434,7 @@ class SequentialCompositeSampler(ObjectPositionSampler):
                 if arg_name not in s_args:
                     s_args[arg_name] = arg
             # Run sampler
+            # print(s_args)
             new_placements = sampler.sample(fixtures=placed_objects, **s_args)
             # Update placements
             placed_objects.update(new_placements)

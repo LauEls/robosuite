@@ -280,6 +280,7 @@ class PickPlace(SingleArmEnv):
         reward = np.sum(self.objects_in_bins)
 
         # add in shaped rewards
+        # print("reward_shaping: ",self.reward_shaping)
         if self.reward_shaping:
             staged_rewards = self.staged_rewards()
             reward += max(staged_rewards)
@@ -412,14 +413,24 @@ class PickPlace(SingleArmEnv):
         bin_x_half = self.model.mujoco_arena.table_full_size[0] / 2 - 0.05
         bin_y_half = self.model.mujoco_arena.table_full_size[1] / 2 - 0.05
 
+        bin_x_little = self.model.mujoco_arena.table_full_size[0] / 40 - 0.05
+        bin_y_little = self.model.mujoco_arena.table_full_size[1] / 40 - 0.05
+        # print(bin_x_little)
+        # print(bin_y_little)
+
         # each object should just be sampled in the bounds of the bin (with some tolerance)
         self.placement_initializer.append_sampler(
             sampler=UniformRandomSampler(
                 name="CollisionObjectSampler",
                 mujoco_objects=self.objects,
-                x_range=[-bin_x_half, bin_x_half],
-                y_range=[-bin_y_half, bin_y_half],
+                # x_range=[-bin_x_half, bin_x_half],
+                # y_range=[-bin_y_half, bin_y_half],
+                x_range=[-bin_x_little, bin_x_little],
+                y_range=[-bin_y_little, bin_y_little],
+                # x_range=[-0.01, 0.01],
+                # y_range=[-0.01, 0.01],
                 rotation=None,
+                # rotation=(0,0),
                 rotation_axis="z",
                 ensure_object_boundary_in_range=True,
                 ensure_valid_placement=True,
@@ -427,6 +438,8 @@ class PickPlace(SingleArmEnv):
                 z_offset=0.0,
             )
         )
+        # if self.single_object_mode == 1:
+
 
         # each visual object should just be at the center of each target bin
         index = 0
