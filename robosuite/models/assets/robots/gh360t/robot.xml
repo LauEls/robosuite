@@ -23,7 +23,7 @@
         <joint damping="0.1"/>
         <!-- <joint type="hinge" axis="0 1 0" limited="true" range="0 60" solimplimit="0.95 0.95 0.1"/> -->
         <!-- <muscle ctrllimited="true" ctrlrange="0 1"/> -->
-        <spatial damping="10000"/>
+        <!-- <spatial damping="10000"/> -->
     </default>
 
     <worldbody>

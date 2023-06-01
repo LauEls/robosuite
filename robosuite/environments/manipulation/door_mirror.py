@@ -140,6 +140,7 @@ class DoorMirror(SingleArmEnv):
         table_offset=(0,0,0),
         action_punishment=False,
         force_punishment=False,
+        stiffness_punishment=False,
         grasp_check=False,
         use_camera_obs=True,
         use_object_obs=True,
@@ -176,6 +177,8 @@ class DoorMirror(SingleArmEnv):
 
         self.action_punishment = action_punishment
         self.force_punishment = force_punishment
+        self.stiffness_punishment = stiffness_punishment
+        self.current_stiffness = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         self.grasp_check = grasp_check
         # reward configuration
         self.use_latch = use_latch
@@ -226,8 +229,8 @@ class DoorMirror(SingleArmEnv):
                 if force_limit[1] > self.max_force:
                     self.max_force = force_limit[1]
 
-            self.min_force = -20
-            self.max_force = 20
+            # self.min_force = 0
+            # self.max_force = 350
 
             print("Min Force: ",self.min_force,", Max Force: ", self.max_force)
 
@@ -262,14 +265,16 @@ class DoorMirror(SingleArmEnv):
         
         reward = 0.0
         force_punishment_scale = 0.02
+        stiffness_punishment_scale = 0.1
+        # print("action = ",action)
 
         # print(0.2 * (1- np.tanh(0.1*np.linalg.norm(self.resting_q_pos - self._joint_pos))))
 
         # sparse completion reward
         if self._check_success():
-            reward = 0.8
+            reward = 1.0
             # reward += 0.2 * (1- np.tanh(10.0*np.linalg.norm(self.resting_pos - self._eef_xpos)))
-            reward += 0.2 * (1- np.tanh(1*np.linalg.norm(self.resting_q_pos - self._joint_pos)))
+            #reward += 0.2 * (1- np.tanh(1*np.linalg.norm(self.resting_q_pos - self._joint_pos)))
 
             #force_punishment_scale = 0.1
 
@@ -313,6 +318,23 @@ class DoorMirror(SingleArmEnv):
                     percent = force / self.max_force
                 reward -= force_punishment_scale * percent
 
+        if self.stiffness_punishment:
+            delta_action = np.clip(action, -1, 1)
+            delta_action = delta_action/10
+            current_iter = [0,1,2,3,4,5]
+            delta_iter = [1,3,5,7,9,12]
+            for i in range(len(current_iter)):
+                if delta_action[delta_iter[i]] > 0.0:
+                    # print("Reward: ", abs(delta_action[delta_iter[i]]) / abs(0.1)*(stiffness_punishment_scale/6))
+                    reward -= abs(delta_action[delta_iter[i]]) / abs(0.1)*(stiffness_punishment_scale/6)
+                   
+                # if self.current_stiffness[current_iter[i]] >= 0.0 and action[delta_iter[i]] > 0.0:
+                #     reward -= abs(action[delta_iter[i]]) / abs(max_delta)*(stiffness_punishment_scale/6)
+                # elif self.current_stiffness[current_iter[i]] <= 0.0 and action[delta_iter[i]] < 0.0:
+                #     pass
+                # else:
+                #     pass
+                # self.current_stiffness[current_iter[i]] + action[delta_iter[i]]
         # print(self.sim.data.qfrc_actuator)
         # print(self.sim.data.)
         # print(reward)
@@ -526,6 +548,7 @@ class DoorMirror(SingleArmEnv):
         Returns:
             np.array: (x,y,z) distance between handle and eef
         """
-        # print(self._handle_xpos - self._eef_xpos)
+        # print("Handle Pos: ",self._handle_xpos)
+        # print("Eef Pos: ", self._eef_xpos)
         return self._handle_xpos - self._eef_xpos
     

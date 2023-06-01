@@ -131,10 +131,13 @@ class GH360TEquilibriumPointController(Controller):
         # Check to make sure motor_pos is size self.joint_dim
         assert len(delta_action) == self.control_dim, "Delta torque must be equal to the robot's joint dimension space!"
        
+        # print("min: ", self.input_min)
+        # print("max: ", self.input_max)
         delta_action = np.clip(delta_action, self.input_min, self.input_max)
         delta_action = delta_action/10
         i_joint = 0
         i_motor = 0
+        # print("delta_action: ",delta_action)
 
         # f = open(self.data_file, 'a')
         # data_writer = csv.writer(f)
