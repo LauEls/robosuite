@@ -49,6 +49,8 @@ class GH360TEquilibriumPointController(Controller):
         # limits (if not specified, set them to actuator limits by default)
         #self.torque_limits = np.array(torque_limits) if torque_limits is not None else self.actuator_limits
         self.force_limits = np.array(force_limits) #SHOULD COME FROM CONFIG FILE
+        self.current_stiffness = np.zeros(6)
+        self.min_stiffness = 0.0
 
         # control frequency
         self.control_freq = policy_freq

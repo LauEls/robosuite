@@ -56,6 +56,7 @@ class SoftJoint(Joint):
         self.tendon_right_neg = Tendon(**right_negative_tendon_kwargs, file_name=file_name)
 
         self.current_joint_pos = 0
+        self.current_stiffness = 0
 
         self.update_goal_pos([motor_init_pos, motor_init_pos])
         # self.current_left_positive_length = self.left_positive_tendon.zero_active_length + self.left_positive_tendon.free_length + self.left_positive_tendon.zero_passive_length
@@ -79,6 +80,9 @@ class SoftJoint(Joint):
     #     return [self.current_left_positive_length, self.current_left_negative_length, self.current_right_positive_length, self.current_right_negative_length]
 
     def update_goal_pos(self, delta_motor_pos):
+        # if delta_motor_pos[0] > delta_motor_pos[1]:
+        #     self.current_stiffness
+        
         #TODO: Check if max or min angle of the motor would be exceeded
         if (self.right_max_pos or self.right_max_tendon) and delta_motor_pos[0] > 0.0:
             # print("Can't exceed right max pos!")
@@ -118,7 +122,19 @@ class SoftJoint(Joint):
 
         
 
+        if delta_right < delta_left:
+            neg_delta_stiffness = (delta_left - delta_right)/2
+            if self.current_stiffness - neg_delta_stiffness < 0.0:
+                new_neg_delta_stiffness = abs(self.current_stiffness - neg_delta_stiffness)
+                self.current_stiffness = 0.0
+                delta_right += new_neg_delta_stiffness
+                delta_left -= new_neg_delta_stiffness
+            else:
+                self.current_stiffness -= neg_delta_stiffness
+        else:
+            self.current_stiffness += (delta_right - delta_left)/2
         
+        print("Current_Stiffness: ", self.current_stiffness)
 
         #TODO: CHECK RETURN VALUE AND DO SOMETHING ABOUT IT
         self.right_min_pos = not self.tendon_right_pos.update_active_pulley(delta_right)
