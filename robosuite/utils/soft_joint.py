@@ -134,7 +134,7 @@ class SoftJoint(Joint):
         else:
             self.current_stiffness += (delta_right - delta_left)/2
         
-        print("Current_Stiffness: ", self.current_stiffness)
+        # print("Current_Stiffness: ", self.current_stiffness)
 
         #TODO: CHECK RETURN VALUE AND DO SOMETHING ABOUT IT
         self.right_min_pos = not self.tendon_right_pos.update_active_pulley(delta_right)
