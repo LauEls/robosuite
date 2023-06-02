@@ -152,7 +152,7 @@ class GH360TEquilibriumPointController(Controller):
         # data_writer.writerow(delta_action)
         # f.close()
         current_motor_pos = []
-        print("-------------------------------------------")
+        # print("-------------------------------------------")
         while i_motor < self.control_dim:#self.control_dim:
             motor_count = self.arm[i_joint].motor_count
             if motor_count == 2:
@@ -177,8 +177,8 @@ class GH360TEquilibriumPointController(Controller):
             #     print(delta_stiffness)
             self.arm[i_joint].update_goal_pos(delta_motor_pos)
 
-            if motor_count == 2:
-                print("Motor Positions: ", self.arm[i_joint].motor_pos_right,", ",self.arm[i_joint].motor_pos_left)
+            # if motor_count == 2:
+            #     print("Motor Positions: ", self.arm[i_joint].motor_pos_right,", ",self.arm[i_joint].motor_pos_left)
 
             if self.write_data:                                                                             
                 if motor_count == 2:
