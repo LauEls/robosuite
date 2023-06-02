@@ -129,6 +129,8 @@ class SoftJoint(Joint):
                 self.current_stiffness = 0.0
                 delta_right += new_neg_delta_stiffness
                 delta_left -= new_neg_delta_stiffness
+                self.motor_pos_right += new_neg_delta_stiffness
+                self.motor_pos_left -= new_neg_delta_stiffness
             else:
                 self.current_stiffness -= neg_delta_stiffness
         else:

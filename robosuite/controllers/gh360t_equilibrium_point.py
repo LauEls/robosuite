@@ -108,6 +108,7 @@ class GH360TEquilibriumPointController(Controller):
         # self.arm.append(self.lowerarm_roll)
         # self.wrist_pitch = SoftJoint()
         # self.arm.append(self.wrist_pitch)
+        self.write_data = False
         self.motor_pos_file = os.path.join('/home/laurenz/phd_project/sac/scripts/test_data', 'motor_pos.csv')
         self.eef_pos_file = os.path.join('/home/laurenz/phd_project/sac/scripts/test_data', 'eef_pos.csv')
         # f = open(self.data_file, 'w')
@@ -163,26 +164,27 @@ class GH360TEquilibriumPointController(Controller):
             #     print(delta_stiffness)
             self.arm[i_joint].update_goal_pos(delta_motor_pos)
 
-            # if motor_count == 2:
-            #     current_motor_pos.append(self.arm[i_joint].motor_pos_right)
-            #     current_motor_pos.append(self.arm[i_joint].motor_pos_left)
-            # else:
-            #     current_motor_pos.append(self.arm[i_joint].goal_motor_pos)
+            if self.write_data:                                                                             
+                if motor_count == 2:
+                    current_motor_pos.append(self.arm[i_joint].motor_pos_right)
+                    current_motor_pos.append(self.arm[i_joint].motor_pos_left)
+                else:
+                    current_motor_pos.append(self.arm[i_joint].goal_motor_pos)
 
             i_motor += motor_count
             i_joint += 1
 
             
+        if self.write_data:
+            f = open(self.motor_pos_file, 'a')
+            data_writer = csv.writer(f)
+            data_writer.writerow(current_motor_pos)
+            f.close()
 
-        # f = open(self.motor_pos_file, 'a')
-        # data_writer = csv.writer(f)
-        # data_writer.writerow(current_motor_pos)
-        # f.close()
-
-        # f = open(self.eef_pos_file, 'a')
-        # data_writer = csv.writer(f)
-        # data_writer.writerow(self.ee_pos)
-        # f.close()
+            f = open(self.eef_pos_file, 'a')
+            data_writer = csv.writer(f)
+            data_writer.writerow(self.ee_pos)
+            f.close()
 
             # motor_count = self.arm[i_joint].motor_count
             # self.arm[i_joint].update_goal_pos(delta_motor_pos[i_motor:i_motor+motor_count])
