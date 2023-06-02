@@ -2,6 +2,7 @@
   "name": "Shoulder Pitch",
   "actuators": 4,
   "motor_init_pos": 4,
+  "fixed_stiffness": 0.0,
   "right": {
     "pos_tendon": {
       "l_free": 183.32267081095785,

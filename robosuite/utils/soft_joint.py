@@ -16,6 +16,7 @@ class SoftJoint(Joint):
         joint_name,
         file_name,
         motor_init_pos = 0,
+        fixed_stiffness = 0
         # config_file,
     ):
         # config_dir = "../controllers/config/gh2"
@@ -47,6 +48,7 @@ class SoftJoint(Joint):
         self.right_min_tendon = False
         self.left_max_tendon = False
         self.left_min_tendon = False
+        self.fixed_stiffness = fixed_stiffness
 
         self.motor_pos_left = 0
         self.motor_pos_right = 0

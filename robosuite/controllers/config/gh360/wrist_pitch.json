@@ -2,6 +2,7 @@
   "name": "Wrist Pitch",
   "actuators": 4,
   "motor_init_pos": 0.0,
+  "fixed_stiffness": 0.75,
   "right": {
     "pos_tendon": {
       "l_free": 97.8772699711225,

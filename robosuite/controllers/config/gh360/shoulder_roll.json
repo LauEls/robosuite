@@ -2,6 +2,7 @@
   "name": "Shoulder Roll",
   "actuators": 4,
   "motor_init_pos": 0.0,
+  "fixed_stiffness": 0.0,
   "right": {
     "pos_tendon": {
       "l_free": 117.96895598419106,
