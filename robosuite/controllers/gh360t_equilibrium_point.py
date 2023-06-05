@@ -56,6 +56,13 @@ class GH360TEquilibriumPointController(Controller):
         self.variable_stiffness = variable_stiffness
         self.soft = soft
 
+        if self.variable_stiffness:
+            print("Equilibrium Point Controller with Variable Stiffness")
+        elif self.soft:
+            print("Equilibrium Point Controller with no stiffness")
+        else:
+            print("Equilibrium Point Cotnroller with fixed stiffness")
+
         # control frequency
         self.control_freq = policy_freq
 
