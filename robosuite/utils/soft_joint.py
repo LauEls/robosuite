@@ -16,7 +16,8 @@ class SoftJoint(Joint):
         joint_name,
         file_name,
         motor_init_pos = 0,
-        fixed_stiffness = 0
+        fixed_stiffness_switch = False,
+        fixed_stiffness = 0,
         # config_file,
     ):
         # config_dir = "../controllers/config/gh2"
@@ -49,6 +50,7 @@ class SoftJoint(Joint):
         self.left_max_tendon = False
         self.left_min_tendon = False
         self.fixed_stiffness = fixed_stiffness
+        self.fixed_stiffness_switch = fixed_stiffness_switch
 
         self.motor_pos_left = 0
         self.motor_pos_right = 0
@@ -60,7 +62,10 @@ class SoftJoint(Joint):
         self.current_joint_pos = 0
         self.current_stiffness = 0
 
-        self.update_goal_pos([motor_init_pos, motor_init_pos])
+        if self.fixed_stiffness_switch:
+            self.update_goal_pos([motor_init_pos+self.fixed_stiffness, motor_init_pos-self.fixed_stiffness])
+        else:
+            self.update_goal_pos([motor_init_pos, motor_init_pos])
         # self.current_left_positive_length = self.left_positive_tendon.zero_active_length + self.left_positive_tendon.free_length + self.left_positive_tendon.zero_passive_length
         # self.current_left_negative_length = self.left_negative_tendon.zero_active_length + self.left_negative_tendon.free_length + self.left_negative_tendon.zero_passive_length
         # self.current_right_positive_length = self.right_positive_tendon.zero_active_length + self.right_positive_tendon.free_length + self.right_positive_tendon.zero_passive_length
@@ -84,46 +89,69 @@ class SoftJoint(Joint):
     def update_goal_pos(self, delta_motor_pos):
         # if delta_motor_pos[0] > delta_motor_pos[1]:
         #     self.current_stiffness
+        right_limit = False
+        left_limit = False
         
         #TODO: Check if max or min angle of the motor would be exceeded
         if (self.right_max_pos or self.right_max_tendon) and delta_motor_pos[0] > 0.0:
             # print("Can't exceed right max pos!")
             delta_right = 0.0
+            right_limit = True
         elif (self.right_min_pos or self.right_min_tendon) and delta_motor_pos[0] < 0.0:
             # print("Can't exceed right min pos!")
             delta_right = 0.0
+            right_limit = True
         else:
             self.motor_pos_right += delta_motor_pos[0]
 
             if self.motor_pos_right > self.motor_max:
                 delta_right = delta_motor_pos[0] - (self.motor_pos_right - self.motor_max)
                 self.motor_pos_right = self.motor_max
+                right_limit = True
             elif self.motor_pos_right < self.motor_min:
                 delta_right = delta_motor_pos[0] + (np.abs(self.motor_pos_right)-np.abs(self.motor_min))
                 self.motor_pos_right = self.motor_min
+                right_limit = True
             else:
                 delta_right = delta_motor_pos[0]
 
         if (self.left_max_pos or self.left_max_tendon) and delta_motor_pos[1] > 0.0:
             # print("Can't exceed left max pos!")
             delta_left = 0.0
+            left_limit = True
         elif (self.left_min_pos or self.left_min_tendon) and delta_motor_pos[1] < 0.0:
             # print("Can't exceed left min pos!")
             delta_left = 0.0
+            left_limit = True
         else:
             self.motor_pos_left += delta_motor_pos[1]
 
             if self.motor_pos_left > self.motor_max:
                 delta_left = delta_motor_pos[1] - (self.motor_pos_left - self.motor_max)
                 self.motor_pos_left = self.motor_max
+                left_limit = True
             elif self.motor_pos_left < self.motor_min:
                 delta_left = delta_motor_pos[1] + (np.abs(self.motor_pos_left)-np.abs(self.motor_min))
                 self.motor_pos_left = self.motor_min
+                left_limit = True
             else:
                 delta_left = delta_motor_pos[1]
 
         
-
+        if self.fixed_stiffness_switch and delta_right != delta_left and self.current_stiffness != 0.0:
+            if right_limit and left_limit:
+                print("This shouldn't happen?")
+            elif right_limit:
+                adj = self.fixed_stiffness*2 - (self.motor_pos_right - self.motor_pos_left)
+                delta_left -= adj
+                self.motor_pos_left -= adj
+                # print("right limit triggered")
+            elif left_limit:
+                adj = self.fixed_stiffness*2 - (self.motor_pos_right - self.motor_pos_left)
+                delta_right += adj
+                self.motor_pos_right += adj
+                # print("left limit triggered")
+    
         if delta_right < delta_left:
             neg_delta_stiffness = (delta_left - delta_right)/2
             if self.current_stiffness - neg_delta_stiffness < 0.0:
@@ -139,6 +167,8 @@ class SoftJoint(Joint):
             self.current_stiffness += (delta_right - delta_left)/2
         
         # print("Current_Stiffness: ", self.current_stiffness)
+
+        
 
         #TODO: CHECK RETURN VALUE AND DO SOMETHING ABOUT IT
         self.right_min_pos = not self.tendon_right_pos.update_active_pulley(delta_right)

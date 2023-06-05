@@ -2,7 +2,7 @@
   "name": "Elbow",
   "actuators": 4,
   "motor_init_pos": 6.28,
-  "fixed_stiffness": 0.0,
+  "fixed_stiffness": 0.7854,
   "right": {
     "pos_tendon": {
       "l_free": 92.830733057538652,

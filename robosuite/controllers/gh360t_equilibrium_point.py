@@ -80,6 +80,10 @@ class GH360TEquilibriumPointController(Controller):
             # print(joint_name)
             # print(variant["motor_init_pos"])
             if variant["actuators"] == 4:
+                if self.soft:
+                    joint_fixed_stiffness = 0.0
+                else:
+                    joint_fixed_stiffness = variant["fixed_stiffness"]
                 self.arm.append(SoftJoint(
                     joint_name=joint_name,
                     motor_max_pos=motor_max_pos,
@@ -89,7 +93,8 @@ class GH360TEquilibriumPointController(Controller):
                     right_negative_tendon_kwargs=variant["right"]["neg_tendon"],
                     file_name=tendon_model_file,
                     motor_init_pos=variant["motor_init_pos"],
-                    fixed_stiffness=variant["fixed_stiffness"]
+                    fixed_stiffness=joint_fixed_stiffness,
+                    fixed_stiffness_switch=not self.variable_stiffness
                 ))
             elif variant["actuators"] == 1:
                 self.arm.append(MotorJoint(
@@ -153,6 +158,8 @@ class GH360TEquilibriumPointController(Controller):
         # f.close()
         current_motor_pos = []
         # print("-------------------------------------------")
+        # np.set_printoptions(suppress=True)
+        # print("Joint Pos: ",np.around(self.joint_pos,4))
         while i_motor < self.control_dim:#self.control_dim:
             motor_count = self.arm[i_joint].motor_count
             if motor_count == 2:
@@ -160,13 +167,15 @@ class GH360TEquilibriumPointController(Controller):
                 delta_stiffness = delta_action[i_motor+1]
                 if self.variable_stiffness:
                     delta_motor_pos = [delta_eq_point+delta_stiffness, delta_eq_point-delta_stiffness]
-                elif self.soft:
-                    delta_motor_pos = [delta_eq_point, delta_eq_point]
                 else:
-                    if self.arm[i_joint].current_stiffness < self.arm[i_joint].fixed_stiffness:
-                        delta_motor_pos = [delta_eq_point+self.arm[i_joint].fixed_stiffness, delta_eq_point-self.arm[i_joint].fixed_stiffness]
-                    else:
-                        delta_motor_pos = [delta_eq_point, delta_eq_point]
+                    delta_motor_pos = [delta_eq_point, delta_eq_point]
+                # elif self.soft:
+                #     delta_motor_pos = [delta_eq_point, delta_eq_point]
+                # else:
+                #     if self.arm[i_joint].current_stiffness < self.arm[i_joint].fixed_stiffness:
+                #         delta_motor_pos = [delta_eq_point+self.arm[i_joint].fixed_stiffness, delta_eq_point-self.arm[i_joint].fixed_stiffness]
+                #     else:
+                #         delta_motor_pos = [delta_eq_point, delta_eq_point]
             else:
                 delta_motor_pos = delta_action[i_motor]
 

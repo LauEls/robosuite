@@ -72,7 +72,7 @@ class Tendon:
             self.tendon_max = False
 
         f_tendon = self.tendon_model[index,0]
-        # if self.id > 20 and self.id < 25:
+        # if self.id > 4 and self.id < 9:
         #     print("Force: ",f_tendon)
         return f_tendon
 
