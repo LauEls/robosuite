@@ -354,11 +354,11 @@ class MujocoEnv(metaclass=EnvMeta):
             # To save memory, we only concatenate the image observations if explicitly requested
             if modality == "image-state" and not macros.CONCATENATE_IMAGES:
                 continue
-            
+
             if macros.CONCATENATE_ROBOT_STATE:
                 observations[modality] = np.concatenate(obs, axis=-1)
 
-        print(observations)
+        #print(observations)
 
         return observations
 

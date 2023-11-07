@@ -491,7 +491,7 @@ class DoorMirror(SingleArmEnv):
                 if key == list_item:
                     value.set_active(True)
 
-        print(observables)
+        # print(observables)
 
         return observables
 
