@@ -483,7 +483,7 @@ class DoorMirror(SingleArmEnv):
                 )
 
         observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
-        macros.CONCATENATE_ROBOT_STATE = False
+        # macros.CONCATENATE_ROBOT_STATE = False
 
         for key, value in observables.items():
             value.set_active(False)
