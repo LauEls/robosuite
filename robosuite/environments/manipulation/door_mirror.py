@@ -9,6 +9,8 @@ from robosuite.models.tasks import ManipulationTask
 from robosuite.utils.placement_samplers import UniformRandomSampler
 from robosuite.utils.observables import Observable, sensor
 
+import robosuite.macros as macros
+
 
 class DoorMirror(SingleArmEnv):
     """
@@ -479,6 +481,17 @@ class DoorMirror(SingleArmEnv):
                     sensor=s,
                     sampling_rate=self.control_freq,
                 )
+
+        observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+        macros.CONCATENATE_ROBOT_STATE = False
+
+        for key, value in observables.items():
+            value.set_active(False)
+            for list_item in observable_list:
+                if key == list_item:
+                    value.set_active(True)
+
+        print(observables)
 
         return observables
 

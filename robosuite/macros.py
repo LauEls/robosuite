@@ -31,6 +31,7 @@ IMAGE_CONVENTION = "opengl"  # Options are {"opengl", "opencv"}
 # In general, observations are concatenated together by modality. However, image observations are expensive memory-wise,
 # so we skip concatenating all images together by default, unless this flag is set to True
 CONCATENATE_IMAGES = False
+CONCATENATE_ROBOT_STATE = True
 
 MUJOCO_GPU_RENDERING = True
 

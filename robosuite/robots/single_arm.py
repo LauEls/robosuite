@@ -333,6 +333,7 @@ class SingleArm(Manipulator):
                 sampling_rate=self.control_freq,
             )
 
+
         return observables
 
     @property
