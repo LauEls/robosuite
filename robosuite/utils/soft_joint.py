@@ -18,6 +18,7 @@ class SoftJoint(Joint):
         motor_init_pos = 0,
         fixed_stiffness_switch = False,
         fixed_stiffness = 0,
+        motor_model = "MX-106",
         # config_file,
     ):
         # config_dir = "../controllers/config/gh2"
@@ -51,6 +52,7 @@ class SoftJoint(Joint):
         self.left_min_tendon = False
         self.fixed_stiffness = fixed_stiffness
         self.fixed_stiffness_switch = fixed_stiffness_switch
+        self.motor_model = motor_model
 
         self.motor_pos_left = 0
         self.motor_pos_right = 0
@@ -66,6 +68,17 @@ class SoftJoint(Joint):
             self.update_goal_pos([motor_init_pos+self.fixed_stiffness, motor_init_pos-self.fixed_stiffness])
         else:
             self.update_goal_pos([motor_init_pos, motor_init_pos])
+
+
+        if motor_model == "MX-64":
+            max_torque = 2.88
+        elif motor_model == "MX-106":
+            max_torque = 5.62
+            
+        self.tendon_left_pos.tendon_max_force = max_torque / (self.tendon_left_pos.r_active/1000)
+        self.tendon_left_neg.tendon_max_force = max_torque / (self.tendon_left_neg.r_active/1000)
+        self.tendon_right_pos.tendon_max_force = max_torque / (self.tendon_right_pos.r_active/1000)
+        self.tendon_right_neg.tendon_max_force = max_torque / (self.tendon_right_neg.r_active/1000)
         # self.current_left_positive_length = self.left_positive_tendon.zero_active_length + self.left_positive_tendon.free_length + self.left_positive_tendon.zero_passive_length
         # self.current_left_negative_length = self.left_negative_tendon.zero_active_length + self.left_negative_tendon.free_length + self.left_negative_tendon.zero_passive_length
         # self.current_right_positive_length = self.right_positive_tendon.zero_active_length + self.right_positive_tendon.free_length + self.right_positive_tendon.zero_passive_length

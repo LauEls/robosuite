@@ -14,6 +14,7 @@ class Tendon:
         r_tendon,
         l_relaxed,
         file_name,
+        tendon_max_force = 290.0,
         id = 0, #TODO-ADD ACTUATOR ID'S TO EACH TENDON
     ):
 
@@ -27,6 +28,7 @@ class Tendon:
         self.l_relaxed = l_relaxed
         self.id = id
         self.tendon_max = False
+        self.tendon_max_force = tendon_max_force
 
         # TODO: Add retrieving a force-strain curve from file and save it in 2D array
         filepath = os.path.join(os.path.dirname(__file__), "config/tendon_models/"+file_name)
@@ -66,14 +68,20 @@ class Tendon:
 
         difference_array = np.absolute(self.tendon_model[:,1]-strain)
         index = difference_array.argmin()
-        if index == len(self.tendon_model[:,1])-1:
-            self.tendon_max = True
-        else:
-            self.tendon_max = False
 
         f_tendon = self.tendon_model[index,0]
         # if self.id > 4 and self.id < 9:
         #     print("Force: ",f_tendon)
+        
+        if f_tendon > self.tendon_max_force:
+            f_tendon = self.tendon_max_force
+            self.tendon_max = True
+        elif index == len(self.tendon_model[:,1])-1:
+            self.tendon_max = True
+        else:
+            self.tendon_max = False
+        
+        
         return f_tendon
 
     def update_active_pulley(self, delta_active):

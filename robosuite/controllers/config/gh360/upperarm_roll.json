@@ -1,5 +1,6 @@
 {
   "name": "Upperarm Roll",
+  "motor_model": "MX-106",
   "actuators": 4,
   "motor_init_pos": 2.5,
   "fixed_stiffness": 0.7854,
