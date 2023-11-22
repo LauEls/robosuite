@@ -7,6 +7,7 @@ from robosuite.utils.motor_joint import MotorJoint
 from robosuite.utils.soft_joint import SoftJoint
 from robosuite.utils.mjcf_utils import xml_path_completion
 import csv
+import time
 
 
 class GH360TEquilibriumPointController(Controller):
@@ -91,6 +92,7 @@ class GH360TEquilibriumPointController(Controller):
                     joint_fixed_stiffness = 0.0
                 else:
                     joint_fixed_stiffness = variant["fixed_stiffness"]
+
                 self.arm.append(SoftJoint(
                     joint_name=joint_name,
                     motor_max_pos=motor_max_pos,
@@ -126,8 +128,11 @@ class GH360TEquilibriumPointController(Controller):
         # self.wrist_pitch = SoftJoint()
         # self.arm.append(self.wrist_pitch)
         self.write_data = False
-        self.motor_pos_file = os.path.join('/home/laurenz/phd_project/sac/scripts/test_data', 'motor_pos.csv')
-        self.eef_pos_file = os.path.join('/home/laurenz/phd_project/sac/scripts/test_data', 'eef_pos.csv')
+        file_base_dir = '/home/laurenz/phd_project/sac/scripts/test_data/v5'
+        self.motor_pos_file = os.path.join(file_base_dir, 'motor_pos.csv')
+        self.delta_action_file = os.path.join(file_base_dir, 'delta_action.csv')
+        self.joint_pos_file = os.path.join(file_base_dir, 'joint_pos.csv')
+        self.eef_pos_file = os.path.join(file_base_dir, 'eef_pos.csv')
         # f = open(self.data_file, 'w')
         # data_writer = csv.writer(f)
         # data_writer.writerow(["rewards"])
@@ -202,21 +207,29 @@ class GH360TEquilibriumPointController(Controller):
                     current_motor_pos.append(self.arm[i_joint].motor_pos_left)
                 else:
                     current_motor_pos.append(self.arm[i_joint].goal_motor_pos)
+                    current_motor_pos.append(delta_motor_pos)
 
             i_motor += motor_count
             i_joint += 1
 
             
         if self.write_data:
+            timestamp = time.time()
+
+            current_motor_pos.insert(0, timestamp)
+            delta_action_data = np.insert(delta_action, 0, timestamp)
+
             f = open(self.motor_pos_file, 'a')
             data_writer = csv.writer(f)
             data_writer.writerow(current_motor_pos)
             f.close()
 
-            f = open(self.eef_pos_file, 'a')
+            f = open(self.delta_action_file, 'a')
             data_writer = csv.writer(f)
-            data_writer.writerow(self.ee_pos)
+            data_writer.writerow(delta_action_data)
             f.close()
+
+            
 
             # motor_count = self.arm[i_joint].motor_count
             # self.arm[i_joint].update_goal_pos(delta_motor_pos[i_motor:i_motor+motor_count])
@@ -266,6 +279,18 @@ class GH360TEquilibriumPointController(Controller):
             else:
                 self.torques[self.arm[i_joint].id] = self.arm[i_joint].get_torques(self.joint_pos[i_joint],self.joint_vel[i_joint])
 
+
+        if self.write_data:
+            timestamp = time.time()
+
+            robot_state = np.concatenate((timestamp, self.joint_pos, self.ee_pos), axis=None)
+            # robot_state = [timestamp, self.joint_pos, self.ee_pos]
+            # robot_state = np.insert(robot_state, 0, timestamp)
+
+            f = open(self.joint_pos_file, 'a')
+            data_writer = csv.writer(f)
+            data_writer.writerow(robot_state)
+            f.close()
 
         # t = self.arm[0].get_torques(self.joint_pos[6])
         # # print(self.joint_pos)

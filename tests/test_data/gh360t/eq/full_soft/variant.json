@@ -12,7 +12,10 @@
     "eval_environment_kwargs": {
       "control_freq": 20,
       "controller": "GH360T_EQUILIBRIUM_POINT",
-      "variable_stiffness": false,
+      "controller_config": {
+        "variable_stiffness": false,
+        "soft": true
+      },
       "env_name": "DoorMirror",
       "grasp_check": true,
       "table_offset": [-0.35, 0.5, 0.75],

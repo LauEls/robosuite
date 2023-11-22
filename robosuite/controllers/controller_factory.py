@@ -183,6 +183,15 @@ def controller_factory(name, params):
     if name == "GH360T_EQUILIBRIUM_POINT":
         return GH360TEquilibriumPointController(interpolator=interpolator, **params)
     
+    if name == "GH360T_EQUILIBRIUM_POINT_SOFT":
+        params["variable_stiffness"] = False
+        return GH360TEquilibriumPointController(interpolator=interpolator, **params)
+    
+    if name == "GH360T_EQUILIBRIUM_POINT_FIXED":
+        params["variable_stiffness"] = False
+        params["soft"] = False
+        return GH360TEquilibriumPointController(interpolator=interpolator, **params)
+    
     if name == "GH360T_MOTOR_POSITION":
         return GH360TMotorPositionController(interpolator=interpolator, **params)
 

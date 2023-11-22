@@ -23,6 +23,8 @@ CONTROLLER_INFO = {
     "GH2_OSC_POSITION": "Operational Space Control (Position Only) for GH2 arm",
     "GH2_OSC_POSE":     "Operational Space Control (Position + Orientation) for GH2 arm",
     "GH360T_EQUILIBRIUM_POINT":     "Equilibrium Point Controller for GH360 arm",
+    "GH360T_EQUILIBRIUM_POINT_SOFT":     "Equilibrium Point Controller with no stiffness variation for GH360 arm",
+    "GH360T_EQUILIBRIUM_POINT_FIXED":     "Equilibrium Point Controller with a fixed stiffness value for GH360 arm",
     "GH360T_JOINT_POSITION":    "Joint Position Controller for GH360 arm",
     "GH360T_MOTOR_POSITION":    "Motor Position Controller for GH360 arm",
 }
