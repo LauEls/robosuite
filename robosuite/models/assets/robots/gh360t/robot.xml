@@ -163,7 +163,7 @@
                                     <site name="elbow_side_left_bot" pos="-35.3950E-03 -24.5363E-03 401.425E-03" />
 
                                     <body name="upperarm2" pos="0E-03 0E-03 0E-03">
-                                        <joint name="upperarm2_joint" type="hinge" axis="-1 0 0" pos="-11.345E-03 -54.883E-03 373.117E-03" limited="true" range="-0.4 2.2" />
+                                        <joint name="upperarm2_joint" type="hinge" axis="-1 0 0" pos="-11.345E-03 -54.883E-03 373.117E-03" limited="true" range="-0.1 2.2" />
                                         <geom name="upperarm2_vis" group="1" type="mesh" mesh="upperarm2_mesh"  pos="0 0 0" euler="0 0 0"/>
 
                                         <geom name="elbow_right_passive_pulley" group="4" type="cylinder" fromto="30.00E-03 -54.883E-03 373.117E-03 40.00E-03 -54.883E-03 373.117E-03" size="40E-03" rgba=".2 .2 .5 0.6" />
