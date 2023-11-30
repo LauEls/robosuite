@@ -128,7 +128,7 @@ class GH360TEquilibriumPointController(Controller):
         # self.wrist_pitch = SoftJoint()
         # self.arm.append(self.wrist_pitch)
         self.write_data = False
-        file_base_dir = '/home/laurenz/phd_project/sac/scripts/test_data/v5'
+        file_base_dir = '/home/laurenz/phd_project/sac/scripts/test_data/v6'
         self.motor_pos_file = os.path.join(file_base_dir, 'motor_pos.csv')
         self.delta_action_file = os.path.join(file_base_dir, 'delta_action.csv')
         self.joint_pos_file = os.path.join(file_base_dir, 'joint_pos.csv')
