@@ -381,30 +381,30 @@
         <position ctrllimited="true" ctrlrange="-1.5708 1.5708" gear="1" joint="lowerarm1_joint"/>
         <position ctrllimited="true" ctrlrange="-1.5708 1.5708" gear="1" joint="lowerarm2_joint"/> -->
 
-        <motor ctrllimited="true" ctrlrange="-10 10" name="motor_lowerarm_roll" joint="lowerarm1_joint" />
-        <motor name="motor_shoulder_yaw_right_top" tendon="tendon_shoulder_yaw_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_shoulder_yaw_right_bot" tendon="tendon_shoulder_yaw_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_shoulder_yaw_left_top" tendon="tendon_shoulder_yaw_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_shoulder_yaw_left_bot" tendon="tendon_shoulder_yaw_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_shoulder_roll_right_top" tendon="tendon_shoulder_roll_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_shoulder_roll_right_bot" tendon="tendon_shoulder_roll_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_shoulder_roll_left_top" tendon="tendon_shoulder_roll_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_shoulder_roll_left_bot" tendon="tendon_shoulder_roll_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_shoulder_pitch_right_top" tendon="tendon_shoulder_pitch_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_shoulder_pitch_right_bot" tendon="tendon_shoulder_pitch_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_shoulder_pitch_left_top" tendon="tendon_shoulder_pitch_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_shoulder_pitch_left_bot" tendon="tendon_shoulder_pitch_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_upperarm_roll_right_top" tendon="tendon_upperarm_roll_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_upperarm_roll_right_bot" tendon="tendon_upperarm_roll_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_upperarm_roll_left_top" tendon="tendon_upperarm_roll_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_upperarm_roll_left_bot" tendon="tendon_upperarm_roll_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_elbow_right_top" tendon="tendon_elbow_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_elbow_right_bot" tendon="tendon_elbow_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_elbow_left_top" tendon="tendon_elbow_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_elbow_left_bot" tendon="tendon_elbow_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_wrist_pitch_right_top" tendon="tendon_wrist_pitch_right_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_wrist_pitch_right_bot" tendon="tendon_wrist_pitch_right_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_wrist_pitch_left_top" tendon="tendon_wrist_pitch_left_top" ctrllimited="true" ctrlrange="0.0 350.0"/>
-        <motor name="motor_wrist_pitch_left_bot" tendon="tendon_wrist_pitch_left_bot" ctrllimited="true" ctrlrange="0.0 350.0"/>
+        <motor ctrllimited="true" ctrlrange="-2.59 2.59" name="motor_lowerarm_roll" joint="lowerarm1_joint" />
+        <motor name="motor_shoulder_yaw_right_top" tendon="tendon_shoulder_yaw_right_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_shoulder_yaw_right_bot" tendon="tendon_shoulder_yaw_right_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_shoulder_yaw_left_top" tendon="tendon_shoulder_yaw_left_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_shoulder_yaw_left_bot" tendon="tendon_shoulder_yaw_left_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_shoulder_roll_right_top" tendon="tendon_shoulder_roll_right_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_shoulder_roll_right_bot" tendon="tendon_shoulder_roll_right_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_shoulder_roll_left_top" tendon="tendon_shoulder_roll_left_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_shoulder_roll_left_bot" tendon="tendon_shoulder_roll_left_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_shoulder_pitch_right_top" tendon="tendon_shoulder_pitch_right_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_shoulder_pitch_right_bot" tendon="tendon_shoulder_pitch_right_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_shoulder_pitch_left_top" tendon="tendon_shoulder_pitch_left_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_shoulder_pitch_left_bot" tendon="tendon_shoulder_pitch_left_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
+        <motor name="motor_upperarm_roll_right_top" tendon="tendon_upperarm_roll_right_top" ctrllimited="true" ctrlrange="0.0 360.2564"/>
+        <motor name="motor_upperarm_roll_right_bot" tendon="tendon_upperarm_roll_right_bot" ctrllimited="true" ctrlrange="0.0 360.2564"/>
+        <motor name="motor_upperarm_roll_left_top" tendon="tendon_upperarm_roll_left_top" ctrllimited="true" ctrlrange="0.0 360.2564"/>
+        <motor name="motor_upperarm_roll_left_bot" tendon="tendon_upperarm_roll_left_bot" ctrllimited="true" ctrlrange="0.0 360.2564"/>
+        <motor name="motor_elbow_right_top" tendon="tendon_elbow_right_top" ctrllimited="true" ctrlrange="0.0 360.2564"/>
+        <motor name="motor_elbow_right_bot" tendon="tendon_elbow_right_bot" ctrllimited="true" ctrlrange="0.0 360.2564"/>
+        <motor name="motor_elbow_left_top" tendon="tendon_elbow_left_top" ctrllimited="true" ctrlrange="0.0 360.2564"/>
+        <motor name="motor_elbow_left_bot" tendon="tendon_elbow_left_bot" ctrllimited="true" ctrlrange="0.0 360.2564"/>
+        <motor name="motor_wrist_pitch_right_top" tendon="tendon_wrist_pitch_right_top" ctrllimited="true" ctrlrange="0.0 184.6154"/>
+        <motor name="motor_wrist_pitch_right_bot" tendon="tendon_wrist_pitch_right_bot" ctrllimited="true" ctrlrange="0.0 184.6154"/>
+        <motor name="motor_wrist_pitch_left_top" tendon="tendon_wrist_pitch_left_top" ctrllimited="true" ctrlrange="0.0 184.6154"/>
+        <motor name="motor_wrist_pitch_left_bot" tendon="tendon_wrist_pitch_left_bot" ctrllimited="true" ctrlrange="0.0 184.6154"/>
     </actuator>
 </mujoco>

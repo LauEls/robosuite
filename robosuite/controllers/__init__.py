@@ -17,6 +17,7 @@ CONTROLLER_INFO = {
     "JOINT_POSITION": "Joint Position",
     "OSC_POSITION": "Operational Space Control (Position Only)",
     "OSC_POSE": "Operational Space Control (Position + Orientation)",
+    "OSC_POSE_VI": "Operational Space Control (Position + Orientation) with variable impedance",
     "IK_POSE": "Inverse Kinematics Control (Position + Orientation) (Note: must have PyBullet installed)",
     "GH2_JOINT_POSITION": "Joint Position Controller for GH2 arm",
     "GH2_JOINT_TORQUE": "Joint Torque Controller for GH2 arm",
