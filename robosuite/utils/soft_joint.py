@@ -98,6 +98,9 @@ class SoftJoint(Joint):
     #     self.motor_pos_right += delta_motor_pos_right
 
     #     return [self.current_left_positive_length, self.current_left_negative_length, self.current_right_positive_length, self.current_right_negative_length]
+        
+    def get_motor_positions(self):
+        return [self.motor_pos_right, self.motor_pos_left]
 
     def update_goal_pos(self, delta_motor_pos):
         # if delta_motor_pos[0] > delta_motor_pos[1]:

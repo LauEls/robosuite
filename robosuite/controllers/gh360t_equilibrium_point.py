@@ -224,10 +224,10 @@ class GH360TEquilibriumPointController(Controller):
             data_writer.writerow(current_motor_pos)
             f.close()
 
-            f = open(self.delta_action_file, 'a')
-            data_writer = csv.writer(f)
-            data_writer.writerow(delta_action_data)
-            f.close()
+            # f = open(self.delta_action_file, 'a')
+            # data_writer = csv.writer(f)
+            # data_writer.writerow(delta_action_data)
+            # f.close()
 
             
 
@@ -283,7 +283,7 @@ class GH360TEquilibriumPointController(Controller):
         if self.write_data:
             timestamp = time.time()
 
-            robot_state = np.concatenate((timestamp, self.joint_pos, self.ee_pos), axis=None)
+            robot_state = np.concatenate((timestamp, self.joint_pos, self.ee_pos, self.torques), axis=None)
             # robot_state = [timestamp, self.joint_pos, self.ee_pos]
             # robot_state = np.insert(robot_state, 0, timestamp)
 

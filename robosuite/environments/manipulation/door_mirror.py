@@ -339,6 +339,9 @@ class DoorMirror(SingleArmEnv):
                 # self.current_stiffness[current_iter[i]] + action[delta_iter[i]]
         # print(self.sim.data.qfrc_actuator)
         # print(self.sim.data.)
+        print("GH360 base pos: "+str(np.array(self.sim.data.site_xpos[self.sim.model.site_name2id("robot0_gh360_base")])))
+        print("GH360 EEF pos"+str(self._eef_xpos))
+        print("Door Handle pos: "+str(self._handle_xpos))
         # print(reward)
         return reward
 
@@ -500,6 +503,8 @@ class DoorMirror(SingleArmEnv):
         Resets simulation internal configurations.
         """
         super()._reset_internal()
+
+        
 
         # Reset all object positions using initializer sampler if we're not directly loading from an xml
         if not self.deterministic_reset:

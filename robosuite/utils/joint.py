@@ -15,3 +15,7 @@ class Joint:
     @abstractmethod
     def update_goal_pos(self):
         pass
+
+    @abstractmethod
+    def get_motor_positions(self):
+        pass

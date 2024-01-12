@@ -36,6 +36,9 @@ class MotorJoint(Joint):
         elif self.goal_motor_pos < self.motor_min_pos:
             self.goal_motor_pos = self.motor_min_pos
 
+    def get_motor_positions(self):
+        return self.goal_motor_pos
+
     def get_torques(self, current_joint_pos, current_joint_vel, gravity_compensation=0):
         torque = 0
 
