@@ -325,9 +325,9 @@ class DoorMirror(SingleArmEnv):
                         percent = force / self.max_force_motor
                 else:
                     percent = force / self.max_force
-                    
+
                 reward -= force_punishment_scale * percent
-                print(force)
+                # print(force)
 
         if self.stiffness_punishment:
             delta_action = np.clip(action, -1, 1)
