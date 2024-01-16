@@ -234,8 +234,10 @@ class DoorMirror(SingleArmEnv):
 
             self.min_force = 0
             self.max_force = 769.230769231
-            self.min_force_motor = -12
-            self.max_force_motor = 12
+            # self.min_force_motor = -12
+            # self.max_force_motor = 12
+            self.min_force_motor = -20
+            self.max_force_motor = 20
             # self.max_force = 350
 
             print("Min Force: ",self.min_force,", Max Force: ", self.max_force)
@@ -270,7 +272,7 @@ class DoorMirror(SingleArmEnv):
         """
         
         reward = 0.0
-        force_punishment_scale = 0.05
+        force_punishment_scale = 0.01
         stiffness_punishment_scale = 0.1
         # print("action = ",action)
 
@@ -318,13 +320,18 @@ class DoorMirror(SingleArmEnv):
             for joint in range(len(self.sim.data.qfrc_actuator)): #can maybe also use self.sim.data.ctrl, self.sim.data.actuator_force
                 force = self.sim.data.qfrc_actuator[joint]
                 percent = 0
-                if joint == 0:
-                    if force < 0:
-                        percent = abs(force) / abs(self.min_force_motor)
-                    elif force > 0:
-                        percent = force / self.max_force_motor
-                else:
-                    percent = force / self.max_force
+                # if joint == 0:
+                #     if force < 0:
+                #         percent = abs(force) / abs(self.min_force_motor)
+                #     elif force > 0:
+                #         percent = force / self.max_force_motor
+                # else:
+                #     percent = force / self.max_force
+
+                if force < 0:
+                    percent = abs(force) / abs(self.min_force_motor)
+                elif force > 0:
+                    percent = force / self.max_force_motor
 
                 reward -= force_punishment_scale * percent
                 # print(force)
