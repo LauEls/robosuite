@@ -178,7 +178,7 @@ class OperationalSpaceController(Controller):
         elif self.impedance_mode == "variable_kp":
             self.control_dim += 6
 
-        print("Control dimensions: "+str(self.control_dim))
+        # print("Control dimensions: "+str(self.control_dim))
 
         # limits
         self.position_limits = np.array(position_limits) if position_limits is not None else position_limits

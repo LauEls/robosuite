@@ -148,8 +148,8 @@ class JointPositionController(Controller):
         elif self.impedance_mode == "variable_kp":
             self.control_dim *= 2
 
-        print("Control dimensions: "+str(self.control_dim))
-        
+        # print("Control dimensions: "+str(self.control_dim))
+
         # control frequency
         self.control_freq = policy_freq
 
