@@ -129,12 +129,12 @@
     </worldbody>
 
     <actuator>
-        <motor ctrllimited="true" ctrlrange="-20 20" name="shoulder1_motor" joint="shoulder1_joint" />
-        <motor ctrllimited="true" ctrlrange="-50 50" name="shoulder2_motor" joint="shoulder2_joint" />
-        <motor ctrllimited="true" ctrlrange="-50 50" name="shoulder3_motor" joint="shoulder3_joint" />
-        <motor ctrllimited="true" ctrlrange="-50 50" name="upperarm1_motor" joint="upperarm1_joint" />
-        <motor ctrllimited="true" ctrlrange="-50 50" name="upperarm2_motor" joint="upperarm2_joint" />
-        <motor ctrllimited="true" ctrlrange="-12 12" name="lowerarm1_motor" joint="lowerarm1_joint" />
+        <motor ctrllimited="true" ctrlrange="-47 47" name="shoulder1_motor" joint="shoulder1_joint" />
+        <motor ctrllimited="true" ctrlrange="-32 32" name="shoulder2_motor" joint="shoulder2_joint" />
+        <motor ctrllimited="true" ctrlrange="-32 32" name="shoulder3_motor" joint="shoulder3_joint" />
+        <motor ctrllimited="true" ctrlrange="-31 31" name="upperarm1_motor" joint="upperarm1_joint" />
+        <motor ctrllimited="true" ctrlrange="-29 29" name="upperarm2_motor" joint="upperarm2_joint" />
+        <motor ctrllimited="true" ctrlrange="-3 3" name="lowerarm1_motor" joint="lowerarm1_joint" />
         <motor ctrllimited="true" ctrlrange="-12 12" name="lowerarm2_motor" joint="lowerarm2_joint" />
 
     </actuator>

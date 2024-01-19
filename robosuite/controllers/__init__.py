@@ -15,6 +15,7 @@ CONTROLLER_INFO = {
     "JOINT_VELOCITY": "Joint Velocity",
     "JOINT_TORQUE": "Joint Torque",
     "JOINT_POSITION": "Joint Position",
+    "JOINT_POSITION_VI": "Joint Position with variable impedance",
     "OSC_POSITION": "Operational Space Control (Position Only)",
     "OSC_POSE": "Operational Space Control (Position + Orientation)",
     "OSC_POSE_VI": "Operational Space Control (Position + Orientation) with variable impedance",

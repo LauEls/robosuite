@@ -141,6 +141,7 @@ def controller_factory(name, params):
             ori_interpolator = deepcopy(interpolator)
             ori_interpolator.set_states(ori="euler")
         params["control_ori"] = True
+        params["impedance_mode"] = "variable_kp"
         return OperationalSpaceController(interpolator_pos=interpolator, interpolator_ori=ori_interpolator, **params)
 
     if name == "OSC_POSITION":
@@ -176,7 +177,11 @@ def controller_factory(name, params):
 
     if name == "JOINT_POSITION":
         return JointPositionController(interpolator=interpolator, **params)
-
+    
+    if name == "JOINT_POSITION_VI":
+        params["impedance_mode"] = "variable_kp"
+        return JointPositionController(interpolator=interpolator, **params)
+        
     if name == "JOINT_TORQUE":
         return JointTorqueController(interpolator=interpolator, **params)
     
