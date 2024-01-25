@@ -27,8 +27,7 @@ class GH360TEquilibriumPointController(Controller):
                  joints = None,
                  tendon_model_file = None,
                  motor_max_pos = 31.42,
-                 variable_stiffness = True,
-                 soft = True, # if variable_stiffness is False, this will swap between the robot joints have no stiffness and having a fixed stiffness
+                 stiffness_mode = "variable", # if variable_stiffness is False, this will swap between the robot joints have no stiffness and having a fixed stiffness
                  **kwargs  # does nothing; used so no error raised when dict is passed with extra terms used previously
                  ):
 
@@ -40,7 +39,12 @@ class GH360TEquilibriumPointController(Controller):
         )
 
         # Control dimension
-        self.control_dim = 13#MAYBE READ THAT OUT OF A CONFIG FILE -> should be 13 at the end
+        self.stiffness_mode = stiffness_mode
+
+        if self.stiffness_mode == "variable":
+            self.control_dim = 13#MAYBE READ THAT OUT OF A CONFIG FILE -> should be 13 at the end
+        elif self.stiffness_mode == "fixed" or self.stiffness_mode == "no_stiffness":
+            self.control_dim = 7
         # print("control dimensions: ",self.control_dim)
 
         # input and output max and min (allow for either explicit lists or single numbers)
@@ -54,8 +58,8 @@ class GH360TEquilibriumPointController(Controller):
         self.force_limits = np.array(force_limits) #SHOULD COME FROM CONFIG FILE
         self.current_stiffness = np.zeros(6)
         self.min_stiffness = 0.0
-        self.variable_stiffness = variable_stiffness
-        self.soft = soft
+        # self.variable_stiffness = variable_stiffness
+        # self.soft = soft
 
         # if self.variable_stiffness:
         #     print("Equilibrium Point Controller with Variable Stiffness")
@@ -88,9 +92,9 @@ class GH360TEquilibriumPointController(Controller):
             # print(joint_name)
             # print(variant["motor_init_pos"])
             if variant["actuators"] == 4:
-                if self.soft:
+                if self.stiffness_mode == "no_stiffness" or self.stiffness_mode == "variable":
                     joint_fixed_stiffness = 0.0
-                else:
+                elif self.stiffness_mode == "fixed":
                     joint_fixed_stiffness = variant["fixed_stiffness"]
 
                 self.arm.append(SoftJoint(
@@ -103,7 +107,7 @@ class GH360TEquilibriumPointController(Controller):
                     file_name=tendon_model_file,
                     motor_init_pos=variant["motor_init_pos"],
                     fixed_stiffness=joint_fixed_stiffness,
-                    fixed_stiffness_switch=not self.variable_stiffness
+                    # fixed_stiffness_switch=not self.variable_stiffness
                 ))
             elif variant["actuators"] == 1:
                 self.arm.append(MotorJoint(
@@ -176,11 +180,15 @@ class GH360TEquilibriumPointController(Controller):
             motor_count = self.arm[i_joint].motor_count
             if motor_count == 2:
                 delta_eq_point = delta_action[i_motor]
-                delta_stiffness = delta_action[i_motor+1]
-                if self.variable_stiffness:
-                    delta_motor_pos = [delta_eq_point+delta_stiffness, delta_eq_point-delta_stiffness]
-                else:
-                    delta_motor_pos = [delta_eq_point, delta_eq_point]
+                if self.stiffness_mode == "variable":
+                    delta_stiffness = delta_action[i_motor+1]
+                else: 
+                    delta_stiffness = 0
+
+                # if self.variable_stiffness:
+                delta_motor_pos = [delta_eq_point+delta_stiffness, delta_eq_point-delta_stiffness]
+                # else:   
+                    # delta_motor_pos = [delta_eq_point, delta_eq_point]
                 # elif self.soft:
                 #     delta_motor_pos = [delta_eq_point, delta_eq_point]
                 # else:

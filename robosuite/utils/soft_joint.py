@@ -16,7 +16,6 @@ class SoftJoint(Joint):
         joint_name,
         file_name,
         motor_init_pos = 0,
-        fixed_stiffness_switch = False,
         fixed_stiffness = 0,
         motor_model = "MX-106",
         # config_file,
@@ -51,7 +50,7 @@ class SoftJoint(Joint):
         self.left_max_tendon = False
         self.left_min_tendon = False
         self.fixed_stiffness = fixed_stiffness
-        self.fixed_stiffness_switch = fixed_stiffness_switch
+        # self.fixed_stiffness_switch = fixed_stiffness_switch
         self.motor_model = motor_model
 
         self.motor_pos_left = 0
@@ -64,10 +63,10 @@ class SoftJoint(Joint):
         self.current_joint_pos = 0
         self.current_stiffness = 0
 
-        if self.fixed_stiffness_switch:
-            self.update_goal_pos([motor_init_pos+self.fixed_stiffness, motor_init_pos-self.fixed_stiffness])
-        else:
-            self.update_goal_pos([motor_init_pos, motor_init_pos])
+        # if self.fixed_stiffness_switch:
+        self.update_goal_pos([motor_init_pos+self.fixed_stiffness, motor_init_pos-self.fixed_stiffness])
+        # else:
+        #     self.update_goal_pos([motor_init_pos, motor_init_pos])
 
 
         if motor_model == "MX-64":
@@ -154,33 +153,33 @@ class SoftJoint(Joint):
                 delta_left = delta_motor_pos[1]
 
         
-        if self.fixed_stiffness_switch and delta_right != delta_left and self.current_stiffness != 0.0:
-            if right_limit and left_limit:
-                print("This shouldn't happen?")
-            elif right_limit:
-                adj = self.fixed_stiffness*2 - (self.motor_pos_right - self.motor_pos_left)
-                delta_left -= adj
-                self.motor_pos_left -= adj
-                # print("right limit triggered")
-            elif left_limit:
-                adj = self.fixed_stiffness*2 - (self.motor_pos_right - self.motor_pos_left)
-                delta_right += adj
-                self.motor_pos_right += adj
-                # print("left limit triggered")
+        # if self.fixed_stiffness_switch and delta_right != delta_left and self.current_stiffness != 0.0:
+        #     if right_limit and left_limit:
+        #         print("This shouldn't happen?")
+        #     elif right_limit:
+        #         adj = self.fixed_stiffness*2 - (self.motor_pos_right - self.motor_pos_left)
+        #         delta_left -= adj
+        #         self.motor_pos_left -= adj
+        #         # print("right limit triggered")
+        #     elif left_limit:
+        #         adj = self.fixed_stiffness*2 - (self.motor_pos_right - self.motor_pos_left)
+        #         delta_right += adj
+        #         self.motor_pos_right += adj
+        #         # print("left limit triggered")
     
-        if delta_right < delta_left:
-            neg_delta_stiffness = (delta_left - delta_right)/2
-            if self.current_stiffness - neg_delta_stiffness < 0.0:
-                new_neg_delta_stiffness = abs(self.current_stiffness - neg_delta_stiffness)
-                self.current_stiffness = 0.0
-                delta_right += new_neg_delta_stiffness
-                delta_left -= new_neg_delta_stiffness
-                self.motor_pos_right += new_neg_delta_stiffness
-                self.motor_pos_left -= new_neg_delta_stiffness
-            else:
-                self.current_stiffness -= neg_delta_stiffness
-        else:
-            self.current_stiffness += (delta_right - delta_left)/2
+        # if delta_right < delta_left:
+        #     neg_delta_stiffness = (delta_left - delta_right)/2
+        #     if self.current_stiffness - neg_delta_stiffness < 0.0:
+        #         new_neg_delta_stiffness = abs(self.current_stiffness - neg_delta_stiffness)
+        #         self.current_stiffness = 0.0
+        #         delta_right += new_neg_delta_stiffness
+        #         delta_left -= new_neg_delta_stiffness
+        #         self.motor_pos_right += new_neg_delta_stiffness
+        #         self.motor_pos_left -= new_neg_delta_stiffness
+        #     else:
+        #         self.current_stiffness -= neg_delta_stiffness
+        # else:
+        #     self.current_stiffness += (delta_right - delta_left)/2
         
         # print("Current_Stiffness: ", self.current_stiffness)
 

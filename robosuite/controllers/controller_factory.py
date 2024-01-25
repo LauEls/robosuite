@@ -195,16 +195,19 @@ def controller_factory(name, params):
         return GH2JointTorqueController(interpolator=interpolator, **params)
 
     if name == "GH360T_EQUILIBRIUM_POINT":
-        return GH360TEquilibriumPointController(interpolator=interpolator, **params)
+        stiffness_mode = "variable"
+        return GH360TEquilibriumPointController(interpolator=interpolator, stiffness_mode=stiffness_mode, **params)
     
     if name == "GH360T_EQUILIBRIUM_POINT_SOFT":
-        params["variable_stiffness"] = False
-        return GH360TEquilibriumPointController(interpolator=interpolator, **params)
+        # params["variable_stiffness"] = False
+        stiffness_mode = "no_stiffness"
+        return GH360TEquilibriumPointController(interpolator=interpolator, stiffness_mode=stiffness_mode, **params)
     
     if name == "GH360T_EQUILIBRIUM_POINT_FIXED":
-        params["variable_stiffness"] = False
-        params["soft"] = False
-        return GH360TEquilibriumPointController(interpolator=interpolator, **params)
+        # params["variable_stiffness"] = False
+        # params["soft"] = False
+        stiffness_mode = "fixed"
+        return GH360TEquilibriumPointController(interpolator=interpolator, stiffness_mode=stiffness_mode, **params)
     
     if name == "GH360T_MOTOR_POSITION":
         return GH360TMotorPositionController(interpolator=interpolator, **params)
