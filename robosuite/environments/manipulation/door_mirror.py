@@ -220,9 +220,9 @@ class DoorMirror(SingleArmEnv):
             renderer_config=renderer_config,
         )
 
-        if self.force_punishment:
-            print("Actuator Control Range: ")
-            print(self.sim.model.actuator_ctrlrange)
+        # if self.force_punishment:
+            # print("Actuator Control Range: ")
+            # print(self.sim.model.actuator_ctrlrange)
             # self.min_force = self.sim.model.actuator_ctrlrange[0][0]
             # self.max_force = self.sim.model.actuator_ctrlrange[0][1]
             # for force_limit in self.sim.model.actuator_ctrlrange:
@@ -232,15 +232,15 @@ class DoorMirror(SingleArmEnv):
             #         self.max_force = force_limit[1]
 
 
-            self.min_force = 0
-            self.max_force = 769.230769231
-            # self.min_force_motor = -12
-            # self.max_force_motor = 12
-            self.min_force_motor = -20
-            self.max_force_motor = 20
+            # self.min_force = 0
+            # self.max_force = 769.230769231
+            # # self.min_force_motor = -12
+            # # self.max_force_motor = 12
+            # self.min_force_motor = -20
+            # self.max_force_motor = 20
             # self.max_force = 350
 
-            print("Min Force: ",self.min_force,", Max Force: ", self.max_force)
+            # print("Min Force: ",self.min_force,", Max Force: ", self.max_force)
 
   
 
@@ -272,7 +272,7 @@ class DoorMirror(SingleArmEnv):
         """
         
         reward = 0.0
-        force_punishment_scale = 0.01
+        force_punishment_scale = 0.1
         stiffness_punishment_scale = 0.1
         # print("action = ",action)
 
@@ -317,8 +317,17 @@ class DoorMirror(SingleArmEnv):
                     break
 
         if self.force_punishment:
-            for joint in range(len(self.sim.data.qfrc_actuator)): #can maybe also use self.sim.data.ctrl, self.sim.data.actuator_force
-                force = self.sim.data.qfrc_actuator[joint]
+            # print("Actuators: "+str(self.sim.data.qfrc_actuator))
+            # print("Actuators: "+str(self.sim.data.ctrl))
+            # print("Actuators: "+str(self.sim.data.actuator_force))
+            percent = 0
+            n_actuators = len(self.sim.data.ctrl)
+            for actuator in range(n_actuators): #can maybe also use self.sim.data.ctrl, self.sim.data.actuator_force
+                # print("actuator min/max: "+str(self.sim.model.actuator_ctrlrange[actuator]))
+                min_force = self.sim.model.actuator_ctrlrange[actuator][0]
+                max_force = self.sim.model.actuator_ctrlrange[actuator][1]
+                force = self.sim.data.ctrl[actuator]
+                # force = self.sim.data.qfrc_actuator[joint]
                 percent = 0
                 # if joint == 0:
                 #     if force < 0:
@@ -329,11 +338,12 @@ class DoorMirror(SingleArmEnv):
                 #     percent = force / self.max_force
 
                 if force < 0:
-                    percent = abs(force) / abs(self.min_force_motor)
+                    percent += abs(force) / abs(min_force)
                 elif force > 0:
-                    percent = force / self.max_force_motor
+                    percent += force / max_force
 
-                reward -= force_punishment_scale * percent
+            percent = percent/n_actuators   
+            reward -= force_punishment_scale * percent
                 # print(force)
 
         if self.stiffness_punishment:
@@ -510,7 +520,7 @@ class DoorMirror(SingleArmEnv):
                 if key == list_item:
                     value.set_active(True)
 
-        # print(observables)
+        #print("observables: "+str(observables))
 
         return observables
 
