@@ -10,6 +10,7 @@ from robosuite.utils.binding_utils import MjSim
 from robosuite.utils.buffers import DeltaBuffer
 from robosuite.utils.observables import Observable, sensor
 
+from robosuite.controllers.gh360t_equilibrium_point import GH360TEquilibriumPointController
 
 class Robot(object):
     """
@@ -197,11 +198,21 @@ class Robot(object):
         @sensor(modality=modality)
         def joint_vel(obs_cache):
             return np.array([self.sim.data.qvel[x] for x in self._ref_joint_vel_indexes])
-
+        
         sensors = [joint_pos, joint_pos_cos, joint_pos_sin, joint_vel]
         names = ["joint_pos", "joint_pos_cos", "joint_pos_sin", "joint_vel"]
         # We don't want to include the direct joint pos sensor outputs
         actives = [True, True, True, True]
+
+        if type(self.controller) == GH360TEquilibriumPointController:
+            @sensor(modality=modality)
+            def motor_pos(obs_cache):
+                return np.array(self.controller.get_motor_pos())
+
+            sensors.append(motor_pos)
+            names.append("motor_pos")
+            # We don't want to include the direct joint pos sensor outputs
+            actives.append(True)
 
         # Create observables for this robot
         observables = OrderedDict()

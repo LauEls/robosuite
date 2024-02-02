@@ -11,6 +11,8 @@ from robosuite.utils.observables import Observable, sensor
 
 import robosuite.macros as macros
 
+from robosuite.controllers.gh360t_equilibrium_point import GH360TEquilibriumPointController
+
 
 class DoorMirror(SingleArmEnv):
     """
@@ -219,28 +221,6 @@ class DoorMirror(SingleArmEnv):
             renderer=renderer,
             renderer_config=renderer_config,
         )
-
-        # if self.force_punishment:
-            # print("Actuator Control Range: ")
-            # print(self.sim.model.actuator_ctrlrange)
-            # self.min_force = self.sim.model.actuator_ctrlrange[0][0]
-            # self.max_force = self.sim.model.actuator_ctrlrange[0][1]
-            # for force_limit in self.sim.model.actuator_ctrlrange:
-            #     if force_limit[0] < self.min_force:
-            #         self.min_force = force_limit[0] 
-            #     if force_limit[1] > self.max_force:
-            #         self.max_force = force_limit[1]
-
-
-            # self.min_force = 0
-            # self.max_force = 769.230769231
-            # # self.min_force_motor = -12
-            # # self.max_force_motor = 12
-            # self.min_force_motor = -20
-            # self.max_force_motor = 20
-            # self.max_force = 350
-
-            # print("Min Force: ",self.min_force,", Max Force: ", self.max_force)
 
   
 
@@ -463,6 +443,7 @@ class DoorMirror(SingleArmEnv):
         """
         observables = super()._setup_observables()
 
+
         # low-level object information
         if self.use_object_obs:
             # Get robot prefix and define observables modality
@@ -511,7 +492,10 @@ class DoorMirror(SingleArmEnv):
                     sampling_rate=self.control_freq,
                 )
 
-        observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+        if type(self.robots[0].controller) == GH360TEquilibriumPointController:
+            observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}motor_pos", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+        else:
+            observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
         # macros.CONCATENATE_ROBOT_STATE = False
 
         for key, value in observables.items():
