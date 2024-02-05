@@ -16,8 +16,9 @@ class Tendon:
         file_name,
         tendon_max_force = 290.0,
         id = 0, #TODO-ADD ACTUATOR ID'S TO EACH TENDON
+        tendon_noise = True
     ):
-
+        self.tendon_noise = tendon_noise
         self.l_free = l_free
         self.r_active = r_active
         self.r_passive = r_passive
@@ -64,12 +65,17 @@ class Tendon:
         # if self.id > 20 and self.id < 25:
         #     print(self.id,": ",self.alpha_active)
         strain = (l_total-self.l_relaxed)/self.l_relaxed*100
+
+        if self.tendon_noise:
+            strain += np.random.uniform(low=-0.1, high=0.1)
+
         #print("Strain: ", strain)
 
         difference_array = np.absolute(self.tendon_model[:,1]-strain)
         index = difference_array.argmin()
 
-        f_tendon = self.tendon_model[index,0]
+        f_tendon = self.tendon_model[index,0] 
+        #f_tendon += np.random.uniform(low=-f_tendon*0.1, high=f_tendon*0.1)
         # if self.id > 4 and self.id < 9:
         #     print("Force: ",f_tendon)
         
