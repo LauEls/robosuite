@@ -138,6 +138,7 @@ class Controller(object, metaclass=abc.ABCMeta):
         if self.new_update or force:
             self.sim.forward()
 
+            #print("Base pos: "+str(np.array(self.sim.data.site_xpos[self.sim.model.site_name2id("robot0_gh360_base")])))
             self.ee_pos = np.array(self.sim.data.site_xpos[self.sim.model.site_name2id(self.eef_name)])
             self.ee_ori_mat = np.array(
                 self.sim.data.site_xmat[self.sim.model.site_name2id(self.eef_name)].reshape([3, 3])
