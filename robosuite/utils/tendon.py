@@ -16,7 +16,7 @@ class Tendon:
         file_name,
         tendon_max_force = 290.0,
         id = 0, #TODO-ADD ACTUATOR ID'S TO EACH TENDON
-        tendon_noise = True
+        tendon_noise = False
     ):
         self.tendon_noise = tendon_noise
         self.l_free = l_free
@@ -67,6 +67,7 @@ class Tendon:
         strain = (l_total-self.l_relaxed)/self.l_relaxed*100
 
         if self.tendon_noise:
+            print("tendon noise is true")
             strain += np.random.uniform(low=-0.1, high=0.1)
 
         #print("Strain: ", strain)

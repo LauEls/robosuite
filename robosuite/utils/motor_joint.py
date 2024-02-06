@@ -19,6 +19,7 @@ class MotorJoint(Joint):
         id=100,
         motor_init_pos = 0,
     ):
+        self.joint_name = joint_name
         self.goal_motor_pos = motor_init_pos
 
         self.kp = kp

@@ -145,6 +145,7 @@ class DoorMirror(SingleArmEnv):
         action_punishment=False,
         force_punishment=False,
         stiffness_punishment=False,
+        motor_obs = False,
         grasp_check=False,
         use_camera_obs=True,
         use_object_obs=True,
@@ -184,6 +185,7 @@ class DoorMirror(SingleArmEnv):
         self.stiffness_punishment = stiffness_punishment
         self.current_stiffness = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         self.grasp_check = grasp_check
+        self.motor_obs = motor_obs
         # reward configuration
         self.use_latch = use_latch
         self.reward_scale = reward_scale
@@ -395,13 +397,13 @@ class DoorMirror(SingleArmEnv):
             self.placement_initializer = UniformRandomSampler(
                     name="ObjectSampler",
                     mujoco_objects=self.door,
-                    x_range=[-0.07, -0.09],
-                    #y_range=[-0.0, 0.0],
-                    #x_range=[-0.0, -0.0],
-                    y_range=[-0.05, 0.05],
+                    x_range=[-0.01, 0.01],
+                    #y_range=[-0.01, 0.01],
+                    #x_range=[-0.07, -0.09],
+                    y_range=[-0.01, 0.01],
                     #rotation=(-np.pi / 2. - 0.25, -np.pi / 2.),
                     #rotation=(np.pi / 2., np.pi / 2. + 0.25),
-                    rotation=(np.pi / 2. -0.125, np.pi / 2. + 0.125),
+                    rotation=(np.pi / 2. -0.1, np.pi / 2. + 0.1),
                     #rotation=(np.pi / 2, np.pi / 2),
                     rotation_axis='z',
                     ensure_object_boundary_in_range=False,
@@ -492,11 +494,11 @@ class DoorMirror(SingleArmEnv):
                     sampling_rate=self.control_freq,
                 )
 
-        # if type(self.robots[0].controller) == GH360TEquilibriumPointController:
-        #     observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}motor_pos", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
-        # else:
-        #     observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
-        observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+        if self.motor_obs:
+            observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}motor_pos", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+        else:
+            observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+        # observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
         # macros.CONCATENATE_ROBOT_STATE = False
 
         for key, value in observables.items():

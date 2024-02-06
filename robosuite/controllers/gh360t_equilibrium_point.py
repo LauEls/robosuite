@@ -8,6 +8,7 @@ from robosuite.utils.soft_joint import SoftJoint
 from robosuite.utils.mjcf_utils import xml_path_completion
 import csv
 import time
+import copy
 
 
 class GH360TEquilibriumPointController(Controller):
@@ -28,6 +29,8 @@ class GH360TEquilibriumPointController(Controller):
                  tendon_model_file = None,
                  motor_max_pos = 31.42,
                  stiffness_mode = "variable", # if variable_stiffness is False, this will swap between the robot joints have no stiffness and having a fixed stiffness
+                 tendon_noise = False,
+                 motor_move_sim = False,
                  **kwargs  # does nothing; used so no error raised when dict is passed with extra terms used previously
                  ):
 
@@ -80,6 +83,7 @@ class GH360TEquilibriumPointController(Controller):
         self.torques = None                               # Torques returned every time run_controller is called
         
         # filepath = os.path.join(os.path.dirname(__file__), "config/gh360t.json")
+        self.motor_count = 0
         self.arm = []
         for joint_name in joints:
             filepath = os.path.join(os.path.dirname(__file__), "config/gh360/"+joint_name+".json")
@@ -89,14 +93,14 @@ class GH360TEquilibriumPointController(Controller):
             except FileNotFoundError:
                 print("Error opening default controller filepath at: {}. "
                     "Please check filepath and try again.".format(filepath))
-            # print(joint_name)
+            #print(joint_name)
             # print(variant["motor_init_pos"])
             if variant["actuators"] == 4:
                 if self.stiffness_mode == "no_stiffness" or self.stiffness_mode == "variable":
                     joint_fixed_stiffness = 0.0
                 elif self.stiffness_mode == "fixed":
                     joint_fixed_stiffness = variant["fixed_stiffness"]
-
+                self.motor_count += 2
                 self.arm.append(SoftJoint(
                     joint_name=joint_name,
                     motor_max_pos=motor_max_pos,
@@ -107,9 +111,12 @@ class GH360TEquilibriumPointController(Controller):
                     file_name=tendon_model_file,
                     motor_init_pos=variant["motor_init_pos"],
                     fixed_stiffness=joint_fixed_stiffness,
+                    tendon_noise=tendon_noise,
+                    motor_move_sim=motor_move_sim,
                     # fixed_stiffness_switch=not self.variable_stiffness
                 ))
             elif variant["actuators"] == 1:
+                self.motor_count += 1
                 self.arm.append(MotorJoint(
                     joint_name=joint_name,
                     id=variant["id"],
@@ -142,6 +149,8 @@ class GH360TEquilibriumPointController(Controller):
         # data_writer.writerow(["rewards"])
         # f.close()
 
+        self.last_time = 0.0
+
     def get_motor_pos(self):
         motor_pos = []
         for joint in self.arm:
@@ -161,8 +170,17 @@ class GH360TEquilibriumPointController(Controller):
         Raises:
             AssertionError: [Invalid action dimension size]
         """
+        # if self.last_time == 0.0:
+        #     self.last_time = time.time()
+        # else:
+        #     new_time = time.time()
+        #     time_step = new_time - self.last_time
+        #     print("control frequency: ", time_step)
+        #     self.last_time = copy.copy(new_time)
+        
         # Update state
         self.update()
+
 
         # Check to make sure motor_pos is size self.joint_dim
         assert len(delta_action) == self.control_dim, "Delta torque must be equal to the robot's joint dimension space!"
@@ -184,11 +202,13 @@ class GH360TEquilibriumPointController(Controller):
         # np.set_printoptions(suppress=True)
         # print("Joint Pos: ",np.around(self.joint_pos,4))
         while i_motor < self.control_dim:#self.control_dim:
-            motor_count = self.arm[i_joint].motor_count
-            if motor_count == 2:
+            joint_motor_count = self.arm[i_joint].motor_count
+            motor_inc = 1
+            if joint_motor_count == 2:
                 delta_eq_point = delta_action[i_motor]
                 if self.stiffness_mode == "variable":
                     delta_stiffness = delta_action[i_motor+1]
+                    motor_inc += 1
                 else: 
                     delta_stiffness = 0
 
@@ -211,20 +231,23 @@ class GH360TEquilibriumPointController(Controller):
             #     print(delta_motor_pos)
             #     print(delta_eq_point)
             #     print(delta_stiffness)
+            #print(self.arm[i_joint].joint_name)
+            # if self.arm[i_joint].joint_name == "elbow":
+            #     print("delta_motor_pos", delta_motor_pos)
             self.arm[i_joint].update_goal_pos(delta_motor_pos)
 
             # if motor_count == 2:
             #     print("Motor Positions: ", self.arm[i_joint].motor_pos_right,", ",self.arm[i_joint].motor_pos_left)
 
             if self.write_data:                                                                             
-                if motor_count == 2:
+                if joint_motor_count == 2:
                     current_motor_pos.append(self.arm[i_joint].motor_pos_right)
                     current_motor_pos.append(self.arm[i_joint].motor_pos_left)
                 else:
                     current_motor_pos.append(self.arm[i_joint].goal_motor_pos)
                     current_motor_pos.append(delta_motor_pos)
 
-            i_motor += motor_count
+            i_motor += motor_inc
             i_joint += 1
 
             
@@ -266,6 +289,14 @@ class GH360TEquilibriumPointController(Controller):
         # Make sure goal has been set
         # if self.goal_torque is None:
         #     self.set_goal(np.zeros(self.control_dim))
+
+        # if self.last_time == 0.0:
+        #     self.last_time = time.time()
+        # else:
+        #     new_time = time.time()
+        #     time_step = new_time - self.last_time
+        #     print("control frequency: ", time_step)
+        #     self.last_time = copy.copy(new_time)
 
         # Update state
         self.update()

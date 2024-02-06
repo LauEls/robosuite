@@ -2,8 +2,11 @@ import numpy as np
 import math
 import os
 import json
+import copy
+import time
 from robosuite.utils.tendon import Tendon
 from robosuite.utils.joint import Joint
+import robosuite.macros as macros
 
 class SoftJoint(Joint):
     def __init__(
@@ -18,6 +21,8 @@ class SoftJoint(Joint):
         motor_init_pos = 0,
         fixed_stiffness = 0,
         motor_model = "MX-106",
+        tendon_noise = False,
+        motor_move_sim = False,
         # config_file,
     ):
         # config_dir = "../controllers/config/gh2"
@@ -36,7 +41,7 @@ class SoftJoint(Joint):
 
         # self.left_side = Tendon(config['left'])
         # self.right_side = Tendon(config['right'])
- 
+
         self.joint_name = joint_name
         self.motor_count = 2
         self.motor_max = motor_max_pos
@@ -52,13 +57,15 @@ class SoftJoint(Joint):
         self.fixed_stiffness = fixed_stiffness
         # self.fixed_stiffness_switch = fixed_stiffness_switch
         self.motor_model = motor_model
+        self.tendon_noise = tendon_noise
+        self.motor_move_sim = motor_move_sim
 
         self.motor_pos_left = 0
         self.motor_pos_right = 0
-        self.tendon_left_pos = Tendon(**left_positive_tendon_kwargs, file_name=file_name)
-        self.tendon_left_neg = Tendon(**left_negative_tendon_kwargs, file_name=file_name)
-        self.tendon_right_pos = Tendon(**right_positive_tendon_kwargs, file_name=file_name)
-        self.tendon_right_neg = Tendon(**right_negative_tendon_kwargs, file_name=file_name)
+        self.tendon_left_pos = Tendon(**left_positive_tendon_kwargs, tendon_noise=self.tendon_noise, file_name=file_name)
+        self.tendon_left_neg = Tendon(**left_negative_tendon_kwargs, tendon_noise=self.tendon_noise, file_name=file_name)
+        self.tendon_right_pos = Tendon(**right_positive_tendon_kwargs, tendon_noise=self.tendon_noise, file_name=file_name)
+        self.tendon_right_neg = Tendon(**right_negative_tendon_kwargs, tendon_noise=self.tendon_noise, file_name=file_name)
 
         self.current_joint_pos = 0
         self.current_stiffness = 0
@@ -78,6 +85,11 @@ class SoftJoint(Joint):
         self.tendon_left_neg.tendon_max_force = max_torque / (self.tendon_left_neg.r_active/1000)
         self.tendon_right_pos.tendon_max_force = max_torque / (self.tendon_right_pos.r_active/1000)
         self.tendon_right_neg.tendon_max_force = max_torque / (self.tendon_right_neg.r_active/1000)
+
+        self.start_time = 0.0
+        self.delta_right = 0.0
+        self.delta_left = 0.0
+        self.model_timestep = macros.SIMULATION_TIMESTEP
         # self.current_left_positive_length = self.left_positive_tendon.zero_active_length + self.left_positive_tendon.free_length + self.left_positive_tendon.zero_passive_length
         # self.current_left_negative_length = self.left_negative_tendon.zero_active_length + self.left_negative_tendon.free_length + self.left_negative_tendon.zero_passive_length
         # self.current_right_positive_length = self.right_positive_tendon.zero_active_length + self.right_positive_tendon.free_length + self.right_positive_tendon.zero_passive_length
@@ -104,6 +116,7 @@ class SoftJoint(Joint):
     def update_goal_pos(self, delta_motor_pos):
         # if delta_motor_pos[0] > delta_motor_pos[1]:
         #     self.current_stiffness
+        
         right_limit = False
         left_limit = False
         
@@ -183,13 +196,21 @@ class SoftJoint(Joint):
         
         # print("Current_Stiffness: ", self.current_stiffness)
 
-        
 
         #TODO: CHECK RETURN VALUE AND DO SOMETHING ABOUT IT
-        self.right_min_pos = not self.tendon_right_pos.update_active_pulley(delta_right)
-        self.right_max_pos = not self.tendon_right_neg.update_active_pulley(-delta_right)
-        self.left_min_pos = not self.tendon_left_pos.update_active_pulley(delta_left)
-        self.left_max_pos = not self.tendon_left_neg.update_active_pulley(-delta_left)
+        if self.motor_move_sim and delta_right < np.pi/2 and delta_left < np.pi/2:
+            self.start_time = time.time()
+            self.delta_right = delta_right
+            self.delta_left = delta_left
+            # if self.joint_name == "elbow":
+            #     print("current active pos: ",self.tendon_right_pos.alpha_active)
+            #     print("delta active: ", self.delta_right)
+        else:
+            # print("delta active: ", delta_right)
+            self.right_min_pos = not self.tendon_right_pos.update_active_pulley(delta_right)
+            self.right_max_pos = not self.tendon_right_neg.update_active_pulley(-delta_right)
+            self.left_min_pos = not self.tendon_left_pos.update_active_pulley(delta_left)
+            self.left_max_pos = not self.tendon_left_neg.update_active_pulley(-delta_left)
 
         # if self.joint_name == "wrist_pitch":
         #     print("Joint Name: ", self.joint_name)
@@ -213,6 +234,17 @@ class SoftJoint(Joint):
     
     def get_torques(self, joint_pos): #delta_motor_pos,
         self.current_joint_pos = joint_pos
+
+        if self.motor_move_sim and self.delta_right < np.pi/2 and self.delta_left < np.pi/2:
+            new_time = time.time()
+            mp = (new_time-self.start_time)/0.02
+            # print("mp: ", mp)
+            self.right_min_pos = not self.tendon_right_pos.update_active_pulley(self.delta_right*mp)
+            self.right_max_pos = not self.tendon_right_neg.update_active_pulley(-self.delta_right*mp)
+            self.left_min_pos = not self.tendon_left_pos.update_active_pulley(self.delta_left*mp)
+            self.left_max_pos = not self.tendon_left_neg.update_active_pulley(-self.delta_left*mp)
+
+            self.start_time = copy.copy(new_time)
 
         self.f_left_pos = self.tendon_left_pos.update_tendon(-joint_pos)
         self.f_left_neg = self.tendon_left_neg.update_tendon(joint_pos)
