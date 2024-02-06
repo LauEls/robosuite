@@ -67,7 +67,7 @@ class Tendon:
         strain = (l_total-self.l_relaxed)/self.l_relaxed*100
 
         if self.tendon_noise:
-            print("tendon noise is true")
+            #print("tendon noise is true")
             strain += np.random.uniform(low=-0.1, high=0.1)
 
         #print("Strain: ", strain)
