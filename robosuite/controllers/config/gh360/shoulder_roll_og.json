@@ -2,6 +2,8 @@
   "name": "Shoulder Roll",
   "motor_model": "MX-106",
   "actuators": 4,
+  "motor_init_pos": 0.0,
+  "fixed_stiffness": 0.7854,
   "right": {
     "pos_tendon": {
       "l_free": 117.96895598419106,
@@ -11,7 +13,7 @@
       "id": 5,
       "alpha_passive_zero": 1.9770401035894065,
       "l_relaxed": 256.22089980256976,
-      "alpha_active_zero": 8.6084222887914521
+      "alpha_active_zero": 8.3232922428181291
     },
     "neg_tendon": {
       "l_free": 117.96895598419106,
@@ -21,7 +23,7 @@
       "id": 6,
       "alpha_passive_zero": 1.7022074954102631,
       "l_relaxed": 245.227595475404,
-      "alpha_active_zero": 8.1326823605425336
+      "alpha_active_zero": 8.1964464236585273
     }
   },
   "left": {
@@ -33,7 +35,7 @@
       "id": 7,
       "alpha_passive_zero": 1.7284688338280281,
       "l_relaxed": 246.27804901211456,
-      "alpha_active_zero": 8.1326823605425336
+      "alpha_active_zero": 8.2085670413897974
     },
     "neg_tendon": {
       "l_free": 117.96895598419103,
@@ -43,9 +45,7 @@
       "id": 8,
       "alpha_passive_zero": 1.9507787651716406,
       "l_relaxed": 255.17044626585908,
-      "alpha_active_zero": 8.6084222887914521
+      "alpha_active_zero": 8.3111716250868502
     }
-  },
-  "motor_init_pos": 0,
-  "fixed_stiffness": 0.7854
+  }
 }

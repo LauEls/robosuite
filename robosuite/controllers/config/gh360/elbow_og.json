@@ -2,6 +2,8 @@
   "name": "Elbow",
   "motor_model": "MX-106",
   "actuators": 4,
+  "motor_init_pos": 6.28,
+  "fixed_stiffness": 0.7854,
   "right": {
     "pos_tendon": {
       "l_free": 92.830733057538652,
@@ -11,7 +13,7 @@
       "id": 17,
       "alpha_passive_zero": 2.7936071344430391,
       "l_relaxed": 184.44311255778268,
-      "alpha_active_zero": 1.9522577849185718
+      "alpha_active_zero": 1.559518813138384
     },
     "neg_tendon": {
       "l_free": 92.830733057538652,
@@ -21,7 +23,7 @@
       "id": 18,
       "alpha_passive_zero": 0.86204575003230988,
       "l_relaxed": 189.82019144005557,
-      "alpha_active_zero": 10.885450761952493
+      "alpha_active_zero": 11.312585053706772
     }
   },
   "left": {
@@ -33,7 +35,7 @@
       "id": 19,
       "alpha_passive_zero": 3.38434861019518,
       "l_relaxed": 218.56668607550952,
-      "alpha_active_zero": 2.3214459133878309
+      "alpha_active_zero": 1.9287596034332676
     },
     "neg_tendon": {
       "l_free": 112.67560738686967,
@@ -43,9 +45,7 @@
       "id": 20,
       "alpha_passive_zero": 0.18376009989965836,
       "l_relaxed": 183.43251440069093,
-      "alpha_active_zero": 10.603806807863748
+      "alpha_active_zero": 10.996550944477915
     }
-  },
-  "motor_init_pos": 6.28,
-  "fixed_stiffness": 0.7854
+  }
 }

@@ -1,51 +1,51 @@
 {
-  "name": "Wrist Pitch",
-  "motor_model": "MX-64",
+  "name": "Shoulder Pitch",
+  "motor_model": "MX-106",
   "actuators": 4,
-  "motor_init_pos": 0.0,
-  "fixed_stiffness": 0.7854,
   "right": {
     "pos_tendon": {
-      "l_free": 97.8772699711225,
-      "r_active": 15.6,
-      "r_passive": 30,
+      "l_free": 183.32267081095785,
+      "r_active": 18,
+      "r_passive": 50,
       "r_tendon": 1.5,
-      "id": 21,
-      "alpha_passive_zero": 1.6965465479099318,
-      "l_relaxed": 175.10315647575237,
-      "alpha_active_zero": 6.7668904909495327
+      "id": 9,
+      "alpha_passive_zero": 2.5223842065780842,
+      "l_relaxed": 264.50460447863816,
+      "alpha_active_zero": 1.6590653087709997
     },
     "neg_tendon": {
-      "l_free": 97.8772699711225,
-      "r_active": 15.6,
-      "r_passive": 30,
+      "l_free": 194.31578082338035,
+      "r_active": 18,
+      "r_passive": 50,
       "r_tendon": 1.5,
-      "id": 22,
-      "alpha_passive_zero": 1.7371963040461944,
-      "l_relaxed": 176.08813133597721,
-      "alpha_active_zero": 6.779850686478806
+      "id": 10,
+      "alpha_passive_zero": 0.16594107264621097,
+      "l_relaxed": 228.65795688815462,
+      "alpha_active_zero": 9.5672884508463021
     }
   },
   "left": {
     "pos_tendon": {
-      "l_free": 97.902112975154949,
-      "r_active": 15.6,
-      "r_passive": 30,
+      "l_free": 183.32267081095785,
+      "r_active": 18,
+      "r_passive": 50,
       "r_tendon": 1.5,
-      "id": 24,
-      "alpha_passive_zero": 1.7550109323802618,
-      "l_relaxed": 176.5389034871738,
-      "alpha_active_zero": 6.7857818989945518
+      "id": 11,
+      "alpha_passive_zero": 2.5223842065780842,
+      "l_relaxed": 264.50460447863816,
+      "alpha_active_zero": 1.6590653087709997
     },
     "neg_tendon": {
-      "l_free": 97.902112975154949,
-      "r_active": 15.6,
-      "r_passive": 30,
+      "l_free": 194.31578082338035,
+      "r_active": 18,
+      "r_passive": 50,
       "r_tendon": 1.5,
-      "id": 23,
-      "alpha_passive_zero": 1.6786588351351912,
-      "l_relaxed": 174.68883343854324,
-      "alpha_active_zero": 6.7614388720388856
+      "id": 12,
+      "alpha_passive_zero": 0.16594107264621097,
+      "l_relaxed": 228.65795688815462,
+      "alpha_active_zero": 9.5672884508463021
     }
-  }
+  },
+  "motor_init_pos": 4,
+  "fixed_stiffness": 0.7854
 }

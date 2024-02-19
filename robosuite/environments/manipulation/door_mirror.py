@@ -257,6 +257,11 @@ class DoorMirror(SingleArmEnv):
         force_punishment_scale = 0.1
         stiffness_punishment_scale = 0.1
         # print("action = ",action)
+        # print("handle pos: ", self._handle_xpos)
+        # print("door pos: ", self.sim.data.body_xpos[self.object_body_ids["door"]])
+        # print("robot base pos: ", self.sim.data.get_body_xpos("robot0_base"))
+        # print("shoulder0 pos: ", self.sim.data.get_body_xpos("robot0_shoulder0"))
+        # print("eef pos: ", self._eef_xpos)
 
         # print(0.2 * (1- np.tanh(0.1*np.linalg.norm(self.resting_q_pos - self._joint_pos))))
 

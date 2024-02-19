@@ -2,6 +2,8 @@
   "name": "Upperarm Roll",
   "motor_model": "MX-106",
   "actuators": 4,
+  "motor_init_pos": 2.5,
+  "fixed_stiffness": 0.7854,
   "right": {
     "pos_tendon": {
       "l_free": 74.2018599834263,
@@ -11,7 +13,7 @@
       "id": 13,
       "alpha_passive_zero": 3.1428689698544434,
       "l_relaxed": 287.92811860199066,
-      "alpha_active_zero": 11.921169483361346
+      "alpha_active_zero": 12.374300767952655
     },
     "neg_tendon": {
       "l_free": 74.2018599834263,
@@ -21,7 +23,7 @@
       "id": 14,
       "alpha_passive_zero": 3.1444939118750579,
       "l_relaxed": 287.87249558666963,
-      "alpha_active_zero": 12.504108759777745
+      "alpha_active_zero": 13.150509748994429
     }
   },
   "left": {
@@ -33,7 +35,7 @@
       "id": 15,
       "alpha_passive_zero": 3.1434788520170165,
       "l_relaxed": 288.32408219802045,
-      "alpha_active_zero": 12.513460098956207
+      "alpha_active_zero": 13.161734738171015
     },
     "neg_tendon": {
       "l_free": 74.7437524144995,
@@ -43,9 +45,7 @@
       "id": 16,
       "alpha_passive_zero": 3.1418750598634144,
       "l_relaxed": 288.37898123712455,
-      "alpha_active_zero": 11.916534070876569
+      "alpha_active_zero": 12.385406152871176
     }
-  },
-  "motor_init_pos": 2.5,
-  "fixed_stiffness": 0.7854
+  }
 }

@@ -2,6 +2,8 @@
   "name": "Shoulder Pitch",
   "motor_model": "MX-106",
   "actuators": 4,
+  "motor_init_pos": 4,
+  "fixed_stiffness": 0.7854,
   "right": {
     "pos_tendon": {
       "l_free": 183.32267081095785,
@@ -11,7 +13,7 @@
       "id": 9,
       "alpha_passive_zero": 2.5223842065780842,
       "l_relaxed": 264.50460447863816,
-      "alpha_active_zero": 1.6590653087709997
+      "alpha_active_zero": 1.5707963267948941
     },
     "neg_tendon": {
       "l_free": 194.31578082338035,
@@ -21,7 +23,7 @@
       "id": 10,
       "alpha_passive_zero": 0.16594107264621097,
       "l_relaxed": 228.65795688815462,
-      "alpha_active_zero": 9.5672884508463021
+      "alpha_active_zero": 10.55567403748155
     }
   },
   "left": {
@@ -33,7 +35,7 @@
       "id": 11,
       "alpha_passive_zero": 2.5223842065780842,
       "l_relaxed": 264.50460447863816,
-      "alpha_active_zero": 1.6590653087709997
+      "alpha_active_zero": 1.5707963267948941
     },
     "neg_tendon": {
       "l_free": 194.31578082338035,
@@ -43,9 +45,7 @@
       "id": 12,
       "alpha_passive_zero": 0.16594107264621097,
       "l_relaxed": 228.65795688815462,
-      "alpha_active_zero": 9.5672884508463021
+      "alpha_active_zero": 10.55567403748155
     }
-  },
-  "motor_init_pos": 4,
-  "fixed_stiffness": 0.7854
+  }
 }
