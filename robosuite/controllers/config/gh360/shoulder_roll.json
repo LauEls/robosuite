@@ -46,6 +46,6 @@
       "alpha_active_zero": 8.6084222887914521
     }
   },
-  "motor_init_pos": 0,
+  "motor_init_pos": 0.0,
   "fixed_stiffness": 0.7854
 }

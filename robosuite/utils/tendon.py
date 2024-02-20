@@ -19,7 +19,11 @@ class Tendon:
         tendon_noise = False
     ):
         self.tendon_noise = tendon_noise
-        self.strain_noise = np.random.uniform(low=-0.1, high=0.1)
+        self.strain_noise = np.random.uniform(low=-20.0, high=0.0)
+        # print("tendon noise: ", self.tendon_noise)
+        #self.strain_noise = -15
+        # if id >= 17 and id < 20:
+        #     self.strain_noise = -10    
         self.l_free = l_free
         self.r_active = r_active
         self.r_passive = r_passive
