@@ -30,7 +30,7 @@ class GH360TEquilibriumPointController(Controller):
                  motor_max_pos = 31.42,
                  stiffness_mode = "variable", # if variable_stiffness is False, this will swap between the robot joints have no stiffness and having a fixed stiffness
                  tendon_noise = False,
-                 tendon_noise_level = -20.0,
+                 tendon_noise_level = 0.0,
                  motor_move_sim = False,
                  **kwargs  # does nothing; used so no error raised when dict is passed with extra terms used previously
                  ):
