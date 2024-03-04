@@ -30,7 +30,11 @@ class MotorJoint(Joint):
         self.motor_count = 1
         self.id = id
 
-    def update_goal_pos(self, delta_goal_pos):
+    def update_goal_pos(self, delta_goal_pos, absolute_pos = False):
+        if absolute_pos:
+            self.goal_motor_pos = delta_goal_pos
+            return
+        
         self.goal_motor_pos += delta_goal_pos
         if self.goal_motor_pos > self.motor_max_pos:
             self.goal_motor_pos = self.motor_max_pos

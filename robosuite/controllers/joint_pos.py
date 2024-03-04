@@ -205,6 +205,7 @@ class JointPositionController(Controller):
         self.goal_qpos = set_goal_position(
             scaled_delta, self.joint_pos, position_limit=self.position_limits, set_pos=set_qpos
         )
+        # self.goal_qpos = action
 
         if self.interpolator is not None:
             self.interpolator.set_goal(self.goal_qpos)

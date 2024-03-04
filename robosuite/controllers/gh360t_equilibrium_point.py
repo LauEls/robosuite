@@ -30,6 +30,7 @@ class GH360TEquilibriumPointController(Controller):
                  motor_max_pos = 31.42,
                  stiffness_mode = "variable", # if variable_stiffness is False, this will swap between the robot joints have no stiffness and having a fixed stiffness
                  tendon_noise = False,
+                 tendon_noise_level = -20.0,
                  motor_move_sim = False,
                  **kwargs  # does nothing; used so no error raised when dict is passed with extra terms used previously
                  ):
@@ -48,7 +49,7 @@ class GH360TEquilibriumPointController(Controller):
             self.control_dim = 13#MAYBE READ THAT OUT OF A CONFIG FILE -> should be 13 at the end
         elif self.stiffness_mode == "fixed" or self.stiffness_mode == "no_stiffness":
             self.control_dim = 7
-        # print("control dimensions: ",self.control_dim)
+        print("control dimensions: ",self.control_dim)
 
         # input and output max and min (allow for either explicit lists or single numbers)
         self.input_max = self.nums2array(input_max, self.control_dim)
@@ -112,6 +113,7 @@ class GH360TEquilibriumPointController(Controller):
                     motor_init_pos=variant["motor_init_pos"],
                     fixed_stiffness=joint_fixed_stiffness,
                     tendon_noise=tendon_noise,
+                    tendon_noise_level = tendon_noise_level,
                     motor_move_sim=motor_move_sim,
                     # fixed_stiffness_switch=not self.variable_stiffness
                 ))
@@ -235,6 +237,8 @@ class GH360TEquilibriumPointController(Controller):
             # if self.arm[i_joint].joint_name == "elbow":
             #     print("delta_motor_pos", delta_motor_pos)
             self.arm[i_joint].update_goal_pos(delta_motor_pos)
+            # print("Motor Position: ", delta_motor_pos)
+            # self.arm[i_joint].update_goal_pos(delta_motor_pos, absolute_pos=True)
 
             # if motor_count == 2:
             #     print("Motor Positions: ", self.arm[i_joint].motor_pos_right,", ",self.arm[i_joint].motor_pos_left)

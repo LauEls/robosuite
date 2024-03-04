@@ -2,6 +2,7 @@ from collections import OrderedDict
 from copy import deepcopy
 
 import numpy as np
+import time
 
 import robosuite.macros as macros
 from robosuite.controllers import reset_controllers

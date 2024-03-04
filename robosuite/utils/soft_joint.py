@@ -22,7 +22,9 @@ class SoftJoint(Joint):
         fixed_stiffness = 0,
         motor_model = "MX-106",
         tendon_noise = False,
+        tendon_noise_level = 0.0,
         motor_move_sim = False,
+
         # config_file,
     ):
         # config_dir = "../controllers/config/gh2"
@@ -62,10 +64,10 @@ class SoftJoint(Joint):
 
         self.motor_pos_left = 0
         self.motor_pos_right = 0
-        self.tendon_left_pos = Tendon(**left_positive_tendon_kwargs, tendon_noise=self.tendon_noise, file_name=file_name)
-        self.tendon_left_neg = Tendon(**left_negative_tendon_kwargs, tendon_noise=self.tendon_noise, file_name=file_name)
-        self.tendon_right_pos = Tendon(**right_positive_tendon_kwargs, tendon_noise=self.tendon_noise, file_name=file_name)
-        self.tendon_right_neg = Tendon(**right_negative_tendon_kwargs, tendon_noise=self.tendon_noise, file_name=file_name)
+        self.tendon_left_pos = Tendon(**left_positive_tendon_kwargs, tendon_noise=self.tendon_noise, tendon_noise_level=tendon_noise_level, file_name=file_name)
+        self.tendon_left_neg = Tendon(**left_negative_tendon_kwargs, tendon_noise=self.tendon_noise, tendon_noise_level=tendon_noise_level, file_name=file_name)
+        self.tendon_right_pos = Tendon(**right_positive_tendon_kwargs, tendon_noise=self.tendon_noise, tendon_noise_level=tendon_noise_level, file_name=file_name)
+        self.tendon_right_neg = Tendon(**right_negative_tendon_kwargs, tendon_noise=self.tendon_noise, tendon_noise_level=tendon_noise_level, file_name=file_name)
 
         self.current_joint_pos = 0
         self.current_stiffness = 0
@@ -113,7 +115,7 @@ class SoftJoint(Joint):
     def get_motor_positions(self):
         return [self.motor_pos_right, self.motor_pos_left]
 
-    def update_goal_pos(self, delta_motor_pos):
+    def update_goal_pos(self, delta_motor_pos, absolute_pos = False):
         # if delta_motor_pos[0] > delta_motor_pos[1]:
         #     self.current_stiffness
         
@@ -207,10 +209,18 @@ class SoftJoint(Joint):
             #     print("delta active: ", self.delta_right)
         else:
             # print("delta active: ", delta_right)
-            self.right_min_pos = not self.tendon_right_pos.update_active_pulley(delta_right)
-            self.right_max_pos = not self.tendon_right_neg.update_active_pulley(-delta_right)
-            self.left_min_pos = not self.tendon_left_pos.update_active_pulley(delta_left)
-            self.left_max_pos = not self.tendon_left_neg.update_active_pulley(-delta_left)
+            if not absolute_pos:
+                self.right_min_pos = not self.tendon_right_pos.update_active_pulley(delta_right)
+                self.right_max_pos = not self.tendon_right_neg.update_active_pulley(-delta_right)
+                self.left_min_pos = not self.tendon_left_pos.update_active_pulley(delta_left)
+                self.left_max_pos = not self.tendon_left_neg.update_active_pulley(-delta_left)
+            else:
+                right_pos = delta_motor_pos[0]
+                left_pos = delta_motor_pos[1]
+                self.right_min_pos = not self.tendon_right_pos.update_active_pulley(right_pos, absolute_pos=True)
+                self.right_max_pos = not self.tendon_right_neg.update_active_pulley(-right_pos, absolute_pos=True)
+                self.left_min_pos = not self.tendon_left_pos.update_active_pulley(left_pos, absolute_pos=True)
+                self.left_max_pos = not self.tendon_left_neg.update_active_pulley(-left_pos, absolute_pos=True)
 
         # if self.joint_name == "wrist_pitch":
         #     print("Joint Name: ", self.joint_name)

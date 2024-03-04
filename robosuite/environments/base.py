@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 from collections import OrderedDict
 
 import numpy as np
+import time
 
 import robosuite
 import robosuite.macros as macros
@@ -276,6 +277,8 @@ class MujocoEnv(metaclass=EnvMeta):
             else self._get_observations(force_update=True)
         )
 
+        self.reseted = True
+
         # Return new observations
         return observations
 
@@ -378,7 +381,19 @@ class MujocoEnv(metaclass=EnvMeta):
         """
         if self.done:
             raise ValueError("executing action in terminated episode")
-
+        
+        # if self.reseted:
+        #     self.reseted = False
+        #     for i in range(100):
+        #         self.sim.forward()
+        #         self._pre_action([0,0,0,0,0,0,0], policy_step=True)
+        #         self.sim.step()
+        #         self._update_observables()
+        #         # self.viewer.update()
+        #         time.sleep(0.1)
+            
+                
+        # print("Done")
         self.timestep += 1
 
         # Since the env.step frequency is slower than the mjsim timestep frequency, the internal controller will output

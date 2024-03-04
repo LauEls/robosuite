@@ -217,6 +217,35 @@ class CanVisualObject(MujocoXMLObject):
             duplicate_collision_geoms=True,
         )
 
+class ViaPointVisualObject(MujocoXMLObject):
+    """
+    Visual fiducial of a via point (used in TrajectoryTracking)
+
+    Fiducial objects are not involved in collision physics.
+    They provide a point of reference to indicate a position.
+    """
+
+    def __init__(self, name):
+        super().__init__(
+            xml_path_completion("objects/via-point-visual.xml"),
+            name=name,
+            joints=None,
+            obj_type="visual",
+            duplicate_collision_geoms=True,
+        )
+
+    @property
+    def important_sites(self):
+        """
+        Returns:
+            dict: In addition to any default sites for this object, also provides the following entries
+
+                :`'handle'`: Name of door handle location site
+        """
+        # Get dict from super call and add to it
+        dic = super().important_sites
+        dic.update({"via_point_site": self.naming_prefix + "via_point_site"})
+        return dic
 
 class PlateWithHoleObject(MujocoXMLObject):
     """
