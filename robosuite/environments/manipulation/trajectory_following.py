@@ -31,6 +31,7 @@ class TrajectoryFollowing(SingleArmEnv):
         force_punishment=False,
         stiffness_punishment=False,
         motor_obs = False,
+        q_vel_obs = True,
         grasp_check=False,
         use_camera_obs=True,
         use_object_obs=True,
@@ -60,6 +61,7 @@ class TrajectoryFollowing(SingleArmEnv):
         self.force_punishment = force_punishment
 
         self.motor_obs = motor_obs
+        self.q_vel_obs = q_vel_obs
         # reward configuration
         self.reward_scale = reward_scale
         self.reward_shaping = reward_shaping
@@ -308,11 +310,11 @@ class TrajectoryFollowing(SingleArmEnv):
                     sampling_rate=self.control_freq,
                 )
 
+        observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_pos", "via_point_to_eef_pos"]
         if self.motor_obs:
-            observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}motor_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_pos", "via_point_to_eef_pos"]
-        else:
-            observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_pos", "via_point_to_eef_pos"]
-        
+            observable_list.insert(1, f"{pf}motor_pos")
+        if self.q_vel_obs:
+            observable_list.insert(1, f"{pf}joint_vel")
 
         for key, value in observables.items():
             value.set_active(False)
