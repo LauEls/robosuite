@@ -253,6 +253,7 @@ class Robot(object):
         ):
             if q_limits[0] != q_limits[1] and not (q_limits[0] + tolerance < q < q_limits[1] - tolerance):
                 print("Joint limit reached in joint " + str(qidx))
+                print("Joint value: ", q)
                 return True
         return False
 
