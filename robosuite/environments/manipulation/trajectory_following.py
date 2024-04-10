@@ -74,7 +74,7 @@ class TrajectoryFollowing(SingleArmEnv):
 
         # self.target_joint_angles = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         # self.via_point_offset = [-0.1576, 0.417, 1.05]
-        self.via_point_offset = [-0.31, 0.46, 0.60]
+        self.via_point_offset = [-0.37, 0.47, 0.99]
 
         super().__init__(
             robots=robots,
@@ -211,8 +211,9 @@ class TrajectoryFollowing(SingleArmEnv):
                 mujoco_objects=self.via_point,
                 # x_range=[-0.01, 0.01],
                 # y_range=[-0.01, 0.01],
-                x_range=[0.0, 0.0],
-                y_range=[0.0, 0.0],
+                x_range=[-0.1, 0.1],
+                y_range=[-0.1, 0.1],
+                z_range=[-0.1, 0.1],
                 #rotation=(-np.pi / 2. - 0.25, -np.pi / 2.),
                 #rotation=(np.pi / 2., np.pi / 2. + 0.25),
                 #rotation=(np.pi / 2. -0.1, np.pi / 2. + 0.1),
@@ -221,7 +222,7 @@ class TrajectoryFollowing(SingleArmEnv):
                 ensure_object_boundary_in_range=False,
                 ensure_valid_placement=False,
                 reference_pos=self.via_point_offset,
-                z_offset=self.via_point_offset[2],
+                # z_offset=self.via_point_offset[2],
             )
 
         # task includes arena, robot, and objects of interest
