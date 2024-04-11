@@ -420,7 +420,7 @@ class TrajectoryFollowing(SingleArmEnv):
             self.status = 1
         elif self.status == 1 and (self._gripper_to_via_point_2 < 0.01).all():
             self.status = 2
-        elif self.status == 2 and (self._gripper_to_via_point_3 < 0.01).all():
+        elif self.status == 2 and (self._gripper_to_via_point_3 < 0.001).all():
             return True
         return False
         # return (self._eef_xpos == self._via_point_xpos).all()
