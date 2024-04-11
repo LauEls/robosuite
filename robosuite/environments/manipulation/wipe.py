@@ -371,7 +371,10 @@ class Wipe(SingleArmEnv):
             pp = [t1, t2, t4, t3]
 
             # Normal of the plane defined by v1 and v2
-            n = np.cross(v1, v2)
+            # Workaround for numpy's cross product bug which gives a code not reachable error
+            cross1 = lambda x,y:np.cross(x,y)
+            # n = np.cross(v1, v2) 
+            n = cross1(v1, v2) 
             n /= np.linalg.norm(n)
 
             def isLeft(P0, P1, P2):

@@ -6,7 +6,7 @@ from robosuite.environments.manipulation.single_arm_env import SingleArmEnv
 from robosuite.models.arenas import EmptyArena
 from robosuite.models.objects import ViaPointVisualObject, MilkVisualObject
 from robosuite.models.tasks import ManipulationTask
-from robosuite.utils.placement_samplers import UniformRandomSampler
+from robosuite.utils.placement_samplers import UniformRandomSampler, SequentialCompositeSampler
 from robosuite.utils.observables import Observable, sensor
 
 
@@ -75,6 +75,7 @@ class TrajectoryFollowing(SingleArmEnv):
         # self.target_joint_angles = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         # self.via_point_offset = [-0.1576, 0.417, 1.05]
         self.via_point_offset = [-0.37, 0.47, 0.99]
+        self.status = 0
 
         super().__init__(
             robots=robots,
@@ -140,9 +141,20 @@ class TrajectoryFollowing(SingleArmEnv):
         # else, we consider only the case if we're using shaped rewards
         elif self.reward_shaping:
             # Add reaching component
-            dist = np.linalg.norm(self._gripper_to_via_point)
-            reaching_reward = 1.0 * (1 - np.tanh(10.0 * dist))
-            reward += reaching_reward
+            if self.status == 0:
+                dist = np.linalg.norm(self._gripper_to_via_point_1)
+                reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
+                reward += reaching_reward
+            elif self.status == 1:
+                reward += 0.25
+                dist = np.linalg.norm(self._gripper_to_via_point_2)
+                reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
+                reward += reaching_reward
+            elif self.status == 2:
+                reward += 0.5
+                dist = np.linalg.norm(self._gripper_to_via_point_3)
+                reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
+                reward += reaching_reward
         # Scale reward if requested
         if self.reward_scale is not None:
             reward *= self.reward_scale / 1.0
@@ -201,35 +213,54 @@ class TrajectoryFollowing(SingleArmEnv):
             quat=[0.6380177736282349, 0.3048497438430786, 0.30484986305236816, 0.6380177736282349]
         )
 
-        # self.via_points = []
-        # self.via_points.append(ViaPointVisual())
+        self.via_points = []
+        for i in range(3):
+            self.via_points.append(ViaPointVisualObject(name="ViaPoint_"+str(i)))
 
-        self.via_point = ViaPointVisualObject(name="ViaPoint")
-        
-        self.placement_initializer = UniformRandomSampler(
-                name="ObjectSampler",
-                mujoco_objects=self.via_point,
-                # x_range=[-0.01, 0.01],
-                # y_range=[-0.01, 0.01],
-                x_range=[-0.1, 0.1],
-                y_range=[-0.1, 0.1],
-                z_range=[-0.1, 0.1],
-                #rotation=(-np.pi / 2. - 0.25, -np.pi / 2.),
-                #rotation=(np.pi / 2., np.pi / 2. + 0.25),
-                #rotation=(np.pi / 2. -0.1, np.pi / 2. + 0.1),
-                rotation=0.0,
-                rotation_axis='z',
-                ensure_object_boundary_in_range=False,
-                ensure_valid_placement=False,
-                reference_pos=self.via_point_offset,
-                # z_offset=self.via_point_offset[2],
+        # self.via_point = ViaPointVisualObject(name="ViaPoint")
+        self.placement_initializer = SequentialCompositeSampler(name="ObjectSampler")
+
+        # self.placement_initializer = UniformRandomSampler(
+        #         name="ObjectSampler",
+        #         mujoco_objects=self.via_point,
+        #         # x_range=[-0.01, 0.01],
+        #         # y_range=[-0.01, 0.01],
+        #         x_range=[-0.1, 0.1],
+        #         y_range=[-0.1, 0.1],
+        #         z_range=[-0.1, 0.1],
+        #         #rotation=(-np.pi / 2. - 0.25, -np.pi / 2.),
+        #         #rotation=(np.pi / 2., np.pi / 2. + 0.25),
+        #         #rotation=(np.pi / 2. -0.1, np.pi / 2. + 0.1),
+        #         rotation=0.0,
+        #         rotation_axis='z',
+        #         ensure_object_boundary_in_range=False,
+        #         ensure_valid_placement=False,
+        #         reference_pos=self.via_point_offset,
+        #         # z_offset=self.via_point_offset[2],
+        #     )
+
+        for via_point in self.via_points:
+            self.placement_initializer.append_sampler(
+                sampler=UniformRandomSampler(
+                    name=f"{via_point.name}ObjectSampler",
+                    mujoco_objects=via_point,
+                    x_range=[-0.1, 0.1],
+                    y_range=[-0.1, 0.1],
+                    z_range=[-0.1, 0.1],
+                    rotation=0.0,
+                    rotation_axis='z',
+                    ensure_object_boundary_in_range=False,
+                    ensure_valid_placement=False,
+                    reference_pos=self.via_point_offset,
+                    # z_offset=self.via_point_offset[2],
+                )
             )
 
         # task includes arena, robot, and objects of interest
         self.model = ManipulationTask(
             mujoco_arena=mujoco_arena,
             mujoco_robots=[robot.robot_model for robot in self.robots], 
-            mujoco_objects=self.via_point,
+            mujoco_objects=self.via_points,
         )
 
     def _setup_references(self):
@@ -240,18 +271,13 @@ class TrajectoryFollowing(SingleArmEnv):
         """
         super()._setup_references()
 
-        self.object_body_ids = dict()
-        self.object_body_ids["via_point"] = self.sim.model.body_name2id(self.via_point.root_body)
-        self.via_point_site_id = self.sim.model.site_name2id(self.via_point.important_sites["via_point_site"])
-        # Additional object references from this env
         # self.object_body_ids = dict()
-        # self.object_body_ids["door"] = self.sim.model.body_name2id(self.door.door_body)
-        # self.object_body_ids["frame"] = self.sim.model.body_name2id(self.door.frame_body)
-        # self.object_body_ids["latch"] = self.sim.model.body_name2id(self.door.latch_body)
-        # self.door_handle_site_id = self.sim.model.site_name2id(self.door.important_sites["handle"])
-        # self.hinge_qpos_addr = self.sim.model.get_joint_qpos_addr(self.door.joints[0])
-        # if self.use_latch:
-        #     self.handle_qpos_addr = self.sim.model.get_joint_qpos_addr(self.door.joints[1])
+        # self.object_body_ids["via_point"] = self.sim.model.body_name2id(self.via_points[0].root_body)
+        self.via_point_site_ids = []
+        for via_point in self.via_points:
+            self.via_point_site_ids.append(self.sim.model.site_name2id(via_point.important_sites["via_point_site"]))
+        # self.via_point_site_id = self.sim.model.site_name2id(self.via_points[0].important_sites["via_point_site"])
+        
 
     def _setup_observables(self):
         """
@@ -275,13 +301,31 @@ class TrajectoryFollowing(SingleArmEnv):
             #     return np.array(self.sim.data.body_xpos[self.object_body_ids["via_point"]])
             
             @sensor(modality=modality)
-            def via_point_pos(obs_cache):
-                return self._via_point_xpos
+            def via_point_1_pos(obs_cache):
+                return self._via_point_1_xpos
+            
+            @sensor(modality=modality)
+            def via_point_2_pos(obs_cache):
+                return self._via_point_2_xpos
+            
+            @sensor(modality=modality)
+            def via_point_3_pos(obs_cache):
+                return self._via_point_3_xpos
 
             @sensor(modality=modality)
-            def via_point_to_eef_pos(obs_cache):
-                return obs_cache["via_point_pos"] - obs_cache[f"{pf}eef_pos"] if\
-                    "via_point_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
+            def via_point_1_to_eef_pos(obs_cache):
+                return obs_cache["via_point_1_pos"] - obs_cache[f"{pf}eef_pos"] if\
+                    "via_point_1_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
+            
+            @sensor(modality=modality)
+            def via_point_2_to_eef_pos(obs_cache):
+                return obs_cache["via_point_2_pos"] - obs_cache[f"{pf}eef_pos"] if\
+                    "via_point_2_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
+            
+            @sensor(modality=modality)
+            def via_point_3_to_eef_pos(obs_cache):
+                return obs_cache["via_point_3_pos"] - obs_cache[f"{pf}eef_pos"] if\
+                    "via_point_3_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
 
             # @sensor(modality=modality)
             # def handle_to_eef_pos(obs_cache):
@@ -292,7 +336,7 @@ class TrajectoryFollowing(SingleArmEnv):
             # def hinge_qpos(obs_cache):
             #     return np.array([self.sim.data.qpos[self.hinge_qpos_addr]])
 
-            sensors = [via_point_pos, via_point_to_eef_pos]
+            sensors = [via_point_1_pos, via_point_2_pos, via_point_3_pos, via_point_1_to_eef_pos, via_point_2_to_eef_pos, via_point_3_to_eef_pos]
             names = [s.__name__ for s in sensors]
 
             # Also append handle qpos if we're using a locked door version with rotatable handle
@@ -311,7 +355,7 @@ class TrajectoryFollowing(SingleArmEnv):
                     sampling_rate=self.control_freq,
                 )
 
-        observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_pos", "via_point_to_eef_pos"]
+        observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_1_pos", "via_point_1_to_eef_pos", "via_point_2_pos", "via_point_2_to_eef_pos", "via_point_3_pos", "via_point_3_to_eef_pos"]
         if self.motor_obs:
             observable_list.insert(1, f"{pf}motor_pos")
         if self.q_vel_obs:
@@ -338,14 +382,31 @@ class TrajectoryFollowing(SingleArmEnv):
         if not self.deterministic_reset:
 
             # Sample from the placement initializer for all objects
+            # object_placements = self.placement_initializer.sample()
+
+            # # We know we're only setting a single object (the door), so specifically set its pose
+            # # door_pos, door_quat, _ = object_placements[self.door.name]
+            # via_point_pos, _, _ = object_placements[self.via_point.name]
+            # via_point_body_id = self.sim.model.body_name2id(self.via_point.root_body)
+            # self.sim.model.body_pos[via_point_body_id] = via_point_pos
+            # self.sim.model.body_quat[door_body_id] = door_quat
+
             object_placements = self.placement_initializer.sample()
 
-            # We know we're only setting a single object (the door), so specifically set its pose
-            # door_pos, door_quat, _ = object_placements[self.door.name]
-            via_point_pos, _, _ = object_placements[self.via_point.name]
-            via_point_body_id = self.sim.model.body_name2id(self.via_point.root_body)
-            self.sim.model.body_pos[via_point_body_id] = via_point_pos
-            # self.sim.model.body_quat[door_body_id] = door_quat
+            for via_point in self.via_points:
+                via_point_pos, _, _ = object_placements[via_point.name]
+                via_point_body_id = self.sim.model.body_name2id(via_point.root_body)
+                self.sim.model.body_pos[via_point_body_id] = via_point_pos
+
+
+            # Loop through all objects and reset their positions
+            # for obj_pos, obj_quat, obj in object_placements.values():
+            #     # Set the visual object body locations
+            #     if "via" in obj.name.lower():
+            #         self.sim.model.body_pos[self.obj_body_id[obj.name]] = obj_pos
+            #         self.sim.model.body_quat[self.obj_body_id[obj.name]] = obj_quat
+            #     else:
+            #         print("shouldn't be here")
 
     def _check_success(self):
         """
@@ -355,7 +416,14 @@ class TrajectoryFollowing(SingleArmEnv):
             bool: True if door has been opened
         """
         # hinge_qpos = self.sim.data.qpos[self.hinge_qpos_addr]
-        return (self._eef_xpos == self._via_point_xpos).all()
+        if self.status == 0 and (self._gripper_to_via_point_1 < 0.01).all():
+            self.status = 1
+        elif self.status == 1 and (self._gripper_to_via_point_2 < 0.01).all():
+            self.status = 2
+        elif self.status == 2 and (self._gripper_to_via_point_3 < 0.01).all():
+            return True
+        return False
+        # return (self._eef_xpos == self._via_point_xpos).all()
 
     def visualize(self, vis_settings):
         """
@@ -378,17 +446,37 @@ class TrajectoryFollowing(SingleArmEnv):
         #     )
 
     @property
-    def _via_point_xpos(self):
+    def _via_point_1_xpos(self):
         """
         Grabs the position of the door handle handle.
 
         Returns:
             np.array: Door handle (x,y,z)
         """
-        return self.sim.data.site_xpos[self.via_point_site_id]
+        return self.sim.data.site_xpos[self.via_point_site_ids[0]]
+    
+    @property
+    def _via_point_2_xpos(self):
+        """
+        Grabs the position of the door handle handle.
+
+        Returns:
+            np.array: Door handle (x,y,z)
+        """
+        return self.sim.data.site_xpos[self.via_point_site_ids[1]]
+    
+    @property
+    def _via_point_3_xpos(self):
+        """
+        Grabs the position of the door handle handle.
+
+        Returns:
+            np.array: Door handle (x,y,z)
+        """
+        return self.sim.data.site_xpos[self.via_point_site_ids[2]]
 
     @property
-    def _gripper_to_via_point(self):
+    def _gripper_to_via_point_1(self):
         """
         Calculates distance from the gripper to the door handle.
 
@@ -397,5 +485,25 @@ class TrajectoryFollowing(SingleArmEnv):
         """
         # print("Handle Pos: ",self._handle_xpos)
         # print("Eef Pos: ", self._eef_xpos)
-        return self._via_point_xpos - self._eef_xpos
+        return self._via_point_1_xpos - self._eef_xpos
+    
+    @property
+    def _gripper_to_via_point_2(self):
+        """
+        Calculates distance from the gripper to the door handle.
+
+        Returns:
+            np.array: (x,y,z) distance between handle and eef
+        """
+        return self._via_point_2_xpos - self._eef_xpos
+    
+    @property
+    def _gripper_to_via_point_3(self):
+        """
+        Calculates distance from the gripper to the door handle.
+
+        Returns:
+            np.array: (x,y,z) distance between handle and eef
+        """
+        return self._via_point_3_xpos - self._eef_xpos
     
