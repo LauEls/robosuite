@@ -32,7 +32,7 @@ class TrajectoryFollowing(SingleArmEnv):
         stiffness_punishment=False,
         motor_obs = False,
         q_vel_obs = True,
-        grasp_check=False,
+        task_state_obs = False,
         use_camera_obs=True,
         use_object_obs=True,
         reward_scale=1.0,
@@ -62,6 +62,7 @@ class TrajectoryFollowing(SingleArmEnv):
 
         self.motor_obs = motor_obs
         self.q_vel_obs = q_vel_obs
+        self.task_state_obs = task_state_obs
         # reward configuration
         self.reward_scale = reward_scale
         self.reward_shaping = reward_shaping
@@ -311,6 +312,10 @@ class TrajectoryFollowing(SingleArmEnv):
             @sensor(modality=modality)
             def via_point_3_pos(obs_cache):
                 return self._via_point_3_xpos
+            
+            @sensor(modality=modality)
+            def task_state(obs_cache):
+                return self.via_point_state
 
             @sensor(modality=modality)
             def via_point_1_to_eef_pos(obs_cache):
@@ -336,7 +341,7 @@ class TrajectoryFollowing(SingleArmEnv):
             # def hinge_qpos(obs_cache):
             #     return np.array([self.sim.data.qpos[self.hinge_qpos_addr]])
 
-            sensors = [via_point_1_pos, via_point_2_pos, via_point_3_pos, via_point_1_to_eef_pos, via_point_2_to_eef_pos, via_point_3_to_eef_pos]
+            sensors = [via_point_1_pos, via_point_2_pos, via_point_3_pos, via_point_1_to_eef_pos, via_point_2_to_eef_pos, via_point_3_to_eef_pos, task_state]
             names = [s.__name__ for s in sensors]
 
             # Also append handle qpos if we're using a locked door version with rotatable handle
@@ -360,6 +365,8 @@ class TrajectoryFollowing(SingleArmEnv):
             observable_list.insert(1, f"{pf}motor_pos")
         if self.q_vel_obs:
             observable_list.insert(1, f"{pf}joint_vel")
+        if self.task_state_obs:
+            observable_list.append("task_state")
 
         for key, value in observables.items():
             value.set_active(False)
@@ -422,6 +429,7 @@ class TrajectoryFollowing(SingleArmEnv):
             print("status 1")
             self.status = 1
         elif self.status == 1 and (np.abs(self._gripper_to_via_point_2) < 0.01).all():
+            print("status 2")
             self.status = 2
         elif self.status == 2 and (np.abs(self._gripper_to_via_point_3) < 0.001).all():
             return True
@@ -509,4 +517,14 @@ class TrajectoryFollowing(SingleArmEnv):
             np.array: (x,y,z) distance between handle and eef
         """
         return self._via_point_3_xpos - self._eef_xpos
+    
+    @property
+    def via_point_state(self):
+        if self.status == 0:
+            return np.array([1, 0, 0])
+        elif self.status == 1:
+            return np.array([0, 1, 0])
+        elif self.status == 2:
+            return np.array([0, 0, 1])
+
     
