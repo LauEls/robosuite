@@ -336,10 +336,10 @@ class Wipe(SingleArmEnv):
             if self.reward_shaping:
                 reward = self.arm_limit_collision_penalty
             self.collisions += 1
-        # elif self.robots[0].check_q_limits():
-        #     if self.reward_shaping:
-        #         reward = self.arm_limit_collision_penalty
-        #     self.collisions += 1
+        elif self.robots[0].check_q_limits():
+            if self.reward_shaping:
+                reward = self.arm_limit_collision_penalty
+            self.collisions += 1
         else:
             # If the arm is not colliding or in joint limits, we check if we are wiping
             # (we don't want to reward wiping if there are unsafe situations)
@@ -696,10 +696,10 @@ class Wipe(SingleArmEnv):
             terminated = True
 
         # Prematurely terminate if contacting the table with the arm
-        # if self.robots[0].check_q_limits():
-        #     if self.print_results:
-        #         print(40 * "-" + " JOINT LIMIT " + 40 * "-")
-        #     terminated = True
+        if self.robots[0].check_q_limits():
+            if self.print_results:
+                print(40 * "-" + " JOINT LIMIT " + 40 * "-")
+            terminated = True
 
         return terminated
 
