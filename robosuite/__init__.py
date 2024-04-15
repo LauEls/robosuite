@@ -19,6 +19,7 @@ from robosuite.environments.manipulation.door import Door
 from robosuite.environments.manipulation.door_mirror import DoorMirror
 from robosuite.environments.manipulation.door_mirror_knob import DoorMirrorKnob
 from robosuite.environments.manipulation.wipe import Wipe
+from robosuite.environments.manipulation.wipe_gh360 import WipeGH360
 from robosuite.environments.manipulation.two_arm_lift import TwoArmLift
 from robosuite.environments.manipulation.two_arm_peg_in_hole import TwoArmPegInHole
 from robosuite.environments.manipulation.two_arm_handover import TwoArmHandover

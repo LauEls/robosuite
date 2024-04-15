@@ -221,7 +221,6 @@ class NVISIIRenderer(Renderer):
             name="camera",
             transform=nvisii.transform.create("camera_transform"),
         )
-
         self.camera.set_camera(
             nvisii.camera.create_from_fov(
                 name="camera_camera", field_of_view=1, aspect=float(self.width) / float(self.height)

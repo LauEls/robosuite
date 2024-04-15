@@ -63,7 +63,7 @@
                         <inertial pos="0.78E-03 165.245E-03 208.015E-03" mass="1416.795E-03" fullinertia="8.669E-03 9.468E-03 3.559E-03 -61355.555E-09 -1.502E-04 -1.559E-03" />
 
                         <body name="shoulder3" pos="0E-03 0E-03 0E-03">
-                            <joint name="shoulder3_joint" type="hinge" axis="-1 0 0" pos="-63E-03 219.896E-03 346.801E-03" limited="true" range="0 1.571" />
+                            <joint name="shoulder3_joint" type="hinge" axis="-1 0 0" pos="-63E-03 219.896E-03 346.801E-03" limited="true" range="-0.2 1.571" />
                             <geom name="shoulder3_vis" group="1" type="mesh" mesh="shoulder3_mesh" pos="0 0 0" euler="0 0 0"/>
 
                             <!--R3 Joint-->

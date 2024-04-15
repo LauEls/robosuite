@@ -8,8 +8,10 @@ import numpy as np
 class OpenCVRenderer:
     def __init__(self, sim):
         # TODO: update this appropriately - need to get screen dimensions
-        self.width = 1280
-        self.height = 800
+        # self.width = 1280
+        # self.height = 800
+        self.width = 1920
+        self.height = 1080
 
         self.sim = sim
         self.camera_name = self.sim.model.camera_id2name(0)
@@ -27,6 +29,7 @@ class OpenCVRenderer:
     def render(self):
         # get frame with offscreen renderer (assumes that the renderer already exists)
         im = self.sim.render(camera_name=self.camera_name, height=self.height, width=self.width)[..., ::-1]
+        # print("camera name: ", self.camera_name)
 
         # write frame to window
         im = np.flip(im, axis=0)

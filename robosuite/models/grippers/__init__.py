@@ -10,6 +10,7 @@ from .panda_gripper import PandaGripper
 from .jaco_three_finger_gripper import JacoThreeFingerGripper, JacoThreeFingerDexterousGripper
 from .robotiq_140_gripper import Robotiq140Gripper
 from .wiping_gripper import WipingGripper
+from .wiping_gripper_gh360 import WipingGripperGH360
 from .null_gripper import NullGripper
 from .gummi_gripper import GummiGripper
 from .hook_gripper import HookGripper
@@ -22,6 +23,7 @@ GRIPPER_MAPPING = {
     "JacoThreeFingerGripper": JacoThreeFingerGripper,
     "JacoThreeFingerDexterousGripper": JacoThreeFingerDexterousGripper,
     "WipingGripper": WipingGripper,
+    "WipingGripperGH360": WipingGripperGH360,
     "Robotiq85Gripper": Robotiq85Gripper,
     "Robotiq140Gripper": Robotiq140Gripper,
     "RobotiqThreeFingerGripper": RobotiqThreeFingerGripper,

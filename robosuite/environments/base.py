@@ -292,6 +292,7 @@ class MujocoEnv(metaclass=EnvMeta):
             # Set the camera angle for viewing
             if self.render_camera is not None:
                 camera_id = self.sim.model.camera_name2id(self.render_camera)
+                # print("Camera ID: ", camera_id)
                 self.viewer.set_camera(camera_id)
 
         if self.has_offscreen_renderer:
