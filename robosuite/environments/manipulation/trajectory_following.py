@@ -376,7 +376,7 @@ class TrajectoryFollowing(SingleArmEnv):
         """
         super()._reset_internal()
 
-        
+        self.status = 0
 
         # Reset all object positions using initializer sampler if we're not directly loading from an xml
         if not self.deterministic_reset:
@@ -416,11 +416,14 @@ class TrajectoryFollowing(SingleArmEnv):
             bool: True if door has been opened
         """
         # hinge_qpos = self.sim.data.qpos[self.hinge_qpos_addr]
-        if self.status == 0 and (self._gripper_to_via_point_1 < 0.01).all():
+        # print("Status: ", self.status)
+        # print("Distance: ", self._gripper_to_via_point_1)
+        if self.status == 0 and (np.abs(self._gripper_to_via_point_1) < 0.01).all():
+            print("status 1")
             self.status = 1
-        elif self.status == 1 and (self._gripper_to_via_point_2 < 0.01).all():
+        elif self.status == 1 and (np.abs(self._gripper_to_via_point_2) < 0.01).all():
             self.status = 2
-        elif self.status == 2 and (self._gripper_to_via_point_3 < 0.001).all():
+        elif self.status == 2 and (np.abs(self._gripper_to_via_point_3) < 0.001).all():
             return True
         return False
         # return (self._eef_xpos == self._via_point_xpos).all()
