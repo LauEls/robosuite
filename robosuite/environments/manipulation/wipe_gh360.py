@@ -38,7 +38,7 @@ DEFAULT_WIPE_CONFIG = {
     "get_info": False,  # Whether to grab info after each env step if not
     "use_robot_obs": True,  # if we use robot observations (proprioception) as input to the policy
     "use_contact_obs": True,  # if we use a binary observation for whether robot is in contact or not
-    "early_terminations": False,  # Whether we allow for early terminations or not
+    "early_terminations": True,  # Whether we allow for early terminations or not
     "use_condensed_obj_obs": True,  # Whether to use condensed object observation representation (only applicable if obj obs is active)
 }
 
@@ -169,6 +169,8 @@ class WipeGH360(SingleArmEnv):
         initialization_noise="default",
         use_camera_obs=True,
         use_object_obs=True,
+        motor_obs = False,
+        q_vel_obs = True,
         reward_scale=1.0,
         reward_shaping=True,
         has_renderer=False,
@@ -197,7 +199,8 @@ class WipeGH360(SingleArmEnv):
 
         # Get config
         self.task_config = task_config if task_config is not None else DEFAULT_WIPE_CONFIG
-
+        self.motor_obs = motor_obs
+        self.q_vel_obs = q_vel_obs
         # Set task-specific parameters
 
         # settings for the reward
@@ -597,6 +600,19 @@ class WipeGH360(SingleArmEnv):
                     sensor=s,
                     sampling_rate=self.control_freq,
                 )
+
+        observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "wipe_radius", "wipe_centroid", "proportion_wiped", "gripper_to_wipe_centroid"]
+        if self.motor_obs:
+            observable_list.insert(1, f"{pf}motor_pos")
+        if self.q_vel_obs:
+            observable_list.insert(1, f"{pf}joint_vel")# observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+        # macros.CONCATENATE_ROBOT_STATE = False
+
+        for key, value in observables.items():
+            value.set_active(False)
+            for list_item in observable_list:
+                if key == list_item:
+                    value.set_active(True)
 
         return observables
 
