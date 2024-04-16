@@ -40,7 +40,7 @@ class TrajectoryFollowing(SingleArmEnv):
         placement_initializer=None,
         has_renderer=False,
         has_offscreen_renderer=True,
-        render_camera="frontview",
+        render_camera="sideview",
         render_collision_mesh=False,
         render_visual_mesh=True,
         render_gpu_device_id=-1,
@@ -156,6 +156,11 @@ class TrajectoryFollowing(SingleArmEnv):
                 dist = np.linalg.norm(self._gripper_to_via_point_3)
                 reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
                 reward += reaching_reward
+            elif self.status == 3:
+                reward += 0.75
+                dist = np.linalg.norm(self._gripper_to_via_point_4)
+                reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
+                reward += reaching_reward
         # Scale reward if requested
         if self.reward_scale is not None:
             reward *= self.reward_scale / 1.0
@@ -215,7 +220,7 @@ class TrajectoryFollowing(SingleArmEnv):
         )
 
         self.via_points = []
-        for i in range(3):
+        for i in range(4):
             self.via_points.append(ViaPointVisualObject(name="ViaPoint_"+str(i)))
 
         # self.via_point = ViaPointVisualObject(name="ViaPoint")
@@ -312,6 +317,10 @@ class TrajectoryFollowing(SingleArmEnv):
             @sensor(modality=modality)
             def via_point_3_pos(obs_cache):
                 return self._via_point_3_xpos
+        
+            @sensor(modality=modality)
+            def via_point_4_pos(obs_cache):
+                return self._via_point_3_xpos
             
             @sensor(modality=modality)
             def task_state(obs_cache):
@@ -331,6 +340,11 @@ class TrajectoryFollowing(SingleArmEnv):
             def via_point_3_to_eef_pos(obs_cache):
                 return obs_cache["via_point_3_pos"] - obs_cache[f"{pf}eef_pos"] if\
                     "via_point_3_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
+            
+            @sensor(modality=modality)
+            def via_point_4_to_eef_pos(obs_cache):
+                return obs_cache["via_point_4_pos"] - obs_cache[f"{pf}eef_pos"] if\
+                    "via_point_4_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
 
             # @sensor(modality=modality)
             # def handle_to_eef_pos(obs_cache):
@@ -341,7 +355,7 @@ class TrajectoryFollowing(SingleArmEnv):
             # def hinge_qpos(obs_cache):
             #     return np.array([self.sim.data.qpos[self.hinge_qpos_addr]])
 
-            sensors = [via_point_1_pos, via_point_2_pos, via_point_3_pos, via_point_1_to_eef_pos, via_point_2_to_eef_pos, via_point_3_to_eef_pos, task_state]
+            sensors = [via_point_1_pos, via_point_2_pos, via_point_3_pos, via_point_4_pos, via_point_1_to_eef_pos, via_point_2_to_eef_pos, via_point_3_to_eef_pos, via_point_4_to_eef_pos, task_state]
             names = [s.__name__ for s in sensors]
 
             # Also append handle qpos if we're using a locked door version with rotatable handle
@@ -431,7 +445,11 @@ class TrajectoryFollowing(SingleArmEnv):
         elif self.status == 1 and (np.abs(self._gripper_to_via_point_2) < 0.01).all():
             print("status 2")
             self.status = 2
-        elif self.status == 2 and (np.abs(self._gripper_to_via_point_3) < 0.001).all():
+        elif self.status == 2 and (np.abs(self._gripper_to_via_point_3) < 0.01).all():
+            print("status 3")
+            self.status = 3
+        elif self.status == 3 and (np.abs(self._gripper_to_via_point_4) < 0.001).all():
+            print("goal reached")
             return True
         return False
         # return (self._eef_xpos == self._via_point_xpos).all()
@@ -485,6 +503,16 @@ class TrajectoryFollowing(SingleArmEnv):
             np.array: Door handle (x,y,z)
         """
         return self.sim.data.site_xpos[self.via_point_site_ids[2]]
+    
+    @property
+    def _via_point_4_xpos(self):
+        """
+        Grabs the position of the door handle handle.
+
+        Returns:
+            np.array: Door handle (x,y,z)
+        """
+        return self.sim.data.site_xpos[self.via_point_site_ids[3]]
 
     @property
     def _gripper_to_via_point_1(self):
@@ -519,12 +547,24 @@ class TrajectoryFollowing(SingleArmEnv):
         return self._via_point_3_xpos - self._eef_xpos
     
     @property
+    def _gripper_to_via_point_4(self):
+        """
+        Calculates distance from the gripper to the door handle.
+
+        Returns:
+            np.array: (x,y,z) distance between handle and eef
+        """
+        return self._via_point_4_xpos - self._eef_xpos
+    
+    @property
     def via_point_state(self):
         if self.status == 0:
-            return np.array([1, 0, 0])
+            return np.array([1, 0, 0, 0])
         elif self.status == 1:
-            return np.array([0, 1, 0])
+            return np.array([0, 1, 0, 0])
         elif self.status == 2:
-            return np.array([0, 0, 1])
+            return np.array([0, 0, 1, 0])
+        elif self.status == 3:
+            return np.array([0, 0, 0, 1])
 
     
