@@ -35,7 +35,9 @@
             <inertial diaginertia="0 0 0" mass="0" pos="0 0 0"/>
             <!-- mount attached here -->
 
-            <body name="shoulder0" pos="-100E-03 0E-03 330E-03" euler="1.571 1.571 0">
+            <!-- Values of the real GH360 base position -->
+            <!-- <body name="shoulder0" pos="-100E-03 0E-03 330E-03" euler="1.571 1.571 0"> -->
+            <body name="shoulder0" pos="-100E-03 0E-03 200E-03" euler="1.571 1.571 0">
                 <geom name="shoulder0_vis" group="1" type="mesh" contype="0" conaffinity="0" mesh="shoulder0_mesh" pos="0 0 0" euler="0 0 0"/>
                 <geom name="shoulder0_col_back" group="0" type="box" pos="0E-03 140.5E-03 25E-03" size="86E-03 140.5E-03 31E-03" rgba=".95 .1 .1 0.6"/>
                 <geom name="shoulder0_col_top_1" group="0" type="box" pos="0E-03 275.00E-03 85.00E-03" size="86E-03 6E-03 91E-03" rgba=".95 .1 .1 0.6"/>

@@ -25,8 +25,6 @@ class TrajectoryFollowing(SingleArmEnv):
         controller_configs=None,
         gripper_types="default",
         initialization_noise="default",
-        use_latch=True,
-        table_offset=(0,0,0),
         action_punishment=False,
         force_punishment=False,
         stiffness_punishment=False,
@@ -35,6 +33,7 @@ class TrajectoryFollowing(SingleArmEnv):
         task_state_obs = False,
         use_camera_obs=True,
         use_object_obs=True,
+        via_point_cnt = 4,
         reward_scale=1.0,
         reward_shaping=False,
         placement_initializer=None,
@@ -63,6 +62,8 @@ class TrajectoryFollowing(SingleArmEnv):
         self.motor_obs = motor_obs
         self.q_vel_obs = q_vel_obs
         self.task_state_obs = task_state_obs
+        self.via_point_cnt = via_point_cnt
+        self.via_points_reached = 0
         # reward configuration
         self.reward_scale = reward_scale
         self.reward_shaping = reward_shaping
@@ -76,7 +77,7 @@ class TrajectoryFollowing(SingleArmEnv):
         # self.target_joint_angles = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         # self.via_point_offset = [-0.1576, 0.417, 1.05]
         self.via_point_offset = [-0.37, 0.47, 0.99]
-        self.status = 0
+        # self.status = 0
 
         super().__init__(
             robots=robots,
@@ -136,31 +137,43 @@ class TrajectoryFollowing(SingleArmEnv):
         force_punishment_scale = 0.1
 
         # sparse completion reward
-        if self._check_success():
-            reward = 1.0
+        # if self._check_success():
+        #     reward = 1.0
+        
+        target_via_point_pos = np.array(self.sim.data.body_xpos[self.sim.model.body_name2id(self.via_points[self.via_points_reached].root_body)])
+        dist = np.linalg.norm(target_via_point_pos - self._eef_xpos)
+        if dist < 0.01:
+            self.via_points_reached += 1
+            target_via_point_pos = np.array(self.sim.data.body_xpos[self.sim.model.body_name2id(self.via_points[self.via_points_reached].root_body)])
+            dist = np.linalg.norm(target_via_point_pos - self._eef_xpos)
 
-        # else, we consider only the case if we're using shaped rewards
-        elif self.reward_shaping:
+        reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
+        reward += reaching_reward
+        reward += 0.25 * self.via_points_reached
+
+
+        # # else, we consider only the case if we're using shaped rewards
+        # elif self.reward_shaping:
             # Add reaching component
-            if self.status == 0:
-                dist = np.linalg.norm(self._gripper_to_via_point_1)
-                reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
-                reward += reaching_reward
-            elif self.status == 1:
-                reward += 0.25
-                dist = np.linalg.norm(self._gripper_to_via_point_2)
-                reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
-                reward += reaching_reward
-            elif self.status == 2:
-                reward += 0.5
-                dist = np.linalg.norm(self._gripper_to_via_point_3)
-                reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
-                reward += reaching_reward
-            elif self.status == 3:
-                reward += 0.75
-                dist = np.linalg.norm(self._gripper_to_via_point_4)
-                reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
-                reward += reaching_reward
+            # if self.status == 0:
+            #     dist = np.linalg.norm(self._gripper_to_via_point_1)
+            #     reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
+            #     reward += reaching_reward
+            # elif self.status == 1:
+            #     reward += 0.25
+            #     dist = np.linalg.norm(self._gripper_to_via_point_2)
+            #     reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
+            #     reward += reaching_reward
+            # elif self.status == 2:
+            #     reward += 0.5
+            #     dist = np.linalg.norm(self._gripper_to_via_point_3)
+            #     reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
+            #     reward += reaching_reward
+            # elif self.status == 3:
+            #     reward += 0.75
+            #     dist = np.linalg.norm(self._gripper_to_via_point_4)
+            #     reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
+            #     reward += reaching_reward
         # Scale reward if requested
         if self.reward_scale is not None:
             reward *= self.reward_scale / 1.0
@@ -220,30 +233,11 @@ class TrajectoryFollowing(SingleArmEnv):
         )
 
         self.via_points = []
-        for i in range(4):
+        for i in range(self.via_point_cnt):
             self.via_points.append(ViaPointVisualObject(name="ViaPoint_"+str(i)))
 
         # self.via_point = ViaPointVisualObject(name="ViaPoint")
         self.placement_initializer = SequentialCompositeSampler(name="ObjectSampler")
-
-        # self.placement_initializer = UniformRandomSampler(
-        #         name="ObjectSampler",
-        #         mujoco_objects=self.via_point,
-        #         # x_range=[-0.01, 0.01],
-        #         # y_range=[-0.01, 0.01],
-        #         x_range=[-0.1, 0.1],
-        #         y_range=[-0.1, 0.1],
-        #         z_range=[-0.1, 0.1],
-        #         #rotation=(-np.pi / 2. - 0.25, -np.pi / 2.),
-        #         #rotation=(np.pi / 2., np.pi / 2. + 0.25),
-        #         #rotation=(np.pi / 2. -0.1, np.pi / 2. + 0.1),
-        #         rotation=0.0,
-        #         rotation_axis='z',
-        #         ensure_object_boundary_in_range=False,
-        #         ensure_valid_placement=False,
-        #         reference_pos=self.via_point_offset,
-        #         # z_offset=self.via_point_offset[2],
-        #     )
 
         for via_point in self.via_points:
             self.placement_initializer.append_sampler(
@@ -293,7 +287,8 @@ class TrajectoryFollowing(SingleArmEnv):
             OrderedDict: Dictionary mapping observable names to its corresponding Observable object
         """
         observables = super()._setup_observables()
-
+        sensors = []
+        names = []
 
         # low-level object information
         if self.use_object_obs:
@@ -301,62 +296,74 @@ class TrajectoryFollowing(SingleArmEnv):
             pf = self.robots[0].robot_model.naming_prefix
             modality = "object"
 
+            for i, via_point in enumerate(self.via_points):
+                via_point_sensors, via_points_sensor_names = self._create_via_point_sensors(i, via_point, modality)
+                sensors += via_point_sensors
+                names += via_points_sensor_names
+
+            @sensor(modality=modality)
+            def task_state(obs_cache):
+                return self.via_point_state
+            
+            sensors += [task_state]
+            names += ["task_state"]
+
             # Define sensor callbacks
             # @sensor(modality=modality)
             # def via_point_pos(obs_cache):
             #     return np.array(self.sim.data.body_xpos[self.object_body_ids["via_point"]])
             
-            @sensor(modality=modality)
-            def via_point_1_pos(obs_cache):
-                return self._via_point_1_xpos
+            # @sensor(modality=modality)
+            # def via_point_1_pos(obs_cache):
+            #     return self._via_point_1_xpos
             
-            @sensor(modality=modality)
-            def via_point_2_pos(obs_cache):
-                return self._via_point_2_xpos
+            # @sensor(modality=modality)
+            # def via_point_2_pos(obs_cache):
+            #     return self._via_point_2_xpos
             
-            @sensor(modality=modality)
-            def via_point_3_pos(obs_cache):
-                return self._via_point_3_xpos
+            # @sensor(modality=modality)
+            # def via_point_3_pos(obs_cache):
+            #     return self._via_point_3_xpos
         
-            @sensor(modality=modality)
-            def via_point_4_pos(obs_cache):
-                return self._via_point_3_xpos
+            # @sensor(modality=modality)
+            # def via_point_4_pos(obs_cache):
+            #     return self._via_point_3_xpos
             
-            @sensor(modality=modality)
-            def task_state(obs_cache):
-                return self.via_point_state
-
-            @sensor(modality=modality)
-            def via_point_1_to_eef_pos(obs_cache):
-                return obs_cache["via_point_1_pos"] - obs_cache[f"{pf}eef_pos"] if\
-                    "via_point_1_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
-            
-            @sensor(modality=modality)
-            def via_point_2_to_eef_pos(obs_cache):
-                return obs_cache["via_point_2_pos"] - obs_cache[f"{pf}eef_pos"] if\
-                    "via_point_2_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
-            
-            @sensor(modality=modality)
-            def via_point_3_to_eef_pos(obs_cache):
-                return obs_cache["via_point_3_pos"] - obs_cache[f"{pf}eef_pos"] if\
-                    "via_point_3_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
-            
-            @sensor(modality=modality)
-            def via_point_4_to_eef_pos(obs_cache):
-                return obs_cache["via_point_4_pos"] - obs_cache[f"{pf}eef_pos"] if\
-                    "via_point_4_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
+            # @sensor(modality=modality)
+            # def task_state(obs_cache):
+            #     return self.via_point_state
 
             # @sensor(modality=modality)
-            # def handle_to_eef_pos(obs_cache):
-            #     return obs_cache["handle_pos"] - obs_cache[f"{pf}eef_pos"] if\
-            #         "handle_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
-
+            # def via_point_1_to_eef_pos(obs_cache):
+            #     return obs_cache["via_point_1_pos"] - obs_cache[f"{pf}eef_pos"] if\
+            #         "via_point_1_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
+            
             # @sensor(modality=modality)
-            # def hinge_qpos(obs_cache):
-            #     return np.array([self.sim.data.qpos[self.hinge_qpos_addr]])
+            # def via_point_2_to_eef_pos(obs_cache):
+            #     return obs_cache["via_point_2_pos"] - obs_cache[f"{pf}eef_pos"] if\
+            #         "via_point_2_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
+            
+            # @sensor(modality=modality)
+            # def via_point_3_to_eef_pos(obs_cache):
+            #     return obs_cache["via_point_3_pos"] - obs_cache[f"{pf}eef_pos"] if\
+            #         "via_point_3_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
+            
+            # @sensor(modality=modality)
+            # def via_point_4_to_eef_pos(obs_cache):
+            #     return obs_cache["via_point_4_pos"] - obs_cache[f"{pf}eef_pos"] if\
+            #         "via_point_4_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
 
-            sensors = [via_point_1_pos, via_point_2_pos, via_point_3_pos, via_point_4_pos, via_point_1_to_eef_pos, via_point_2_to_eef_pos, via_point_3_to_eef_pos, via_point_4_to_eef_pos, task_state]
-            names = [s.__name__ for s in sensors]
+            # # @sensor(modality=modality)
+            # # def handle_to_eef_pos(obs_cache):
+            # #     return obs_cache["handle_pos"] - obs_cache[f"{pf}eef_pos"] if\
+            # #         "handle_pos" in obs_cache and f"{pf}eef_pos" in obs_cache else np.zeros(3)
+
+            # # @sensor(modality=modality)
+            # # def hinge_qpos(obs_cache):
+            # #     return np.array([self.sim.data.qpos[self.hinge_qpos_addr]])
+
+            # sensors = [via_point_1_pos, via_point_2_pos, via_point_3_pos, via_point_4_pos, via_point_1_to_eef_pos, via_point_2_to_eef_pos, via_point_3_to_eef_pos, via_point_4_to_eef_pos, task_state]
+            # names = [s.__name__ for s in sensors]
 
             # Also append handle qpos if we're using a locked door version with rotatable handle
             # if self.use_latch:
@@ -374,7 +381,11 @@ class TrajectoryFollowing(SingleArmEnv):
                     sampling_rate=self.control_freq,
                 )
 
-        observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_1_pos", "via_point_1_to_eef_pos", "via_point_2_pos", "via_point_2_to_eef_pos", "via_point_3_pos", "via_point_3_to_eef_pos"]
+        # observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_1_pos", "via_point_1_to_eef_pos", "via_point_2_pos", "via_point_2_to_eef_pos", "via_point_3_pos", "via_point_3_to_eef_pos"]
+        observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat"]
+        for i in range(self.via_point_cnt):
+            observable_list.append(f"via_point{i}_pos")
+            observable_list.append(f"gripper_to_via_point{i}")
         if self.motor_obs:
             observable_list.insert(1, f"{pf}motor_pos")
         if self.q_vel_obs:
@@ -391,13 +402,51 @@ class TrajectoryFollowing(SingleArmEnv):
 
         return observables
 
+    def _create_via_point_sensors(self, i, via_point, modality="object"):
+        """
+        Helper function to create sensors for a given marker. This is abstracted in a separate function call so that we
+        don't have local function naming collisions during the _setup_observables() call.
+
+        Args:
+            i (int): ID number corresponding to the marker
+            marker (MujocoObject): Marker to create sensors for
+            modality (str): Modality to assign to all sensors
+
+        Returns:
+            2-tuple:
+                sensors (list): Array of sensors for the given marker
+                names (list): array of corresponding observable names
+        """
+        pf = self.robots[0].robot_model.naming_prefix
+
+        @sensor(modality=modality)
+        def via_point_pos(obs_cache):
+            # return self.sim.data.site_xpos[self.via_point_site_ids[0]]
+            return np.array(self.sim.data.body_xpos[self.sim.model.body_name2id(via_point.root_body)])
+
+        
+
+        @sensor(modality=modality)
+        def gripper_to_via_point(obs_cache):
+            return (
+                obs_cache[f"via_point{i}_pos"] - obs_cache[f"{pf}eef_pos"]
+                if f"via_point{i}_pos" in obs_cache and f"{pf}eef_pos" in obs_cache
+                else np.zeros(3)
+            )
+
+        sensors = [via_point_pos, gripper_to_via_point]
+        names = [f"via_point{i}_pos", f"gripper_to_via_point{i}"]
+
+        return sensors, names
+
     def _reset_internal(self):
         """
         Resets simulation internal configurations.
         """
         super()._reset_internal()
 
-        self.status = 0
+        # self.status = 4-self.via_point_cnt
+        self.via_points_reached = 0
 
         # Reset all object positions using initializer sampler if we're not directly loading from an xml
         if not self.deterministic_reset:
@@ -436,21 +485,26 @@ class TrajectoryFollowing(SingleArmEnv):
         Returns:
             bool: True if door has been opened
         """
+        # Lookup current target position
+        # check distance to target position
+        # If smaller then threshold increase target index 
+
+
         # hinge_qpos = self.sim.data.qpos[self.hinge_qpos_addr]
         # print("Status: ", self.status)
         # print("Distance: ", self._gripper_to_via_point_1)
-        if self.status == 0 and (np.abs(self._gripper_to_via_point_1) < 0.01).all():
-            print("status 1")
-            self.status = 1
-        elif self.status == 1 and (np.abs(self._gripper_to_via_point_2) < 0.01).all():
-            print("status 2")
-            self.status = 2
-        elif self.status == 2 and (np.abs(self._gripper_to_via_point_3) < 0.01).all():
-            print("status 3")
-            self.status = 3
-        elif self.status == 3 and (np.abs(self._gripper_to_via_point_4) < 0.001).all():
-            print("goal reached")
-            return True
+        # if self.status == 0 and (np.abs(self._gripper_to_via_point_1) < 0.01).all():
+        #     print("status 1")
+        #     self.status = 1
+        # elif self.status == 1 and (np.abs(self._gripper_to_via_point_2) < 0.01).all():
+        #     print("status 2")
+        #     self.status = 2
+        # elif self.status == 2 and (np.abs(self._gripper_to_via_point_3) < 0.01).all():
+        #     print("status 3")
+        #     self.status = 3
+        # elif self.status == 3 and (np.abs(self._gripper_to_via_point_4) < 0.001).all():
+        #     print("goal reached")
+        #     return True
         return False
         # return (self._eef_xpos == self._via_point_xpos).all()
 
@@ -474,97 +528,98 @@ class TrajectoryFollowing(SingleArmEnv):
         #         target_type="site"
         #     )
 
-    @property
-    def _via_point_1_xpos(self):
-        """
-        Grabs the position of the door handle handle.
+    # @property
+    # def _via_point_1_xpos(self):
+    #     """
+    #     Grabs the position of the door handle handle.
 
-        Returns:
-            np.array: Door handle (x,y,z)
-        """
-        return self.sim.data.site_xpos[self.via_point_site_ids[0]]
+    #     Returns:
+    #         np.array: Door handle (x,y,z)
+    #     """
+    #     return self.sim.data.site_xpos[self.via_point_site_ids[0]]
     
-    @property
-    def _via_point_2_xpos(self):
-        """
-        Grabs the position of the door handle handle.
+    # @property
+    # def _via_point_2_xpos(self):
+    #     """
+    #     Grabs the position of the door handle handle.
 
-        Returns:
-            np.array: Door handle (x,y,z)
-        """
-        return self.sim.data.site_xpos[self.via_point_site_ids[1]]
+    #     Returns:
+    #         np.array: Door handle (x,y,z)
+    #     """
+    #     return self.sim.data.site_xpos[self.via_point_site_ids[1]]
     
-    @property
-    def _via_point_3_xpos(self):
-        """
-        Grabs the position of the door handle handle.
+    # @property
+    # def _via_point_3_xpos(self):
+    #     """
+    #     Grabs the position of the door handle handle.
 
-        Returns:
-            np.array: Door handle (x,y,z)
-        """
-        return self.sim.data.site_xpos[self.via_point_site_ids[2]]
+    #     Returns:
+    #         np.array: Door handle (x,y,z)
+    #     """
+    #     return self.sim.data.site_xpos[self.via_point_site_ids[2]]
     
-    @property
-    def _via_point_4_xpos(self):
-        """
-        Grabs the position of the door handle handle.
+    # @property
+    # def _via_point_4_xpos(self):
+    #     """
+    #     Grabs the position of the door handle handle.
 
-        Returns:
-            np.array: Door handle (x,y,z)
-        """
-        return self.sim.data.site_xpos[self.via_point_site_ids[3]]
+    #     Returns:
+    #         np.array: Door handle (x,y,z)
+    #     """
+    #     return self.sim.data.site_xpos[self.via_point_site_ids[3]]
 
-    @property
-    def _gripper_to_via_point_1(self):
-        """
-        Calculates distance from the gripper to the door handle.
+    # @property
+    # def _gripper_to_via_point_1(self):
+    #     """
+    #     Calculates distance from the gripper to the door handle.
 
-        Returns:
-            np.array: (x,y,z) distance between handle and eef
-        """
-        # print("Handle Pos: ",self._handle_xpos)
-        # print("Eef Pos: ", self._eef_xpos)
-        return self._via_point_1_xpos - self._eef_xpos
+    #     Returns:
+    #         np.array: (x,y,z) distance between handle and eef
+    #     """
+    #     # print("Handle Pos: ",self._handle_xpos)
+    #     # print("Eef Pos: ", self._eef_xpos)
+    #     return self._via_point_1_xpos - self._eef_xpos
     
-    @property
-    def _gripper_to_via_point_2(self):
-        """
-        Calculates distance from the gripper to the door handle.
+    # @property
+    # def _gripper_to_via_point_2(self):
+    #     """
+    #     Calculates distance from the gripper to the door handle.
 
-        Returns:
-            np.array: (x,y,z) distance between handle and eef
-        """
-        return self._via_point_2_xpos - self._eef_xpos
+    #     Returns:
+    #         np.array: (x,y,z) distance between handle and eef
+    #     """
+    #     return self._via_point_2_xpos - self._eef_xpos
     
-    @property
-    def _gripper_to_via_point_3(self):
-        """
-        Calculates distance from the gripper to the door handle.
+    # @property
+    # def _gripper_to_via_point_3(self):
+    #     """
+    #     Calculates distance from the gripper to the door handle.
 
-        Returns:
-            np.array: (x,y,z) distance between handle and eef
-        """
-        return self._via_point_3_xpos - self._eef_xpos
+    #     Returns:
+    #         np.array: (x,y,z) distance between handle and eef
+    #     """
+    #     return self._via_point_3_xpos - self._eef_xpos
     
-    @property
-    def _gripper_to_via_point_4(self):
-        """
-        Calculates distance from the gripper to the door handle.
+    # @property
+    # def _gripper_to_via_point_4(self):
+    #     """
+    #     Calculates distance from the gripper to the door handle.
 
-        Returns:
-            np.array: (x,y,z) distance between handle and eef
-        """
-        return self._via_point_4_xpos - self._eef_xpos
+    #     Returns:
+    #         np.array: (x,y,z) distance between handle and eef
+    #     """
+    #     return self._via_point_4_xpos - self._eef_xpos
     
     @property
     def via_point_state(self):
-        if self.status == 0:
-            return np.array([1, 0, 0, 0])
-        elif self.status == 1:
-            return np.array([0, 1, 0, 0])
-        elif self.status == 2:
-            return np.array([0, 0, 1, 0])
-        elif self.status == 3:
-            return np.array([0, 0, 0, 1])
+        # if self.status == 0:
+        #     return np.array([1, 0, 0, 0])
+        # elif self.status == 1:
+        #     return np.array([0, 1, 0, 0])
+        # elif self.status == 2:
+        #     return np.array([0, 0, 1, 0])
+        # elif self.status == 3:
+        #     return np.array([0, 0, 0, 1])
+        return self.via_points_reached/self.via_point_cnt
 
     
