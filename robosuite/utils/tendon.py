@@ -101,7 +101,7 @@ class Tendon:
             self.tendon_max = False
         
         
-        return f_tendon
+        return -f_tendon
 
     def update_active_pulley(self, delta_active, absolute_pos = False):
             if not absolute_pos:

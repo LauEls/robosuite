@@ -8,7 +8,7 @@
       "r_active": 15.6,
       "r_passive": 40,
       "r_tendon": 1.5,
-      "id": 17,
+      "id": 18,
       "alpha_passive_zero": 2.7936071344430391,
       "l_relaxed": 184.44311255778268,
       "alpha_active_zero": 1.9522577849185718
@@ -18,7 +18,7 @@
       "r_active": 15.6,
       "r_passive": 40,
       "r_tendon": 1.5,
-      "id": 18,
+      "id": 17,
       "alpha_passive_zero": 0.86204575003230988,
       "l_relaxed": 189.82019144005557,
       "alpha_active_zero": 10.885450761952493
@@ -30,7 +30,7 @@
       "r_active": 15.6,
       "r_passive": 40,
       "r_tendon": 1.5,
-      "id": 19,
+      "id": 20,
       "alpha_passive_zero": 3.38434861019518,
       "l_relaxed": 218.56668607550952,
       "alpha_active_zero": 2.3214459133878309
@@ -40,7 +40,7 @@
       "r_active": 15.6,
       "r_passive": 40,
       "r_tendon": 1.5,
-      "id": 20,
+      "id": 19,
       "alpha_passive_zero": 0.18376009989965836,
       "l_relaxed": 183.43251440069093,
       "alpha_active_zero": 10.603806807863748

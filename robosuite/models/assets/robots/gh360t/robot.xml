@@ -36,8 +36,8 @@
             <!-- mount attached here -->
 
             <!-- Values of the real GH360 base position -->
-            <!-- <body name="shoulder0" pos="-100E-03 0E-03 330E-03" euler="1.571 1.571 0"> -->
-            <body name="shoulder0" pos="-100E-03 0E-03 200E-03" euler="1.571 1.571 0">
+            <body name="shoulder0" pos="-100E-03 0E-03 330E-03" euler="1.571 1.571 0">
+            <!-- <body name="shoulder0" pos="-100E-03 0E-03 200E-03" euler="1.571 1.571 0"> -->
                 <geom name="shoulder0_vis" group="1" type="mesh" contype="0" conaffinity="0" mesh="shoulder0_mesh" pos="0 0 0" euler="0 0 0"/>
                 <geom name="shoulder0_col_back" group="0" type="box" pos="0E-03 140.5E-03 25E-03" size="86E-03 140.5E-03 31E-03" rgba=".95 .1 .1 0.6"/>
                 <geom name="shoulder0_col_top_1" group="0" type="box" pos="0E-03 275.00E-03 85.00E-03" size="86E-03 6E-03 91E-03" rgba=".95 .1 .1 0.6"/>
@@ -51,13 +51,13 @@
 
                 <site name="shoulder_yaw_active_right_top" pos="53.3997E-03 264.1E-03 32.3576E-03" />
                 <site name="shoulder_yaw_active_right_bot" pos="85.3499E-03 257.6E-03 48.7206E-03" />
-                <site name="shoulder_yaw_active_left_top" pos="-85.3499E-03 254.295E-03 48.7206E-03" />
-                <site name="shoulder_yaw_active_left_bot" pos="-53.3997E-03 260.795E-03 32.3576E-03" />
+                <site name="shoulder_yaw_active_left_bot" pos="-85.3499E-03 254.295E-03 48.7206E-03" />
+                <site name="shoulder_yaw_active_left_top" pos="-53.3997E-03 260.795E-03 32.3576E-03" />
 
                 <site name="shoulder_yaw_side_right_top" pos="-48.7288E-03 260.5E-03 117.658E-03" />
                 <site name="shoulder_yaw_side_right_bot" pos="75.8198E-03 260.5E-03 181.444E-03" />
-                <site name="shoulder_yaw_side_left_top" pos="-75.8198E-03 253.50E-03 181.444E-03" />
-                <site name="shoulder_yaw_side_left_bot" pos="48.7288E-03 253.50E-03 117.658E-03" />
+                <site name="shoulder_yaw_side_left_bot" pos="-75.8198E-03 253.50E-03 181.444E-03" />
+                <site name="shoulder_yaw_side_left_top" pos="48.7288E-03 253.50E-03 117.658E-03" />
 
 
                 <body name="shoulder1" pos="0E-03 0E-03 0E-03">
@@ -74,13 +74,13 @@
                     <site name="shoulder_yaw_passive_right" pos="-10.988E-03 261.683E-03 253.325E-03" />
                     <site name="shoulder_yaw_passive_left" pos="10.988E-03 252.317E-03 253.325E-03" />
 
-                    <site name="shoulder_roll_active_right_top" pos="82.4476E-03 60.8886E-03 213.539E-03" />
-                    <site name="shoulder_roll_active_right_bot" pos="50.3448E-03 41.3152E-03 220.039E-03" />
+                    <site name="shoulder_roll_active_right_bot" pos="82.4476E-03 60.8886E-03 213.539E-03" />
+                    <site name="shoulder_roll_active_right_top" pos="50.3448E-03 41.3152E-03 220.039E-03" />
                     <site name="shoulder_roll_active_left_top" pos="-50.3448E-03 41.3152E-03 229.361E-03" />
                     <site name="shoulder_roll_active_left_bot" pos="-82.4476E-03 60.8886E-03 222.861E-03" />
 
-                    <site name="shoulder_roll_side_right_top" pos="49.9935E-03 174.306E-03 215.1750E-03" />
-                    <site name="shoulder_roll_side_right_bot" pos="-35.6138E-03 122.11E-03 215.175E-03" />
+                    <site name="shoulder_roll_side_right_bot" pos="49.9935E-03 174.306E-03 215.1750E-03" />
+                    <site name="shoulder_roll_side_right_top" pos="-35.6138E-03 122.11E-03 215.175E-03" />
                     <site name="shoulder_roll_side_left_top" pos="35.6138E-03 122.11E-03 224.4250E-03" />
                     <site name="shoulder_roll_side_left_bot" pos="-49.9935E-03 174.306E-03 224.4250E-03" />
 
@@ -113,7 +113,7 @@
                         <site name="shoulder_pitch_side_left_bot" pos="-5.50E-03 247.184E-03 303.125E-03" />
                         
                         <body name="shoulder3" pos="0E-03 0E-03 0E-03">
-                            <joint name="shoulder3_joint" type="hinge" axis="-1 0 0" pos="-63E-03 219.896E-03 346.801E-03" limited="true" range="0 1.57" />
+                            <joint name="shoulder3_joint" type="hinge" axis="-1 0 0" pos="-63E-03 219.896E-03 346.801E-03" limited="true" range="-0.2 1.57" />
                             <geom name="shoulder3_vis" group="1" type="mesh" mesh="shoulder3_mesh" pos="0 0 0" euler="0 0 0"/>
 
                             <geom name="shoulder_pitch_passive_pulley" group="4" type="cylinder" fromto="-10.00E-03 219.896E-03 346.801E-03 10.00E-03 219.896E-03 346.801E-03" size="50E-03" rgba=".2 .2 .5 0.6" />
@@ -130,16 +130,16 @@
 
                                 <inertial pos="-2.114E-03 133.964E-03 364.032E-03" mass="818.378E-03" fullinertia="9.134E-04 3.100E-03 3.103E-03 -2.038E-04 14733.703E-09 -1.596E-04" />
 
-                                <site name="upperarm_roll_active_right_top" pos="82.8205E-03 106.417E-03 359.301E-03" />
-                                <site name="upperarm_roll_active_right_bot" pos="67.6105E-03 99.917E-03 387.549E-03" />
-                                <site name="upperarm_roll_active_left_top" pos="-67.689E-03 89.417E-03 387.31E-03" />
-                                <site name="upperarm_roll_active_left_bot" pos="-82.7141E-03 82.917E-03 358.932E-03" />
+                                <site name="upperarm_roll_active_right_bot" pos="82.8205E-03 106.417E-03 359.301E-03" />
+                                <site name="upperarm_roll_active_right_top" pos="67.6105E-03 99.917E-03 387.549E-03" />
+                                <site name="upperarm_roll_active_left_bot" pos="-67.689E-03 89.417E-03 387.31E-03" />
+                                <site name="upperarm_roll_active_left_top" pos="-82.7141E-03 82.917E-03 358.932E-03" />
 
-                                <site name="upperarm_roll_side_right_top" pos="-12.3747E-03 108.3170E-03 289.955E-03" /> <!-- 33.7182E-03 108.3170E-03 303.67E-03 -->
+                                <site name="upperarm_roll_side_right_bot" pos="-12.3747E-03 108.3170E-03 289.955E-03" /> <!-- 33.7182E-03 108.3170E-03 303.67E-03 -->
                                 <!-- <site name="upperarm_roll_side_right_top_2" pos="29.13E-03 108.3170E-03 290.172E-03" />  0.355E-03 108.3170E-03 260E-03 -->
-                                <site name="upperarm_roll_side_right_bot" pos="-42.6862E-03 100.3170E-03 346.249E-03" /> <!-- -5.86335E-03 100.3170E-03 377.18E-03 -->
-                                <site name="upperarm_roll_side_left_top" pos="43.3349E-03 92.3170E-03 346.449E-03" /> <!-- 6.36903E-03 92.3170E-03 377.209E-03 --> <!-- 50.355E-03 92.3170E-03 350.117E-03 -->
-                                <site name="upperarm_roll_side_left_bot" pos="13.488E-03 84.3170E-03 290.076E-03" /> <!-- -32.7313E-03 84.3170E-03 303.359E-03 -->
+                                <site name="upperarm_roll_side_right_top" pos="-42.6862E-03 100.3170E-03 346.249E-03" /> <!-- -5.86335E-03 100.3170E-03 377.18E-03 -->
+                                <site name="upperarm_roll_side_left_bot" pos="43.3349E-03 92.3170E-03 346.449E-03" /> <!-- 6.36903E-03 92.3170E-03 377.209E-03 --> <!-- 50.355E-03 92.3170E-03 350.117E-03 -->
+                                <site name="upperarm_roll_side_left_top" pos="13.488E-03 84.3170E-03 290.076E-03" /> <!-- -32.7313E-03 84.3170E-03 303.359E-03 -->
 
                                 <body name="upperarm1" pos="0E-03 0E-03 0E-03">
                                     <joint name="upperarm1_joint" type="hinge" axis="0 1 0" pos="0.855E-03 113.317E-03 333.117E-03" limited="true" range="-3.0 3.0" />
@@ -151,10 +151,10 @@
 
                                     <site name="upperarm_roll_side_right_top_2" pos="-55E-03 108.3170E-03 333.117E-03" />
 
-                                    <site name="upperarm_roll_passive_right_top" pos="-32.9224E-03 108.3170E-03 362.661E-03" />
-                                    <site name="upperarm_roll_passive_right_bot" pos="6.51711E-03 100.317E-03 289.046E-03" />
-                                    <site name="upperarm_roll_passive_left_top" pos="-5.67206E-03 92.317E-03 289.027E-03" />
-                                    <site name="upperarm_roll_passive_left_bot" pos="33.4977E-03 84.3170E-03 362.812E-03" />
+                                    <site name="upperarm_roll_passive_right_bot" pos="-32.9224E-03 108.3170E-03 362.661E-03" />
+                                    <site name="upperarm_roll_passive_right_top" pos="6.51711E-03 100.317E-03 289.046E-03" />
+                                    <site name="upperarm_roll_passive_left_bot" pos="-5.67206E-03 92.317E-03 289.027E-03" />
+                                    <site name="upperarm_roll_passive_left_top" pos="33.4977E-03 84.3170E-03 362.812E-03" />
 
                                     <site name="elbow_active_right_top" pos="41.355E-03 41.9463E-03 342.071E-03" />
                                     <site name="elbow_active_right_bot" pos="34.855E-03 46.788E-03 374.791E-03" />
@@ -242,26 +242,26 @@
             <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_right_bot" />
             <site site="shoulder_yaw_passive_right" />         
         </spatial>
-        <spatial name="tendon_shoulder_yaw_left_top" width="2E-03" rgba=".3 .95 .3 1" damping="200">
-            <site site="shoulder_yaw_active_left_top" />
-            <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_left_top" />
-            <site site="shoulder_yaw_passive_left" />         
-        </spatial>
-        <spatial name="tendon_shoulder_yaw_left_bot" width="2E-03" rgba=".95 .3 .3 1" damping="200">
+        <spatial name="tendon_shoulder_yaw_left_bot" width="2E-03" rgba=".3 .95 .3 1" damping="200">
             <site site="shoulder_yaw_active_left_bot" />
             <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_left_bot" />
             <site site="shoulder_yaw_passive_left" />         
         </spatial>
+        <spatial name="tendon_shoulder_yaw_left_top" width="2E-03" rgba=".95 .3 .3 1" damping="200">
+            <site site="shoulder_yaw_active_left_top" />
+            <geom geom="shoulder_yaw_passive_pulley" sidesite="shoulder_yaw_side_left_top" />
+            <site site="shoulder_yaw_passive_left" />         
+        </spatial>
 
         <!--Shoulder Roll-->
-        <spatial name="tendon_shoulder_roll_right_top" width="2E-03" rgba=".95 .3 .3 1" damping="200">
-            <site site="shoulder_roll_active_right_top" />
-            <geom geom="shoulder_roll_passive_pulley" sidesite="shoulder_roll_side_right_top" />
-            <site site="shoulder_roll_passive_right" />         
-        </spatial>
-        <spatial name="tendon_shoulder_roll_right_bot" width="2E-03" rgba=".3 .95 .3 1" damping="200">
+        <spatial name="tendon_shoulder_roll_right_bot" width="2E-03" rgba=".95 .3 .3 1" damping="200">
             <site site="shoulder_roll_active_right_bot" />
             <geom geom="shoulder_roll_passive_pulley" sidesite="shoulder_roll_side_right_bot" />
+            <site site="shoulder_roll_passive_right" />         
+        </spatial>
+        <spatial name="tendon_shoulder_roll_right_top" width="2E-03" rgba=".3 .95 .3 1" damping="200">
+            <site site="shoulder_roll_active_right_top" />
+            <geom geom="shoulder_roll_passive_pulley" sidesite="shoulder_roll_side_right_top" />
             <site site="shoulder_roll_passive_right" />         
         </spatial>
         <spatial name="tendon_shoulder_roll_left_top" width="2E-03" rgba=".3 .95 .3 1" damping="200">
@@ -384,29 +384,29 @@
         <position ctrllimited="true" ctrlrange="-1.5708 1.5708" gear="1" joint="lowerarm2_joint"/> -->
 
         <motor ctrllimited="true" ctrlrange="-2.59 2.59" name="motor_lowerarm_roll" joint="lowerarm1_joint" />
-        <motor name="motor_shoulder_yaw_right_top" tendon="tendon_shoulder_yaw_right_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_shoulder_yaw_right_bot" tendon="tendon_shoulder_yaw_right_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_shoulder_yaw_left_top" tendon="tendon_shoulder_yaw_left_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_shoulder_yaw_left_bot" tendon="tendon_shoulder_yaw_left_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_shoulder_roll_right_top" tendon="tendon_shoulder_roll_right_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_shoulder_roll_right_bot" tendon="tendon_shoulder_roll_right_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_shoulder_roll_left_top" tendon="tendon_shoulder_roll_left_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_shoulder_roll_left_bot" tendon="tendon_shoulder_roll_left_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_shoulder_pitch_right_top" tendon="tendon_shoulder_pitch_right_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_shoulder_pitch_right_bot" tendon="tendon_shoulder_pitch_right_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_shoulder_pitch_left_top" tendon="tendon_shoulder_pitch_left_top" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_shoulder_pitch_left_bot" tendon="tendon_shoulder_pitch_left_bot" ctrllimited="true" ctrlrange="0.0 312.2222"/>
-        <motor name="motor_upperarm_roll_right_top" tendon="tendon_upperarm_roll_right_top" ctrllimited="true" ctrlrange="0.0 360.2564"/>
-        <motor name="motor_upperarm_roll_right_bot" tendon="tendon_upperarm_roll_right_bot" ctrllimited="true" ctrlrange="0.0 360.2564"/>
-        <motor name="motor_upperarm_roll_left_top" tendon="tendon_upperarm_roll_left_top" ctrllimited="true" ctrlrange="0.0 360.2564"/>
-        <motor name="motor_upperarm_roll_left_bot" tendon="tendon_upperarm_roll_left_bot" ctrllimited="true" ctrlrange="0.0 360.2564"/>
-        <motor name="motor_elbow_right_top" tendon="tendon_elbow_right_top" ctrllimited="true" ctrlrange="0.0 360.2564"/>
-        <motor name="motor_elbow_right_bot" tendon="tendon_elbow_right_bot" ctrllimited="true" ctrlrange="0.0 360.2564"/>
-        <motor name="motor_elbow_left_top" tendon="tendon_elbow_left_top" ctrllimited="true" ctrlrange="0.0 360.2564"/>
-        <motor name="motor_elbow_left_bot" tendon="tendon_elbow_left_bot" ctrllimited="true" ctrlrange="0.0 360.2564"/>
-        <motor name="motor_wrist_pitch_right_top" tendon="tendon_wrist_pitch_right_top" ctrllimited="true" ctrlrange="0.0 184.6154"/>
-        <motor name="motor_wrist_pitch_right_bot" tendon="tendon_wrist_pitch_right_bot" ctrllimited="true" ctrlrange="0.0 184.6154"/>
-        <motor name="motor_wrist_pitch_left_top" tendon="tendon_wrist_pitch_left_top" ctrllimited="true" ctrlrange="0.0 184.6154"/>
-        <motor name="motor_wrist_pitch_left_bot" tendon="tendon_wrist_pitch_left_bot" ctrllimited="true" ctrlrange="0.0 184.6154"/>
+        <motor name="motor_shoulder_yaw_right_top" tendon="tendon_shoulder_yaw_right_top" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_shoulder_yaw_right_bot" tendon="tendon_shoulder_yaw_right_bot" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_shoulder_yaw_left_top" tendon="tendon_shoulder_yaw_left_top" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_shoulder_yaw_left_bot" tendon="tendon_shoulder_yaw_left_bot" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_shoulder_roll_right_top" tendon="tendon_shoulder_roll_right_top" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_shoulder_roll_right_bot" tendon="tendon_shoulder_roll_right_bot" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_shoulder_roll_left_top" tendon="tendon_shoulder_roll_left_top" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_shoulder_roll_left_bot" tendon="tendon_shoulder_roll_left_bot" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_shoulder_pitch_right_top" tendon="tendon_shoulder_pitch_right_top" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_shoulder_pitch_right_bot" tendon="tendon_shoulder_pitch_right_bot" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_shoulder_pitch_left_top" tendon="tendon_shoulder_pitch_left_top" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_shoulder_pitch_left_bot" tendon="tendon_shoulder_pitch_left_bot" ctrllimited="true" ctrlrange="-312.2222 0.0"/>
+        <motor name="motor_upperarm_roll_right_top" tendon="tendon_upperarm_roll_right_top" ctrllimited="true" ctrlrange="-360.2564 0.0"/>
+        <motor name="motor_upperarm_roll_right_bot" tendon="tendon_upperarm_roll_right_bot" ctrllimited="true" ctrlrange="-360.2564 0.0"/>
+        <motor name="motor_upperarm_roll_left_top" tendon="tendon_upperarm_roll_left_top" ctrllimited="true" ctrlrange="-360.2564 0.0"/>
+        <motor name="motor_upperarm_roll_left_bot" tendon="tendon_upperarm_roll_left_bot" ctrllimited="true" ctrlrange="-360.2564 0.0"/>
+        <motor name="motor_elbow_right_top" tendon="tendon_elbow_right_top" ctrllimited="true" ctrlrange="-360.2564 0.0"/>
+        <motor name="motor_elbow_right_bot" tendon="tendon_elbow_right_bot" ctrllimited="true" ctrlrange="-360.2564 0.0"/>
+        <motor name="motor_elbow_left_top" tendon="tendon_elbow_left_top" ctrllimited="true" ctrlrange="-360.2564 0.0"/>
+        <motor name="motor_elbow_left_bot" tendon="tendon_elbow_left_bot" ctrllimited="true" ctrlrange="-360.2564 0.0"/>
+        <motor name="motor_wrist_pitch_right_top" tendon="tendon_wrist_pitch_right_top" ctrllimited="true" ctrlrange="-184.6154 0.0"/>
+        <motor name="motor_wrist_pitch_right_bot" tendon="tendon_wrist_pitch_right_bot" ctrllimited="true" ctrlrange="-184.6154 0.0"/>
+        <motor name="motor_wrist_pitch_left_top" tendon="tendon_wrist_pitch_left_top" ctrllimited="true" ctrlrange="-184.6154 0.0"/>
+        <motor name="motor_wrist_pitch_left_bot" tendon="tendon_wrist_pitch_left_bot" ctrllimited="true" ctrlrange="-184.6154 0.0"/>
     </actuator>
 </mujoco>

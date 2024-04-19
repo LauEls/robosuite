@@ -322,10 +322,17 @@ class GH360TEquilibriumPointController(Controller):
         for i_joint in range(len(self.arm)):
             if self.arm[i_joint].motor_count == 2:
                 current_joint_torques = self.arm[i_joint].get_torques(self.joint_pos[i_joint])
+                
                 self.torques[self.arm[i_joint].tendon_right_pos.id] = current_joint_torques[0]
                 self.torques[self.arm[i_joint].tendon_right_neg.id] = current_joint_torques[1]
                 self.torques[self.arm[i_joint].tendon_left_pos.id] = current_joint_torques[2]
                 self.torques[self.arm[i_joint].tendon_left_neg.id] = current_joint_torques[3]
+
+                # if self.arm[i_joint].joint_name == "shoulder_pitch":
+                #     print("shoulder_pitch torques: ",current_joint_torques)
+                #     print("tendon_ids: ", [self.arm[i_joint].tendon_right_pos.id, self.arm[i_joint].tendon_right_neg.id, self.arm[i_joint].tendon_left_pos.id, self.arm[i_joint].tendon_left_neg.id])
+                
+                # print("torques"+self.arm[i_joint].joint_name+": ",self.torques)
             else:
                 self.torques[self.arm[i_joint].id] = self.arm[i_joint].get_torques(self.joint_pos[i_joint],self.joint_vel[i_joint])
 
@@ -359,6 +366,10 @@ class GH360TEquilibriumPointController(Controller):
         super().run_controller()
 
         # Return final torques
+        # self.torques = np.zeros(25)
+        # self.torques[12] = -100.0
+        # print("shoulder_pitch: ",self.torques[9:13])
+        # print("torques: ",self.torques)
         return self.torques
 
     def reset_goal(self):

@@ -76,7 +76,7 @@ class TrajectoryFollowing(SingleArmEnv):
 
         # self.target_joint_angles = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         # self.via_point_offset = [-0.1576, 0.417, 1.05]
-        self.via_point_offset = [-0.37, 0.47, 0.99]
+        self.via_point_offset = [-0.37, 0.47, 1.12]
         # self.status = 0
 
         super().__init__(

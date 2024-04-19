@@ -8,7 +8,7 @@
       "r_active": 18,
       "r_passive": 50,
       "r_tendon": 1.5,
-      "id": 9,
+      "id": 10,
       "alpha_passive_zero": 2.5223842065780842,
       "l_relaxed": 264.50460447863816,
       "alpha_active_zero": 1.6590653087709997
@@ -18,7 +18,7 @@
       "r_active": 18,
       "r_passive": 50,
       "r_tendon": 1.5,
-      "id": 10,
+      "id": 9,
       "alpha_passive_zero": 0.16594107264621097,
       "l_relaxed": 228.65795688815462,
       "alpha_active_zero": 9.5672884508463021
@@ -30,7 +30,7 @@
       "r_active": 18,
       "r_passive": 50,
       "r_tendon": 1.5,
-      "id": 11,
+      "id": 12,
       "alpha_passive_zero": 2.5223842065780842,
       "l_relaxed": 264.50460447863816,
       "alpha_active_zero": 1.6590653087709997
@@ -40,12 +40,12 @@
       "r_active": 18,
       "r_passive": 50,
       "r_tendon": 1.5,
-      "id": 12,
+      "id": 11,
       "alpha_passive_zero": 0.16594107264621097,
       "l_relaxed": 228.65795688815462,
       "alpha_active_zero": 9.5672884508463021
     }
   },
-  "motor_init_pos": 4.0,
+  "motor_init_pos": 4.5,
   "fixed_stiffness": 0.7854
 }

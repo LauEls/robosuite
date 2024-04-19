@@ -30,7 +30,7 @@
       "r_active": 18,
       "r_passive": 50.5,
       "r_tendon": 1.5,
-      "id": 7,
+      "id": 8,
       "alpha_passive_zero": 1.7284688338280281,
       "l_relaxed": 246.27804901211456,
       "alpha_active_zero": 8.1326823605425336
@@ -40,7 +40,7 @@
       "r_active": 18,
       "r_passive": 50.5,
       "r_tendon": 1.5,
-      "id": 8,
+      "id": 7,
       "alpha_passive_zero": 1.9507787651716406,
       "l_relaxed": 255.17044626585908,
       "alpha_active_zero": 8.6084222887914521
