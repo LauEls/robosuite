@@ -49,7 +49,6 @@ class GH360TEquilibriumPointController(Controller):
             self.control_dim = 13#MAYBE READ THAT OUT OF A CONFIG FILE -> should be 13 at the end
         elif self.stiffness_mode == "fixed" or self.stiffness_mode == "no_stiffness":
             self.control_dim = 7
-        # print("control dimensions: ",self.control_dim)
 
         # input and output max and min (allow for either explicit lists or single numbers)
         self.input_max = self.nums2array(input_max, self.control_dim)
@@ -65,12 +64,6 @@ class GH360TEquilibriumPointController(Controller):
         # self.variable_stiffness = variable_stiffness
         # self.soft = soft
 
-        # if self.variable_stiffness:
-        #     print("Equilibrium Point Controller with Variable Stiffness")
-        # elif self.soft:
-        #     print("Equilibrium Point Controller with no stiffness")
-        # else:
-        #     print("Equilibrium Point Cotnroller with fixed stiffness")
 
         # control frequency
         self.control_freq = policy_freq
