@@ -562,9 +562,9 @@ class TrajectoryFollowing(SingleArmEnv):
         info["total_ee_wrench"] = total_wrench_ee
 
         # Update force bias
-        if np.linalg.norm(self.ee_force_bias) == 0:
-            self.ee_force_bias = self.robots[0].ee_force
-            self.ee_torque_bias = self.robots[0].ee_torque
+        # if np.linalg.norm(self.ee_force_bias) == 0:
+        #     self.ee_force_bias = self.robots[0].ee_force
+        #     self.ee_torque_bias = self.robots[0].ee_torque
 
         # if self.get_info:
         #     info["add_vals"] = ["nwipedmarkers", "colls", "percent_viapoints_", "f_excess"]
