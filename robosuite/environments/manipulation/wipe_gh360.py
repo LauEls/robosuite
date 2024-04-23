@@ -737,6 +737,13 @@ class WipeGH360(SingleArmEnv):
         """
         reward, done, info = super()._post_action(action)
 
+        total_wrench_ee = np.linalg.norm(np.array(self.robots[0].recent_ee_forcetorques.current))
+
+        # print("ee_force: ", self.robots[0].ee_force)
+        # print("ee_torque: ", self.robots[0].ee_torque)
+        # print("recent_wrench", self.robots[0].recent_ee_forcetorques.current)
+        # print("total_wrench_ee: ", total_wrench_ee)
+
         # Update force bias
         if np.linalg.norm(self.ee_force_bias) == 0:
             self.ee_force_bias = self.robots[0].ee_force
@@ -748,6 +755,8 @@ class WipeGH360(SingleArmEnv):
             info["colls"] = self.collisions
             info["percent_viapoints_"] = len(self.wiped_markers) / self.num_markers
             info["f_excess"] = self.f_excess
+        
+        info["total_ee_wrench"] = total_wrench_ee
 
         # allow episode to finish early if allowed
         if self.early_terminations:

@@ -560,6 +560,9 @@ class DoorMirror(SingleArmEnv):
         """
         reward, done, info = super()._post_action(action)
 
+        total_wrench_ee = np.linalg.norm(np.array(self.robots[0].recent_ee_forcetorques.current))
+        info["total_ee_wrench"] = total_wrench_ee
+
         # Update force bias
         if np.linalg.norm(self.ee_force_bias) == 0:
             self.ee_force_bias = self.robots[0].ee_force
