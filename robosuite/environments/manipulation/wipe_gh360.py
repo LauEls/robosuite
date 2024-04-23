@@ -27,8 +27,8 @@ DEFAULT_WIPE_CONFIG = {
     "table_height_std": 0.0,  # Standard deviation to sample different heigths of the table each episode
     "line_width": 0.04,  # Width of the line to wipe (diameter of the pegs)
     "two_clusters": False,  # if the dirt to wipe is one continuous line or two
-    "coverage_factor": 0.6,  # how much of the table surface we cover
-    "num_markers": 50,  # How many particles of dirt to generate in the environment
+    "coverage_factor": 0.3,  # how much of the table surface we cover
+    "num_markers": 30,  # How many particles of dirt to generate in the environment
     # settings for thresholds
     "contact_threshold": 1.0,  # Minimum eef force to qualify as contact [N]
     "pressure_threshold": 0.5,  # force threshold (N) to overcome to get increased contact wiping reward
@@ -705,7 +705,7 @@ class WipeGH360(SingleArmEnv):
         if self.check_contact(self.robots[0].robot_model):
             if self.print_results:
                 print(40 * "-" + " COLLIDED " + 40 * "-")
-            terminated = True
+            # terminated = True
 
         # Prematurely terminate if task is success
         if self._check_success():
@@ -717,7 +717,7 @@ class WipeGH360(SingleArmEnv):
         if self.robots[0].check_q_limits():
             if self.print_results:
                 print(40 * "-" + " JOINT LIMIT " + 40 * "-")
-            terminated = True
+            # terminated = True
 
         return terminated
 

@@ -543,6 +543,41 @@ class DoorMirror(SingleArmEnv):
         """
         hinge_qpos = self.sim.data.qpos[self.hinge_qpos_addr]
         return hinge_qpos < -0.3
+    
+    def _post_action(self, action):
+        """
+        In addition to super method, add additional info if requested
+
+        Args:
+            action (np.array): Action to execute within the environment
+
+        Returns:
+            3-tuple:
+
+                - (float) reward from the environment
+                - (bool) whether the current episode is completed or not
+                - (dict) info about current env step
+        """
+        reward, done, info = super()._post_action(action)
+
+        # Update force bias
+        if np.linalg.norm(self.ee_force_bias) == 0:
+            self.ee_force_bias = self.robots[0].ee_force
+            self.ee_torque_bias = self.robots[0].ee_torque
+
+        # if self.get_info:
+        #     info["add_vals"] = ["nwipedmarkers", "colls", "percent_viapoints_", "f_excess"]
+        #     info["nwipedmarkers"] = len(self.wiped_markers)
+        #     info["colls"] = self.collisions
+        #     info["percent_viapoints_"] = len(self.wiped_markers) / self.num_markers
+        #     info["f_excess"] = self.f_excess
+
+        # allow episode to finish early if allowed
+        # if self.early_terminations:
+        #     done = done or self._check_success()
+        done = self._check_success()
+
+        return reward, done, info
 
     def visualize(self, vis_settings):
         """

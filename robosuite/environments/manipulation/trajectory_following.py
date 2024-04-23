@@ -34,6 +34,7 @@ class TrajectoryFollowing(SingleArmEnv):
         use_camera_obs=True,
         use_object_obs=True,
         via_point_cnt = 4,
+        fixed_quadrants = False,
         reward_scale=1.0,
         reward_shaping=False,
         placement_initializer=None,
@@ -63,6 +64,7 @@ class TrajectoryFollowing(SingleArmEnv):
         self.q_vel_obs = q_vel_obs
         self.task_state_obs = task_state_obs
         self.via_point_cnt = via_point_cnt
+        self.fixed_quadrants = fixed_quadrants
         self.via_points_reached = 0
         # reward configuration
         self.reward_scale = reward_scale
@@ -76,7 +78,7 @@ class TrajectoryFollowing(SingleArmEnv):
 
         # self.target_joint_angles = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         # self.via_point_offset = [-0.1576, 0.417, 1.05]
-        self.via_point_offset = [-0.37, 0.47, 1.12]
+        self.via_point_offset = np.array([-0.37, 0.47, 1.12])
         # self.status = 0
 
         super().__init__(
@@ -139,21 +141,21 @@ class TrajectoryFollowing(SingleArmEnv):
         # sparse completion reward
         # if self._check_success():
         #     reward = 1.0
-        
-        target_via_point_pos = np.array(self.sim.data.body_xpos[self.sim.model.body_name2id(self.via_points[self.via_points_reached].root_body)])
-        dist = np.linalg.norm(target_via_point_pos - self._eef_xpos)
-        if dist < 0.01:
-            if self.via_points_reached < self.via_point_cnt-1:
-                self.via_points_reached += 1
-                print("Via Point Reached: "+str(self.via_points_reached))
-            else:
-                print("via_points_reached: 4")
+        if self._check_success():
+            reward = 1.0
+        else:
             target_via_point_pos = np.array(self.sim.data.body_xpos[self.sim.model.body_name2id(self.via_points[self.via_points_reached].root_body)])
             dist = np.linalg.norm(target_via_point_pos - self._eef_xpos)
+            if dist < 0.05:
+                self.via_points_reached += 1
+                print("Via Point Reached: "+str(self.via_points_reached))
+                if self.via_points_reached < self.via_point_cnt-1:
+                    target_via_point_pos = np.array(self.sim.data.body_xpos[self.sim.model.body_name2id(self.via_points[self.via_points_reached].root_body)])
+                    dist = np.linalg.norm(target_via_point_pos - self._eef_xpos)
 
-        reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
-        reward += reaching_reward
-        reward += 0.25 * self.via_points_reached
+            reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
+            reward += reaching_reward
+            reward += 0.25 * self.via_points_reached
 
 
         # # else, we consider only the case if we're using shaped rewards
@@ -243,22 +245,46 @@ class TrajectoryFollowing(SingleArmEnv):
         # self.via_point = ViaPointVisualObject(name="ViaPoint")
         self.placement_initializer = SequentialCompositeSampler(name="ObjectSampler")
 
-        for via_point in self.via_points:
-            self.placement_initializer.append_sampler(
-                sampler=UniformRandomSampler(
-                    name=f"{via_point.name}ObjectSampler",
-                    mujoco_objects=via_point,
-                    x_range=[-0.1, 0.1],
-                    y_range=[-0.1, 0.1],
-                    z_range=[-0.1, 0.1],
-                    rotation=0.0,
-                    rotation_axis='z',
-                    ensure_object_boundary_in_range=False,
-                    ensure_valid_placement=False,
-                    reference_pos=self.via_point_offset,
-                    # z_offset=self.via_point_offset[2],
+        if self.fixed_quadrants and self.via_point_cnt == 4:
+            offset_adjustment = []
+            offset_adjustment.append(np.array([0.1, 0.0, 0.1]))
+            offset_adjustment.append(np.array([0.1, 0.0, -0.1]))
+            offset_adjustment.append(np.array([-0.1, 0.0, 0.1]))
+            offset_adjustment.append(np.array([-0.1, 0.0, -0.1]))
+
+            for i, via_point in enumerate(self.via_points):
+                self.placement_initializer.append_sampler(
+                    sampler=UniformRandomSampler(
+                        name=f"{via_point.name}ObjectSampler",
+                        mujoco_objects=via_point,
+                        x_range=[-0.01, 0.01],
+                        y_range=[-0.01, 0.01],
+                        z_range=[-0.01, 0.01],
+                        rotation=0.0,
+                        rotation_axis='z',
+                        ensure_object_boundary_in_range=False,
+                        ensure_valid_placement=False,
+                        reference_pos=self.via_point_offset+offset_adjustment[i],
+                        # z_offset=self.via_point_offset[2],
+                    )
                 )
-            )
+        else:
+            for i, via_point in enumerate(self.via_points):
+                self.placement_initializer.append_sampler(
+                    sampler=UniformRandomSampler(
+                        name=f"{via_point.name}ObjectSampler",
+                        mujoco_objects=via_point,
+                        x_range=[-0.1, 0.1],
+                        y_range=[-0.1, 0.1],
+                        z_range=[-0.1, 0.1],
+                        rotation=0.0,
+                        rotation_axis='z',
+                        ensure_object_boundary_in_range=False,
+                        ensure_valid_placement=False,
+                        reference_pos=self.via_point_offset,
+                        # z_offset=self.via_point_offset[2],
+                    )
+                )
 
         # task includes arena, robot, and objects of interest
         self.model = ManipulationTask(
@@ -509,6 +535,10 @@ class TrajectoryFollowing(SingleArmEnv):
         # elif self.status == 3 and (np.abs(self._gripper_to_via_point_4) < 0.001).all():
         #     print("goal reached")
         #     return True
+
+        if self.via_points_reached == self.via_point_cnt:
+            return True
+
         return False
         # return (self._eef_xpos == self._via_point_xpos).all()
 
