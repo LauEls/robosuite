@@ -578,7 +578,9 @@ class TrajectoryFollowing(SingleArmEnv):
         # allow episode to finish early if allowed
         # if self.early_terminations:
         #     done = done or self._check_success()
-        done = self._check_success()
+
+        # done = self._check_success()
+        done = False
 
         return reward, done, info
     
