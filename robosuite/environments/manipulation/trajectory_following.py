@@ -147,7 +147,7 @@ class TrajectoryFollowing(SingleArmEnv):
         else:
             target_via_point_pos = np.array(self.sim.data.body_xpos[self.sim.model.body_name2id(self.via_points[self.via_points_reached].root_body)])
             dist = np.linalg.norm(target_via_point_pos - self._eef_xpos)
-            if dist < 0.05:
+            if dist < 0.01:
                 self.via_points_reached += 1
                 print("Via Point Reached: "+str(self.via_points_reached))
                 if self.via_points_reached < self.via_point_cnt-1:
@@ -562,6 +562,7 @@ class TrajectoryFollowing(SingleArmEnv):
 
         total_wrench_ee = np.linalg.norm(np.array(self.robots[0].recent_ee_forcetorques.current))
         info["total_ee_wrench"] = total_wrench_ee
+        info["task_completed"] = self._check_success()
 
         # Update force bias
         # if np.linalg.norm(self.ee_force_bias) == 0:

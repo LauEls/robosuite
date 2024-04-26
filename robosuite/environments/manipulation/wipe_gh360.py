@@ -739,6 +739,7 @@ class WipeGH360(SingleArmEnv):
 
         total_wrench_ee = np.linalg.norm(np.array(self.robots[0].recent_ee_forcetorques.current))
         info["total_ee_wrench"] = total_wrench_ee
+        info["task_completed"] = self._check_success()
 
 
         # print("ee_force: ", self.robots[0].ee_force)

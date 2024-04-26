@@ -189,6 +189,7 @@ class JointPositionController(Controller):
             self.kd = 2 * np.sqrt(self.kp) * np.clip(damping_ratio, self.damping_ratio_min, self.damping_ratio_max)
         elif self.impedance_mode == "variable_kp":
             kp, delta = action[:jnt_dim], action[jnt_dim:]
+            kp = kp*self.kp_max
             self.kp = np.clip(kp, self.kp_min, self.kp_max)
             self.kd = 2 * np.sqrt(self.kp)  # critically damped
         else:  # This is case "fixed"
