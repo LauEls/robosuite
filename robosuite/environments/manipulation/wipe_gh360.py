@@ -460,6 +460,7 @@ class WipeGH360(SingleArmEnv):
                 elif total_force_ee > self.pressure_threshold and self.sim.data.ncon > 1:
                     reward += self.wipe_contact_reward + 0.01 * total_force_ee
                     if self.sim.data.ncon > 50:
+                        # print("Many contacts: ", self.sim.data.ncon)
                         reward += 10.0 * self.wipe_contact_reward
 
                 # Penalize large accelerations
