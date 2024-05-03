@@ -146,6 +146,7 @@ class Lift(SingleArmEnv):
         use_object_obs=True,
         reward_scale=1.0,
         reward_shaping=False,
+        obs_optimization=False,
         placement_initializer=None,
         has_renderer=False,
         has_offscreen_renderer=True,
@@ -173,6 +174,8 @@ class Lift(SingleArmEnv):
         # reward configuration
         self.reward_scale = reward_scale
         self.reward_shaping = reward_shaping
+
+        self.obs_optimization = obs_optimization
 
         # whether to use ground-truth object states
         self.use_object_obs = use_object_obs
@@ -382,6 +385,15 @@ class Lift(SingleArmEnv):
                     sensor=s,
                     sampling_rate=self.control_freq,
                 )
+
+            if self.obs_optimization:
+                observable_list = [f"{pf}eef_quat", f"{pf}gripper_qpos", f"{pf}gripper_qvel", "gripper_to_cube_pos", "cube_quat"]
+
+                for key, value in observables.items():
+                    value.set_active(False)
+                    for list_item in observable_list:
+                        if key == list_item:
+                            value.set_active(True)
 
         return observables
 
