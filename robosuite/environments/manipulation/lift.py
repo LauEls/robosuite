@@ -318,6 +318,8 @@ class Lift(SingleArmEnv):
                 x_range=[-0.2, 0.2],
                 y_range=[-0.2, 0.2],
                 rotation=(-np.pi/4, +np.pi/4),
+                # x_range=[-0.0, 0.0],
+                # y_range=[-0.0, 0.0],
                 # rotation=0.0,
                 ensure_object_boundary_in_range=False,
                 ensure_valid_placement=True,
