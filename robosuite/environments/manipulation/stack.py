@@ -8,7 +8,7 @@ from robosuite.models.objects import BoxObject
 from robosuite.models.tasks import ManipulationTask
 from robosuite.utils.mjcf_utils import CustomMaterial
 from robosuite.utils.observables import Observable, sensor
-from robosuite.utils.placement_samplers import UniformRandomSampler
+from robosuite.utils.placement_samplers import UniformRandomSampler, SequentialCompositeSampler
 from robosuite.utils.transform_utils import convert_quat
 
 
@@ -352,24 +352,50 @@ class Stack(SingleArmEnv):
         )
         cubes = [self.cubeA, self.cubeB]
         # Create placement initializer
-        if self.placement_initializer is not None:
-            self.placement_initializer.reset()
-            self.placement_initializer.add_objects(cubes)
-        else:
-            self.placement_initializer = UniformRandomSampler(
-                name="ObjectSampler",
-                mujoco_objects=cubes,
+        self.placement_initializer = SequentialCompositeSampler(name="ObjectSampler")
+
+        for i, cube in enumerate(cubes):
+            if i == 0:
+                ref_pos = self.table_offset + np.array([0.0, -0.1, 0.0])
+            else:
+                ref_pos = self.table_offset + np.array([0.0, 0.1, 0.0])
+            self.placement_initializer.append_sampler(sampler = UniformRandomSampler(
+                name=f"{cube.name}ObjectSampler",
+                mujoco_objects=cube,
                 # x_range=[-0.08, 0.08],
                 # y_range=[-0.08, 0.08],
                 # rotation=None,
-                x_range=[-0.2, 0.2],
-                y_range=[-0.2, 0.2],
-                rotation=[-np.pi/4, np.pi/4],
+                # x_range=[0.05, 0.05],
+                # y_range=[0.05, 0.05],
+                # rotation=[-np.pi/4, np.pi/4],
+                x_range=[0.0, 0.0],
+                y_range=[0.0, 0.0],
+                rotation=0.0,
                 ensure_object_boundary_in_range=False,
                 ensure_valid_placement=True,
-                reference_pos=self.table_offset,
+                reference_pos=ref_pos,
                 z_offset=0.01,
-            )
+            ))
+
+
+        # if self.placement_initializer is not None:
+        #     self.placement_initializer.reset()
+        #     self.placement_initializer.add_objects(cubes)
+        # else:
+        #     self.placement_initializer = UniformRandomSampler(
+        #         name="ObjectSampler",
+        #         mujoco_objects=cubes,
+        #         x_range=[-0.08, 0.08],
+        #         y_range=[-0.08, 0.08],
+        #         # rotation=None,
+        #         # x_range=[-0.4, -0.2],
+        #         # y_range=[-0.2, 0.2],
+        #         rotation=[-np.pi/4, np.pi/4],
+        #         ensure_object_boundary_in_range=False,
+        #         ensure_valid_placement=True,
+        #         reference_pos=self.table_offset,
+        #         z_offset=0.01,
+        #     )
 
         # task includes arena, robot, and objects of interest
         self.model = ManipulationTask(
