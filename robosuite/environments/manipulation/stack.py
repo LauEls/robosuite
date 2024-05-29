@@ -146,6 +146,7 @@ class Stack(SingleArmEnv):
         use_object_obs=True,
         reward_scale=1.0,
         reward_shaping=False,
+        obs_optimization=False,
         placement_initializer=None,
         has_renderer=False,
         has_offscreen_renderer=True,
@@ -173,6 +174,8 @@ class Stack(SingleArmEnv):
         # reward configuration
         self.reward_scale = reward_scale
         self.reward_shaping = reward_shaping
+
+        self.obs_optimization = obs_optimization
 
         # whether to use ground-truth object states
         self.use_object_obs = use_object_obs
@@ -365,12 +368,12 @@ class Stack(SingleArmEnv):
                 # x_range=[-0.08, 0.08],
                 # y_range=[-0.08, 0.08],
                 # rotation=None,
-                # x_range=[0.05, 0.05],
-                # y_range=[0.05, 0.05],
-                # rotation=[-np.pi/4, np.pi/4],
-                x_range=[0.0, 0.0],
-                y_range=[0.0, 0.0],
-                rotation=0.0,
+                x_range=[-0.05, 0.05],
+                y_range=[-0.05, 0.05],
+                rotation=[-np.pi/4, np.pi/4],
+                # x_range=[0.0, 0.0],
+                # y_range=[0.0, 0.0],
+                # rotation=0.0,
                 ensure_object_boundary_in_range=False,
                 ensure_valid_placement=True,
                 reference_pos=ref_pos,
@@ -498,6 +501,15 @@ class Stack(SingleArmEnv):
                     sensor=s,
                     sampling_rate=self.control_freq,
                 )
+
+            if self.obs_optimization:
+                observable_list = [f"{pf}eef_quat", f"{pf}gripper_qpos", f"{pf}gripper_qvel", "gripper_to_cubeA", "gripper_to_cubeB", "cubeA_quat", "cubeB_quat"]
+
+                for key, value in observables.items():
+                    value.set_active(False)
+                    for list_item in observable_list:
+                        if key == list_item:
+                            value.set_active(True)
 
         return observables
 
