@@ -142,6 +142,9 @@ class Lift(SingleArmEnv):
         initialization_noise="default",
         table_full_size=(0.8, 0.8, 0.05),
         table_friction=(1.0, 5e-3, 1e-4),
+        cube_x_range = [-0.2, 0.2],
+        cube_y_range = [-0.2, 0.2],
+        cube_rotation = (-np.pi/4, +np.pi/4),
         use_camera_obs=True,
         use_object_obs=True,
         reward_scale=1.0,
@@ -170,6 +173,9 @@ class Lift(SingleArmEnv):
         self.table_full_size = table_full_size
         self.table_friction = table_friction
         self.table_offset = np.array((0, 0, 0.8))
+        self.cube_x_range = cube_x_range
+        self.cube_y_range = cube_y_range
+        self.cube_rotation = cube_rotation
 
         # reward configuration
         self.reward_scale = reward_scale
@@ -315,12 +321,12 @@ class Lift(SingleArmEnv):
                 mujoco_objects=self.cube,
                 # x_range=[-0.03, 0.03],
                 # y_range=[-0.03, 0.03],
-                # x_range=[-0.2, 0],
-                # y_range=[-0.2, 0],
+                # x_range=[-0.2, 0.2],
+                # y_range=[-0.2, 0.2],
                 # rotation=(-np.pi/4, +np.pi/4),
-                x_range=[-0.0, 0.0],
-                y_range=[-0.0, 0.0],
-                rotation=0.0,
+                x_range=self.cube_x_range,
+                y_range=self.cube_y_range,
+                rotation=self.cube_rotation,
                 ensure_object_boundary_in_range=False,
                 ensure_valid_placement=True,
                 reference_pos=self.table_offset,
