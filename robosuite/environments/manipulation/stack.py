@@ -503,7 +503,7 @@ class Stack(SingleArmEnv):
                 )
 
             if self.obs_optimization:
-                observable_list = [f"{pf}eef_quat", f"{pf}gripper_qpos", f"{pf}gripper_qvel", "gripper_to_cubeA", "gripper_to_cubeB", "cubeA_quat", "cubeB_quat"]
+                observable_list = [f"{pf}eef_quat", f"{pf}gripper_qpos", f"{pf}gripper_qvel", "cubeA_quat", "cubeB_quat", "gripper_to_cubeA", "gripper_to_cubeB"]
 
                 for key, value in observables.items():
                     value.set_active(False)
