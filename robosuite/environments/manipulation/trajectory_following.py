@@ -247,9 +247,12 @@ class TrajectoryFollowing(SingleArmEnv):
                     sampler=UniformRandomSampler(
                         name=f"{via_point.name}ObjectSampler",
                         mujoco_objects=via_point,
-                        x_range=[-0.1, 0.1],
-                        y_range=[-0.1, 0.1],
-                        z_range=[-0.1, 0.1],
+                        # x_range=[-0.1, 0.1],
+                        # y_range=[-0.1, 0.1],
+                        # z_range=[-0.1, 0.1],
+                        x_range=[-0.05, 0.05],
+                        y_range=[-0.05, 0.05],
+                        z_range=[-0.05, 0.05],
                         rotation=0.0,
                         rotation_axis='z',
                         ensure_object_boundary_in_range=False,
@@ -322,7 +325,7 @@ class TrajectoryFollowing(SingleArmEnv):
         # observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_1_pos", "via_point_1_to_eef_pos", "via_point_2_pos", "via_point_2_to_eef_pos", "via_point_3_pos", "via_point_3_to_eef_pos"]
         observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat"]
         for i in range(self.via_point_cnt):
-            observable_list.append(f"via_point{i}_pos")
+            #observable_list.append(f"via_point{i}_pos")
             observable_list.append(f"gripper_to_via_point{i}")
         if self.motor_obs:
             observable_list.insert(1, f"{pf}motor_pos")
