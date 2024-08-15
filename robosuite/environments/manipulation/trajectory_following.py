@@ -250,9 +250,9 @@ class TrajectoryFollowing(SingleArmEnv):
                         # x_range=[-0.1, 0.1],
                         # y_range=[-0.1, 0.1],
                         # z_range=[-0.1, 0.1],
-                        x_range=[-0.05, 0.05],
-                        y_range=[-0.05, 0.05],
-                        z_range=[-0.05, 0.05],
+                        x_range=[-0.02, 0.02],
+                        y_range=[-0.02, 0.02],
+                        z_range=[-0.02, 0.02],
                         rotation=0.0,
                         rotation_axis='z',
                         ensure_object_boundary_in_range=False,
@@ -323,7 +323,7 @@ class TrajectoryFollowing(SingleArmEnv):
                 )
 
         # observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_1_pos", "via_point_1_to_eef_pos", "via_point_2_pos", "via_point_2_to_eef_pos", "via_point_3_pos", "via_point_3_to_eef_pos"]
-        observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat"]
+        observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_1_pos", "via_point_1_to_eef_pos"]
         for i in range(self.via_point_cnt):
             #observable_list.append(f"via_point{i}_pos")
             observable_list.append(f"gripper_to_via_point{i}")
