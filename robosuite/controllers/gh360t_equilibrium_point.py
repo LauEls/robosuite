@@ -154,6 +154,15 @@ class GH360TEquilibriumPointController(Controller):
                 motor_pos.append(joint.motor_pos_left)
                 
         return motor_pos
+    
+    def get_motor_vel(self):
+        motor_vel = []
+        for joint in self.arm:
+            if type(joint) == SoftJoint:
+                motor_vel.append(joint.motor_vel_right)
+                motor_vel.append(joint.motor_vel_left)
+                
+        return motor_vel
 
     def set_goal(self, delta_action):
         """

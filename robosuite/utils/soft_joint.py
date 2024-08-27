@@ -64,6 +64,8 @@ class SoftJoint(Joint):
 
         self.motor_pos_left = 0
         self.motor_pos_right = 0
+        self.motor_vel_left = 0
+        self.motor_vel_right = 0
         self.tendon_left_pos = Tendon(**left_positive_tendon_kwargs, tendon_noise=self.tendon_noise, tendon_noise_level=tendon_noise_level, file_name=file_name)
         self.tendon_left_neg = Tendon(**left_negative_tendon_kwargs, tendon_noise=self.tendon_noise, tendon_noise_level=tendon_noise_level, file_name=file_name)
         self.tendon_right_pos = Tendon(**right_positive_tendon_kwargs, tendon_noise=self.tendon_noise, tendon_noise_level=tendon_noise_level, file_name=file_name)
@@ -167,7 +169,8 @@ class SoftJoint(Joint):
             else:
                 delta_left = delta_motor_pos[1]
 
-        
+        self.motor_vel_right = delta_right/0.05
+        self.motor_vel_left = delta_left/0.05
         # if self.fixed_stiffness_switch and delta_right != delta_left and self.current_stiffness != 0.0:
         #     if right_limit and left_limit:
         #         print("This shouldn't happen?")

@@ -329,6 +329,7 @@ class TrajectoryFollowing(SingleArmEnv):
             observable_list.append(f"via_point{i}_pos")
             observable_list.append(f"gripper_to_via_point{i}")
         if self.motor_obs:
+            observable_list.insert(1, f"{pf}motor_vel")
             observable_list.insert(1, f"{pf}motor_pos")
         if self.q_vel_obs:
             observable_list.insert(1, f"{pf}joint_vel")

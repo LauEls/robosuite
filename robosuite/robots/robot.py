@@ -208,11 +208,19 @@ class Robot(object):
             @sensor(modality=modality)
             def motor_pos(obs_cache):
                 return np.array(self.controller.get_motor_pos())
+            
+            @sensor(modality=modality)
+            def motor_vel(obs_cache):
+                return np.array(self.controller.get_motor_vel())
 
             sensors.append(motor_pos)
+            sensors.append(motor_vel)
             names.append("motor_pos")
+            names.append("motor_vel")
             # We don't want to include the direct joint pos sensor outputs
             actives.append(True)
+            actives.append(True)
+
 
         # Create observables for this robot
         observables = OrderedDict()
