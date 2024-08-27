@@ -322,10 +322,11 @@ class TrajectoryFollowing(SingleArmEnv):
                     sampling_rate=self.control_freq,
                 )
 
-        # observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_1_pos", "via_point_1_to_eef_pos", "via_point_2_pos", "via_point_2_to_eef_pos", "via_point_3_pos", "via_point_3_to_eef_pos"]
-        observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_1_pos", "via_point_1_to_eef_pos"]
+        # observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_1_pos", "via_point_1_to_eef_pos", "via_point_2_pos", "via_point_2_to_eef_pos", "via_point_3_pos", "via_point_3_to_eef_pos", "via_point_4_pos", "via_point_4_to_eef_pos"]
+        # observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat", "via_point_1_pos", "via_point_1_to_eef_pos"]
+        observable_list = [f"{pf}joint_pos", f"{pf}eef_pos", f"{pf}eef_quat"]
         for i in range(self.via_point_cnt):
-            #observable_list.append(f"via_point{i}_pos")
+            observable_list.append(f"via_point{i}_pos")
             observable_list.append(f"gripper_to_via_point{i}")
         if self.motor_obs:
             observable_list.insert(1, f"{pf}motor_pos")
