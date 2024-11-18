@@ -289,7 +289,14 @@ class DoorMirror(SingleArmEnv):
             else:
                 if self.use_latch:
                     handle_qpos = self.sim.data.qpos[self.handle_qpos_addr]
-                    reward += np.clip(0.25 * np.abs(handle_qpos / (0.25 * np.pi)), -0.25, 0.25)
+                    hinge_qpos = self.sim.data.qpos[self.hinge_qpos_addr]
+                    # reward += np.clip(0.25 * np.abs(handle_qpos / (0.25 * np.pi)), -0.25, 0.25)
+                    if np.abs(handle_qpos) >= 0.1:
+                        reward = 0.25
+                        reward += np.clip(0.25 * np.abs(handle_qpos / (0.25 * np.pi)), 0.0, 0.25)
+                        reward += np.clip(0.25 * np.abs(hinge_qpos / 0.3), 0, 0.25)
+
+
 
         # Scale reward if requested
         if self.reward_scale is not None:
@@ -542,7 +549,11 @@ class DoorMirror(SingleArmEnv):
             bool: True if door has been opened
         """
         hinge_qpos = self.sim.data.qpos[self.hinge_qpos_addr]
-        return hinge_qpos < -0.3
+        if self.grasp_check:
+            return hinge_qpos < -0.3
+        else:
+            handle_qpos = self.sim.data.qpos[self.handle_qpos_addr]
+            return hinge_qpos < -0.3 and np.abs(handle_qpos) <= 0.1
     
     def _post_action(self, action):
         """
