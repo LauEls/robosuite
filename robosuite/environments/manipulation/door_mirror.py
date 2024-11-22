@@ -147,6 +147,7 @@ class DoorMirror(SingleArmEnv):
         stiffness_punishment=False,
         motor_obs = False,
         grasp_check=False,
+        obs_optimization=False,
         use_camera_obs=True,
         use_object_obs=True,
         reward_scale=1.0,
@@ -190,6 +191,8 @@ class DoorMirror(SingleArmEnv):
         self.use_latch = use_latch
         self.reward_scale = reward_scale
         self.reward_shaping = reward_shaping
+
+        self.obs_optimization = obs_optimization
 
         # whether to use ground-truth object states
         self.use_object_obs = use_object_obs
@@ -294,6 +297,8 @@ class DoorMirror(SingleArmEnv):
                     if np.abs(handle_qpos) >= 0.1:
                         reward = 0.25
                         reward += np.clip(0.25 * np.abs(handle_qpos / (0.25 * np.pi)), 0.0, 0.25)
+                    if np.abs(hinge_qpos) >= 0.1:
+                        reward = 0.5
                         reward += np.clip(0.25 * np.abs(hinge_qpos / 0.3), 0, 0.25)
 
 
@@ -504,10 +509,16 @@ class DoorMirror(SingleArmEnv):
                     sampling_rate=self.control_freq,
                 )
 
-        if self.motor_obs:
-            observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}motor_pos", f"{pf}motor_vel" f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+        if self.obs_optimization:
+            if self.motor_obs:
+                observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}motor_pos", f"{pf}motor_vel" f"{pf}eef_quat", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+            else:
+                observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_quat", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
         else:
-            observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+            if self.motor_obs:
+                observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}motor_pos", f"{pf}motor_vel" f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+            else:
+                observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
         # observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
         # macros.CONCATENATE_ROBOT_STATE = False
 

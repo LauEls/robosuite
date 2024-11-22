@@ -177,6 +177,8 @@ class Lift(SingleArmEnv):
         self.cube_y_range = cube_y_range
         self.cube_rotation = cube_rotation
 
+        self.tast_state = 0.0
+
         # reward configuration
         self.reward_scale = reward_scale
         self.reward_shaping = reward_shaping
@@ -245,6 +247,7 @@ class Lift(SingleArmEnv):
 
         # sparse completion reward
         if self._check_success():
+            self.task_state = 1.0
             reward = 2.25
 
         # use a shaping reward
@@ -257,9 +260,12 @@ class Lift(SingleArmEnv):
             reaching_reward = 1 - np.tanh(10.0 * dist)
             reward += reaching_reward
 
+            self.task_state = 0.0
+
             # grasping reward
             if self._check_grasp(gripper=self.robots[0].gripper, object_geoms=self.cube):
                 reward += 0.25
+                self.task_state = 0.5
 
         # Scale reward if requested
         if self.reward_scale is not None:
@@ -395,7 +401,8 @@ class Lift(SingleArmEnv):
                 )
 
             if self.obs_optimization:
-                observable_list = [f"{pf}eef_quat", f"{pf}gripper_qpos", f"{pf}gripper_qvel", "gripper_to_cube_pos", "cube_quat"]
+                # observable_list = [f"{pf}eef_quat", f"{pf}gripper_qpos", f"{pf}gripper_qvel", "gripper_to_cube_pos", "cube_quat"]
+                observable_list = [f"{pf}eef_pos", f"{pf}eef_quat", f"{pf}gripper_qpos", f"{pf}gripper_qvel", "cube_pos", "cube_quat"]
 
                 for key, value in observables.items():
                     value.set_active(False)
