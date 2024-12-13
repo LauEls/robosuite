@@ -137,6 +137,7 @@ class DoorMirrorKnob(SingleArmEnv):
         gripper_types="default",
         initialization_noise="default",
         use_latch=True,
+        table_offset=(0,0,0),
         use_camera_obs=True,
         use_object_obs=True,
         reward_scale=1.0,
@@ -163,7 +164,7 @@ class DoorMirrorKnob(SingleArmEnv):
         # settings for table top (hardcoded since it's not an essential part of the environment)
         self.table_full_size = (0.8, 0.3, 0.05)
         # self.table_offset = (-0.2, -0.35, 0.8)
-        self.table_offset = (-0.2, 0.35, 0.8)
+        self.table_offset = table_offset
         #self.table_offset = (-0.1, 0.35, 0.8)
 
         # reward configuration
