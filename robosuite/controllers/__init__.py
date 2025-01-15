@@ -9,10 +9,12 @@ from .gh2_osc import GH2OperationalSpaceController
 from .gh360t_equilibrium_point import GH360TEquilibriumPointController
 from .gh360t_joint_pos import GH360TJointPositionController
 from .gh360t_motor_pos import GH360TMotorPositionController
+from .joint_vel_limited import JointVelocityLimitedController
 
 
 CONTROLLER_INFO = {
     "JOINT_VELOCITY": "Joint Velocity",
+    "JOINT_VELOCITY_LIMITED": "Joint Velocity with joint angle limits",
     "JOINT_TORQUE": "Joint Torque",
     "JOINT_POSITION": "Joint Position",
     "JOINT_POSITION_VI": "Joint Position with variable impedance",

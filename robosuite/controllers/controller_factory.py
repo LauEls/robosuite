@@ -18,6 +18,7 @@ from .gh2_osc import GH2OperationalSpaceController
 from .gh360t_equilibrium_point import GH360TEquilibriumPointController
 from .gh360t_joint_pos import GH360TJointPositionController
 from .gh360t_motor_pos import GH360TMotorPositionController
+from .joint_vel_limited import JointVelocityLimitedController
 
 # Global var for linking pybullet server to multiple ik controller instances if necessary
 pybullet_server = None
@@ -174,6 +175,9 @@ def controller_factory(name, params):
 
     if name == "JOINT_VELOCITY":
         return JointVelocityController(interpolator=interpolator, **params)
+
+    if name == "JOINT_VELOCITY_LIMITED":
+        return JointVelocityLimitedController(interpolator=interpolator, **params)
 
     if name == "JOINT_POSITION":
         return JointPositionController(interpolator=interpolator, **params)
