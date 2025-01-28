@@ -2,7 +2,8 @@
     <compiler angle="radian"/>
 
     <asset>
-        <mesh class="hook" name="hook_mesh" file="meshes/hook_gripper/gripper_hook_binary.stl" />
+        <!-- <mesh class="hook" name="hook_mesh" file="meshes/hook_gripper/gripper_hook_binary.stl" /> -->
+        <mesh class="hook" name="hook_mesh" file="meshes/hook_gripper/gripper_hook_v2.stl" />
     </asset>
 
     <default>
@@ -20,8 +21,8 @@
             <geom name="inner_pad" type="box" pos="-9.9E-03 40E-03 0E-03" size="0.1E-03 20E-03 9E-03" rgba="0 1 1 1" friction = "2 0.05 0.0001" priority="1"/>
             <geom name="hook_2_col" type="box" pos="2.5E-03 65E-03 0E-03" size="12.5E-03 5E-03 10E-03" rgba="0 1 0 0.5" />
             <geom name="middle_pad" type="box" pos="0E-03 59.9E-03 0E-03" size="10E-03 0.1E-03 9E-03" rgba="0 1 1 1" friction = "2 0.05 0.0001" priority="1"/>
-            <geom name="hook_3_col" type="box" pos="12.5E-03 55E-03 0E-03" size="2.5E-03 5E-03 10E-03" rgba="0 0 1 0.5" />
-            <geom name="outer_pad" type="box" pos="9.9E-03 55E-03 0E-03" size="0.1E-03 5E-03 9E-03" rgba="0 1 1 1" friction = "2 0.05 0.0001" priority="1"/>
+            <!-- <geom name="hook_3_col" type="box" pos="12.5E-03 55E-03 0E-03" size="2.5E-03 5E-03 10E-03" rgba="0 0 1 0.5" />
+            <geom name="outer_pad" type="box" pos="9.9E-03 55E-03 0E-03" size="0.1E-03 5E-03 9E-03" rgba="0 1 1 1" friction = "2 0.05 0.0001" priority="1"/> -->
             <inertial pos="-6.887E-03 26.533E-03 0.014E-03" mass="57.70E-03" fullinertia="35363.467E-09 18046.14E-09 35665.868E-09 1310.376E-09 -7.748E-09 16.896E-09" />
             <!-- This site was added for visualization. -->
             <body name="eef" pos="0 0.05 0" euler="1.5708 0 0">

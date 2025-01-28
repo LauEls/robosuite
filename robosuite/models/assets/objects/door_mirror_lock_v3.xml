@@ -24,8 +24,9 @@
                   <joint name="hinge" pos="-0.255 0 0" axis="0 0 1" range="-0.4 0.0" damping="1" frictionloss="1" limited="true"/>
                   <geom size="0.22 0.02 .29" type="box" friction="1 1 1" group="0" name="panel" material="MatDarkWood"/>
                   <body name="latch" pos="0.175 0 -0.025">
-                      <inertial pos="-0.017762 0.0138544 0" quat="0.365653 0.605347 -0.36522 0.605365" mass="0.1" diaginertia="0.0483771 0.0410001 0.0111013" />
-                      <joint name="latch_joint" pos="0 0 0" axis="0 1 0" range="-1.57 0" frictionloss="0.1" damping="0" limited="true" springref="0" stiffness="1" />
+                      <!-- <inertial pos="-0.017762 0.0138544 0" quat="0.365653 0.605347 -0.36522 0.605365" mass="0.1" diaginertia="0.0483771 0.0410001 0.0111013" /> -->
+                      <inertial pos="0.1 0.04 0" euler="0.0 0.0 0.0" mass="1.5" diaginertia="0.0483771 0.0410001 0.0111013" />
+                      <joint name="latch_joint" pos="0 0 0" axis="0 1 0" range="-1.57 0" frictionloss="1" damping="0.1" limited="true" springref="0" stiffness="1" />
                       <!-- <geom fromto="0 0.0625 0 0 -0.125 0" size="0.016" type="cylinder" group="0" name="handle_base" material="MatMetal"/> -->
                       <geom fromto="0 0.0625 0 0 -0.066 0" size="0.008" type="cylinder" group="0" name="handle_base" material="MatMetal"/>
                       <!-- <geom size="0.075 0.015 0.02" pos="-0.075 -0.10 0" type="box" group="0" name="handle" material="MatMetal"/> -->
@@ -48,6 +49,6 @@
 
     <!-- <actuator>
       <position ctrllimited="true" ctrlrange="-1000 1000" gear="1" joint="hinge"/>
-      <motor ctrllimited="true" ctrlrange="-1.5708 0.7854" joint="latch_joint" name="latch"/>
+      <motor ctrllimited="true" ctrlrange="-10 10" joint="latch_joint" name="latch"/>
     </actuator> -->
 </mujoco>

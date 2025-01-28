@@ -294,7 +294,7 @@ class DoorMirror(SingleArmEnv):
                     handle_qpos = self.sim.data.qpos[self.handle_qpos_addr]
                     hinge_qpos = self.sim.data.qpos[self.hinge_qpos_addr]
                     # reward += np.clip(0.25 * np.abs(handle_qpos / (0.25 * np.pi)), -0.25, 0.25)
-                    if np.abs(handle_qpos) >= 0.1:
+                    if np.abs(handle_qpos) >= 0.1 and self._check_grasp(gripper=self.robots[0].gripper, object_geoms="handle"):
                         reward = 0.25
                         reward += np.clip(0.25 * np.abs(handle_qpos / (0.25 * np.pi)), 0.0, 0.25)
                     if np.abs(hinge_qpos) >= 0.1:
@@ -376,6 +376,7 @@ class DoorMirror(SingleArmEnv):
 
         # Adjust base pose accordingly
         xpos = self.robots[0].robot_model.base_xpos_offset["table"](self.table_full_size[0])
+        print("xpos: ",xpos)
         self.robots[0].robot_model.set_base_xpos(xpos)
 
         # load model for table top workspace
@@ -412,19 +413,19 @@ class DoorMirror(SingleArmEnv):
             self.placement_initializer = UniformRandomSampler(
                     name="ObjectSampler",
                     mujoco_objects=self.door,
-                    x_range=[-0.01, 0.01],
-                    y_range=[-0.01, 0.01],
+                    # x_range=[-0.01, 0.01],
+                    # y_range=[-0.01, 0.01],
                     # y_range=[-0.01, 0.01],
                     # x_range=[-0.05, 0.05],
                     # x_range=[-0.07, -0.09],
-                    # y_range=[-0.0, -0.0],
-                    # x_range=[-0.0, -0.0],
+                    y_range=[-0.0, -0.0],
+                    x_range=[-0.0, -0.0],
                     
                     #rotation=(-np.pi / 2. - 0.25, -np.pi / 2.),
                     #rotation=(np.pi / 2., np.pi / 2. + 0.25),
-                    rotation=(np.pi / 2. -0.1, np.pi / 2. + 0.1),
+                    # rotation=(np.pi / 2. -0.1, np.pi / 2. + 0.1),
                     # rotation=(np.pi / 2. -0.25, np.pi / 2. + 0.25),
-                    # rotation=(np.pi / 2 + 0.0, np.pi / 2 + 0.0),
+                    rotation=(np.pi / 2 + 0.0, np.pi / 2 + 0.0),
                     rotation_axis='z',
                     ensure_object_boundary_in_range=False,
                     ensure_valid_placement=True,
@@ -464,7 +465,7 @@ class DoorMirror(SingleArmEnv):
             OrderedDict: Dictionary mapping observable names to its corresponding Observable object
         """
         observables = super()._setup_observables()
-
+        print(self.sim.data.body_xpos[self.sim.model.body_name2id("robot0_shoulder0")])
 
         # low-level object information
         if self.use_object_obs:

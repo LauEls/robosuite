@@ -27,7 +27,7 @@ class HookGripper(GripperModel):
     def _important_geoms(self):
         return {
             "left_finger": ["hook_1_col", "inner_pad"],
-            "right_finger": ["hook_3_col", "outer_pad"],
+            "right_finger": ["hook_2_col", "middle_pad"],
             "left_fingerpad": ["inner_pad"],
-            "right_fingerpad": ["outer_pad"],
+            "right_fingerpad": ["middle_pad"],
         }
