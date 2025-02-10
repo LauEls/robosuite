@@ -104,7 +104,7 @@
                                                 <inertial pos="1.346E-03 -218.297E-03 328.426E-03" mass="579.824E-03" fullinertia="1.293E-03 5.658E-04 9.995E-04 10703.597E-09 -20960.705E-09 1.297E-04"/>
 
                                                 <body name="lowerarm2" pos="0E-03 0E-03 0E-03">
-                                                    <joint name="lowerarm2_joint" type="hinge" axis="1 0 0" pos="-12.109E-03 -298.364E-03 331.517E-03" limited="true" range="-1.571 1.571" />
+                                                    <joint name="lowerarm2_joint" type="hinge" axis="-1 0 0" pos="-12.109E-03 -298.364E-03 331.517E-03" limited="true" range="-1.571 1.571" />
                                                     <geom name="lowerarm2_vis" group="1" type="mesh" mesh="lowerarm2_mesh" pos="0 0 0" euler="0 0 0"/>
 
                                                     <!--R9 Joint-->
