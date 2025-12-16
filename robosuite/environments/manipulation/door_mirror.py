@@ -142,6 +142,9 @@ class DoorMirror(SingleArmEnv):
         initialization_noise="default",
         use_latch=True,
         table_offset=(0,0,0),
+        door_x_variance = [0.0,0.0],
+        door_y_variance = [0.0,0.0],
+        door_rot_variance = [0.0,0.0],
         action_punishment=False,
         force_punishment=False,
         stiffness_punishment=False,
@@ -176,6 +179,9 @@ class DoorMirror(SingleArmEnv):
         self.table_full_size = (0.8, 0.3, 0.05)
         # self.table_offset = (-0.2, -0.35, 0.8)
         self.table_offset = table_offset#(-0.2, 0.55, 0.8) #(-0.2, 0.35, 0.8)
+        self.door_x_variance = door_x_variance
+        self.door_y_variance = door_y_variance
+        self.door_rot_variance = door_rot_variance
         #self.table_offset = (-0.1, 0.35, 0.8)
         # self.resting_pos = [-0.26256637, 0.35293338, 1.04808937]
         self.resting_pos = [-0.36193448,  0.47809581, -0.06899795]
@@ -278,7 +284,7 @@ class DoorMirror(SingleArmEnv):
         elif self.reward_shaping:
             # Add reaching component
             dist = np.linalg.norm(self._gripper_to_handle)
-            reaching_reward = 0.2 * (1 - np.tanh(10.0 * dist))
+            reaching_reward = 0.25 * (1 - np.tanh(10.0 * dist))
             reward += reaching_reward
             # Add rotating component if we're using a locked door
             
@@ -294,12 +300,12 @@ class DoorMirror(SingleArmEnv):
                     handle_qpos = self.sim.data.qpos[self.handle_qpos_addr]
                     hinge_qpos = self.sim.data.qpos[self.hinge_qpos_addr]
                     # reward += np.clip(0.25 * np.abs(handle_qpos / (0.25 * np.pi)), -0.25, 0.25)
-                    if np.abs(handle_qpos) >= 0.1 and self._check_grasp(gripper=self.robots[0].gripper, object_geoms="handle"):
+                    if np.abs(handle_qpos) >= 0.1:
                         reward = 0.25
-                        reward += np.clip(0.25 * np.abs(handle_qpos / (0.25 * np.pi)), 0.0, 0.25)
+                        reward += np.clip(0.25 * np.abs(handle_qpos / 0.6), 0.0, 0.25)
                     if np.abs(hinge_qpos) >= 0.1:
                         reward = 0.5
-                        reward += np.clip(0.25 * np.abs(hinge_qpos / 0.3), 0, 0.25)
+                        reward += np.clip(0.25 * np.abs(hinge_qpos / 0.4), 0, 0.25)
 
 
 
@@ -418,14 +424,14 @@ class DoorMirror(SingleArmEnv):
                     # y_range=[-0.01, 0.01],
                     # x_range=[-0.05, 0.05],
                     # x_range=[-0.07, -0.09],
-                    y_range=[-0.0, -0.0],
-                    x_range=[-0.0, -0.0],
+                    y_range=self.door_y_variance,
+                    x_range=self.door_x_variance,
                     
                     #rotation=(-np.pi / 2. - 0.25, -np.pi / 2.),
                     #rotation=(np.pi / 2., np.pi / 2. + 0.25),
                     # rotation=(np.pi / 2. -0.1, np.pi / 2. + 0.1),
                     # rotation=(np.pi / 2. -0.25, np.pi / 2. + 0.25),
-                    rotation=(np.pi / 2 + 0.0, np.pi / 2 + 0.0),
+                    rotation=(np.pi / 2 + self.door_rot_variance[0], np.pi / 2 + self.door_rot_variance[1]),
                     rotation_axis='z',
                     ensure_object_boundary_in_range=False,
                     ensure_valid_placement=True,
@@ -519,13 +525,14 @@ class DoorMirror(SingleArmEnv):
             if self.motor_obs:
                 observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}motor_pos", f"{pf}motor_vel" f"{pf}eef_quat", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
             else:
-                observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_quat", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+                observable_list = [ f"{pf}joint_vel", f"{pf}joint_pos", f"{pf}eef_quat", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
         else:
             if self.motor_obs:
                 observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}motor_pos", f"{pf}motor_vel" f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
             else:
                 observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
-        # observable_list = [f"{pf}joint_pos", f"{pf}joint_vel", f"{pf}eef_pos", f"{pf}eef_quat", "door_pos", "handle_pos", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+                # observable_list = [f"{pf}joint_vel", f"{pf}joint_pos", f"{pf}eef_quat", "handle_to_eef_pos", "hinge_qpos", "handle_qpos"]
+        # observable_list = [f"{pf}joint_pos", "handle_qpos", "handle_to_eef_pos"]
         # macros.CONCATENATE_ROBOT_STATE = False
 
         for key, value in observables.items():
@@ -534,7 +541,7 @@ class DoorMirror(SingleArmEnv):
                 if key == list_item:
                     value.set_active(True)
 
-        #print("observables: "+str(observables))
+        # print("observables: "+str(observables))
 
         return observables
 
